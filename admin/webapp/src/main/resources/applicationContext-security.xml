@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sc="http://www.springframework.org/schema/security" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="256" />
+	</bean>
+
+	<bean id="userService" class="org.meruvian.yama.security.UserService" />
+
+	<sc:http use-expressions="true">
+		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
+		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
+		<sc:intercept-url pattern="/**" method="POST" access="isFullyAuthenticated()" />
+
+		<sc:remember-me authentication-success-handler-ref="userService" />
+		<sc:form-login login-page="/" login-processing-url="/login"
+			username-parameter="username" password-parameter="password"
+			authentication-failure-url="/?failure"
+			authentication-success-handler-ref="userService" />
+		<sc:logout logout-url="/logout" logout-success-url="/"
+			invalidate-session="true" />
+	</sc:http>
+
+	<!-- Database authentication -->
+	<sc:authentication-manager>
+		<sc:authentication-provider
+			user-service-ref="userService">
+			<sc:password-encoder ref="passwordEncoder" />
+		</sc:authentication-provider>
+	</sc:authentication-manager>
+</beans>

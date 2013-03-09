@@ -1,0 +1,19 @@
+<decorators>
+	<excludes>
+		<pattern>/styles/*</pattern>
+		<pattern>/scripts/*</pattern>
+		<pattern>/images/*</pattern>
+		<pattern>*.json</pattern>
+		<pattern>*.xml</pattern>
+	</excludes>
+
+	<decorator name="admin" page="/view/decorator/default-decorator.ftl">
+		<pattern>/</pattern>
+		<pattern>/home</pattern>
+		<pattern>/admin/*</pattern>
+	</decorator>
+
+	<decorator name="security" page="/view/decorator/security-decorator.ftl">
+		<pattern>/security/*</pattern>
+	</decorator>
+</decorators> 
