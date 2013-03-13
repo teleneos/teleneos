@@ -19,22 +19,33 @@
 		<freemarker.version>2.3.19</freemarker.version>
 		<jquery.version>1.9.1</jquery.version>
 		<bootstrap.version>2.3.0</bootstrap.version>
-		<jradius.version>1.1.4</jradius.version>
+		<jradius.version>1.0.0</jradius.version>
 		<inca.version>1.0.2</inca.version>
 		<yama.version>1.0.2</yama.version>
 	</properties>
 
 	<repositories>
 		<repository>
+			<id>central</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
 			<id>coova</id>
 			<name>Coova Repository</name>
 			<url>http://coova-dev.s3.amazonaws.com/mvn</url>
+		</repository>
+		<repository>
+			<id>tinyradius</id>
+			<name>Tiny Radius</name>
+			<url>http://repo.softconstructions.com.au/maven</url>
 		</repository>
 	</repositories>
 
 	<modules>
 		<module>webapp</module>
 		<module>persistence</module>
+		<module>radius</module>
 	</modules>
 
 	<build>

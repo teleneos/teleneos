@@ -1,7 +1,7 @@
 <ul class="nav">
 	<li>
 		<a href='<@s.url value="/" />'>
-			<i class="icon-home"></i>
+			<i class="icon-home icon-white"></i>
 			<@s.text name="page.home" />
 		</a>
 	</li>
@@ -9,42 +9,12 @@
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />
 <#if user != 'null'>
-<ul class="nav">
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			<@s.text name="menu.admin" />
-			<b class="caret"></b>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/admin/user">
-					<@s.text name="menu.admin.user" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/user/online">
-					<@s.text name="menu.admin.onlineuser" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/service">
-					<@s.text name="menu.admin.service" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/user/group">
-					<@s.text name="menu.admin.group" />
-				</a>
-			</li>
-		</ul>
-	</li>
-</ul>
 
 <ul class="nav pull-right">
 	<li class="divider-vertical"></li>
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			<i class="icon-user"></i>
+			<i class="icon-user icon-white"></i>
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">

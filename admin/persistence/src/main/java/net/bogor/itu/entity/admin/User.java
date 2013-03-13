@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import net.bogor.itu.entity.Address;
 import net.bogor.itu.entity.Name;
+import net.bogor.itu.entity.radius.Radcheck;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
@@ -34,6 +35,7 @@ public class User extends DefaultPersistence {
 	private boolean male = true;
 	private String phone;
 	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+	private Radcheck radcheck;
 
 	@OneToOne
 	@JoinColumn(name = "backend_user_id")
@@ -99,4 +101,13 @@ public class User extends DefaultPersistence {
 		this.userGroups = userGroups;
 	}
 
+	@OneToOne
+	@JoinColumn(referencedColumnName = "username", name = "radcheck_username")
+	public Radcheck getRadcheck() {
+		return radcheck;
+	}
+
+	public void setRadcheck(Radcheck radcheck) {
+		this.radcheck = radcheck;
+	}
 }

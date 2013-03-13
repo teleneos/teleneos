@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Init user on startup -->
-	<!-- <bean id="user" class="net.bogor.itu.persistence.UserIntializer" /> -->
+	<bean id="user" class="net.bogor.itu.persistence.UserIntializer" />
 
 	<!-- Index database on startup -->
 	<!-- <bean id="dbIndexer" class="net.bogor.itu.persistence.FullSearchService" 

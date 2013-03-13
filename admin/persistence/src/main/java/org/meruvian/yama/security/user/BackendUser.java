@@ -65,6 +65,7 @@ public class BackendUser extends DefaultPersistence {
 
 	@Field
 	@Analyzer(definition = "customanalyzer")
+	@Column(unique = true)
 	public String getEmail() {
 		return email;
 	}

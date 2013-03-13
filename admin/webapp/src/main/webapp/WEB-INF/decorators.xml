@@ -12,6 +12,10 @@
 		<pattern>/home</pattern>
 		<pattern>/admin/*</pattern>
 	</decorator>
+	
+	<decorator name="user" page="/view/decorator/user-decorator.ftl">
+		<pattern>/user/*</pattern>
+	</decorator>
 
 	<decorator name="security" page="/view/decorator/security-decorator.ftl">
 		<pattern>/security/*</pattern>

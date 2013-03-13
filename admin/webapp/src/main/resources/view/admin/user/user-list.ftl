@@ -19,7 +19,11 @@
 			<#include "/view/decorator/nav/admin-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<form class="form-inline span10 offset2" method="get">
+				<a class="btn btn-primary span2" href="<@s.url value="/admin/user/add" />">
+					<i class="icon-plus icon-white"></i>
+					<@s.text name="button.add" />
+				</a>
+				<form class="form-inline span10" method="get">
 					<div class="input-append pull-right">
 						<input type="text" name="q" value="${q}" />
 						<button class="btn">
@@ -33,31 +37,28 @@
 					<thead>
 						<tr>
 							<th class="span1">#</th>
-							<th><@s.text name="label.admin.onlineuser.id" /></th>
-							<th><@s.text name="label.admin.onlineuser.username" /></th>
-							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
-							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
+							<th><@s.text name="label.login.username" /></th>
+							<th><@s.text name="label.user.name" /></th>
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<#list accts.entityList as a>
+						<#list users.entityList as u>
 						<tr>
 							<td>${no}</td>
-							<td>${a.radacctid?string('#')}</td>
-							<td>${a.username!}</td>
-							<td>${a.nasipaddress!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
-							<td>${byteString(a.acctinputoctets)}</td>
-							<td>${byteString(a.acctoutputoctets)}</td>
+							<td><a href="<@s.url value="/admin/user/edit/${u.user.username}" />">${u.user.username!}</a></td>
+							<td>${u.name.first!} ${u.name.last!}</td>
+							<td>${byteString(0)}</td>
+							<td>${byteString(0)}</td>
+							<#--
 							<td>
 								<a href="<@s.url value="/admin/user/disconnect/${a.username!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
 									<i class="icon-off"></i>
 								</a>
 							</td>
+							-->
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -70,9 +71,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${accts.rowCount?string('#')},
+				items: ${users.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(accts.currentPage + 1)?string('#')},
+				currentPage: ${(users.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

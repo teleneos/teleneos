@@ -16,5 +16,10 @@
 				<@s.text name="menu.admin.service" />
 			</a>
 		</li>
+		<li>
+			<a href="/admin/user/group">
+				<@s.text name="menu.admin.group" />
+			</a>
+		</li>
 	</ul>
 </div>

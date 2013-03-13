@@ -7,9 +7,18 @@
 			<div class="span12">
 				<div class="modal modal-static">
 					<div class="modal-header">
-						<h2><@s.text name="page.login.header" /></h2>
+						<h2>
+							<@s.text name="page.login.header" />
+							<small>
+								<@s.text name="page.login.header.signup">
+									<@s.param>
+										<@s.url value="/user/signup" />
+									</@s.param>
+								</@s.text>
+							</small>
+						</h2>
 					</div>
-					<@s.form id="login-form" theme="bootstrap" action="/login" cssClass="form-horizontal">
+					<@s.form action="/user/login" id="login-form" theme="bootstrap" cssClass="form-horizontal">
 						<div class="modal-body">
 							<@s.actionmessage theme="bootstrap" />
 							<@s.textfield key="label.login.username" name="username" cssClass="span9" autofocus="" /> 
