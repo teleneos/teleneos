@@ -38,6 +38,28 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			<@s.text name="menu.pos" />
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/pos/item">
+					<@s.text name="menu.pos.item" />
+				</a>
+			</li>
+			<li>
+				<a href="/pos/itemcategory">
+					<@s.text name="menu.pos.itemcategory" />
+				</a>
+			</li>
+			<li>
+				<a href="/pos/transaction">
+					<@s.text name="menu.pos.transaction" />
+				</a>
+		</ul>
+	</li>
 </ul>
 
 <ul class="nav pull-right">

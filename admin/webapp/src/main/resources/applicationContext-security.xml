@@ -9,7 +9,7 @@
 
 	<bean id="passwordEncoder"
 		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
-		<constructor-arg value="1" />
+		<constructor-arg value="256" />
 	</bean>
 
 	<bean id="userService" class="org.meruvian.yama.security.UserService" />
@@ -26,6 +26,7 @@
 
 	<sc:http use-expressions="true">
 		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
+		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
 		<sc:intercept-url pattern="/user/signin" access="permitAll" />
 		<sc:intercept-url pattern="/user/signup" access="permitAll" />

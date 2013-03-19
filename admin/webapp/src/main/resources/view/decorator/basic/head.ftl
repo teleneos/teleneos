@@ -9,6 +9,6 @@
 		<link rel="stylesheet" type="text/css" href="${ctx}/static/bootstrap/2.3.0/css/bootstrap-responsive.min.css" />
 		
 		<script type="text/javascript" src="${ctx}/static/jquery/1.9.1/jquery.min.js"></script>
-		
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 		${head!}
 	</head>
