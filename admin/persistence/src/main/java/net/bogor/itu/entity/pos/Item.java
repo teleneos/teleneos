@@ -19,6 +19,8 @@ public class Item extends DefaultPersistence {
 	private String name;
 	private String description;
 	private Long price;
+	private UnitOfMeasure uom;
+	private ItemType itemType;
 	private ItemCategory category;
 
 	public String getCode() {
@@ -51,6 +53,26 @@ public class Item extends DefaultPersistence {
 
 	public void setPrice(Long price) {
 		this.price = price;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "uom_id")
+	public UnitOfMeasure getUom() {
+		return uom;
+	}
+
+	public void setUom(UnitOfMeasure uom) {
+		this.uom = uom;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "item_type_id")
+	public ItemType getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(ItemType itemType) {
+		this.itemType = itemType;
 	}
 
 	@ManyToOne

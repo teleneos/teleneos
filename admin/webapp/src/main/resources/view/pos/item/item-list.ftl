@@ -29,8 +29,11 @@
 							<th><@s.text name="label.admin.item.code" /></th>
 							<th><@s.text name="label.admin.item.name" /></th>
 							<th><@s.text name="label.admin.item.description" /></th>
+							<th><@s.text name="label.admin.item.uom" /></th>
+							<th><@s.text name="label.admin.item.itemtype" /></th>
 							<th><@s.text name="label.admin.item.category" /></th>
 							<th><@s.text name="label.admin.item.price" /></th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -42,6 +45,8 @@
 							<td><a href="${editUrl + s.id}">${s.code!}</a></td>
 							<td>${s.name!}</td>
 							<td>${s.description!}</td>
+							<td>${s.uom.name!}</td>
+							<td>${s.itemType.name!}</td>
 							<td>${s.category.name!}</td>
 							<td>${s.price!}</td>
 						</tr>

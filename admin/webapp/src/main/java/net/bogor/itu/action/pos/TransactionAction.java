@@ -52,7 +52,7 @@ public class TransactionAction extends DefaultAction implements
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult addForm() {
 		return new ActionResult("freemarker",
-				"/view/pos/transaction/transaction-detail-form.ftl");
+				"/view/pos/transaction/transaction-form.ftl");
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
@@ -64,11 +64,6 @@ public class TransactionAction extends DefaultAction implements
 
 		TransactionHeader tHeader = model.getTransactionHeader();
 
-		model.getTransactionDetail().setTransactionHeader(
-				tHeaderService.findById(tHeader.getId()));
-
-		tDetailService.save(model.getTransactionDetail());
-
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
@@ -77,7 +72,7 @@ public class TransactionAction extends DefaultAction implements
 	public ActionResult formDetail() {
 
 		model.setTransactionDetails(tDetailService.findByKeyword(model
-				.getTransactionHeader().getId(), model.getMax(), model
+				.getTransactionHeader().getId(), 0, model
 				.getPage() - 1));
 
 		model.setTransactionHeader(tHeaderService.findById(model

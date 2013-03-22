@@ -7,7 +7,10 @@ import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.springframework.stereotype.Repository;
-
+/**
+ * @author Edy Setiawan
+ * 
+ */
 @Repository
 public class TransactionHeaderRepository extends
 		PersistenceRepository<TransactionHeader> {

@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.theader.title" /></tile>
-		<meta name="header" content="<@s.text name="page.theader.header" />">
+		<title><@s.text name="page.itemtype.title" /></tile>
+		<meta name="header" content="<@s.text name="page.itemtype.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/transaction/add" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/pos/uom/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,18 +26,18 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.theader.user" /></th>
-							<th><@s.text name="label.admin.theader.date" /></th>
+							<th><@s.text name="label.admin.uom.name" /></th>
+							<th><@s.text name="label.admin.uom.description" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<@s.url value="/pos/transaction/detail/" var="detailUrl" />
-						<#list transactionHeaders.entityList as s>
+						<@s.url value="/pos/uom/edit/" var="editUrl" />
+						<#list uoms.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${detailUrl + s.id}">${s.user.name.first!} ${s.user.name.last!}</a></td>
-							<td>${s.logInformation.createDate!}</td>
+							<td><a href="${editUrl + s.id}">${s.name!}</a></td>
+							<td>${s.description!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -50,9 +50,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${transactionHeaders.rowCount?string('#')},
+				items: ${uoms.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(transactionHeaders.currentPage + 1)?string('#')},
+				currentPage: ${(uoms.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

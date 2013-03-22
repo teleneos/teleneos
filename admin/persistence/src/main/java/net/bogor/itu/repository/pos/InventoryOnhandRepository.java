@@ -1,6 +1,7 @@
 package net.bogor.itu.repository.pos;
 
-import net.bogor.itu.entity.pos.Item;
+import net.bogor.itu.entity.pos.InventoryOnhand;
+import net.bogor.itu.entity.pos.InventoryOnhand;
 import net.bogor.itu.persistence.PersistenceRepository;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,17 +14,16 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public class ItemRepository extends PersistenceRepository<Item> {
-	public EntityListWrapper<Item> findByKeyword(String keyword, String order,
-			String orderBy, int limit, int page, String condition) {
+public class InventoryOnhandRepository extends PersistenceRepository<InventoryOnhand> {
+	
+	public EntityListWrapper<InventoryOnhand> findByKeyword(String keyword,
+			String order, String orderBy, int limit, int page, String condition) {
 
-		String criteria = "(i.code LIKE ? AND i.name LIKE ? AND i.description LIKE ? " +
-				"AND i.uom.name LIKE ? AND i.itemType.name LIKE ? AND i.category.name LIKE ?)";
+		String criteria = "(i.item.name LIKE ? )";
 		criteria = criteria.replace("AND", condition);
 		criteria += " AND i.logInformation.statusFlag = ? ORDER BY "
 				+ StringUtils.defaultIfEmpty(order, "i.id") + " " + orderBy;
-		Object[] params = { keyword, keyword, keyword, keyword,keyword, keyword,
-				StatusFlag.ACTIVE };
+		Object[] params = { keyword, StatusFlag.ACTIVE };
 		for (int i = 0; i < params.length - 1; i++) {
 			if (params[i] instanceof String || params[i] == null) {
 				params[i] = StringUtils.defaultIfEmpty((String) params[i], "");

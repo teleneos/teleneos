@@ -11,9 +11,10 @@
 					<@s.hidden name="transactionHeader.id" />
 					<#if transactionHeader.id??>
 					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.user.name.first!} ${transactionHeader.user.name.last!}" cssClass="span4" />
+					<@s.textfield key="label.admin.theader.date" readonly="true" value="${transactionHeader.logInformation.createDate!}" cssClass="span4" />
 					<#else>
 					<div class="control-group ">
-						<label class="control-label" for="add_id">User <span class="required">*</span></label>
+						<label class="control-label" for="add_id"><@s.text name="menu.admin.user" /> <span class="required">*</span></label>
 						<div class="controls">
 							<@s.hidden name="id" id="user-id" />
 							<input type="text" id="user-name" readonly="true" class="span4">
@@ -70,7 +71,7 @@
 						
 						<tr>
 							<td></td>
-							<td><strong><@s.text name="label.admin.tdetail.totalquantity" /></strong></td>
+							<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>
 							<td style="text-align: center;"><strong>${totalQnty}</strong> </td>
 							<td style="text-align: right;" colspan="2"><strong>${totalPrice}</strong> </td>
 						</tr>
@@ -97,21 +98,9 @@
 					<@s.submit key="button.save" cssClass="btn btn-primary" />
 				</div>
 				</@s.form>
-				<div id="pagination"></div>
 				</#if>
 				</#if>
 			</div>
 		</div>		
-		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
-		<script type="text/javascript">
- 		$(function() {
-			$('#pagination').pagination({
-				items: ${transactionDetails.rowCount?string('#')},
-				itemsOnPage: ${max?string('#')},
-				currentPage: ${(transactionDetails.currentPage + 1)?string('#')},
-				hrefTextPrefix: '?q=${q}&page='
-			});
-		}); 
-		</script>
 	</body>
 </html>

@@ -39,6 +39,8 @@ public class ItemImplService implements ItemService {
 			i.setName(item.getName());
 			i.setDescription(item.getDescription());
 			i.setPrice(item.getPrice());
+			i.setUom(item.getUom());
+			i.setItemType(item.getItemType());
 			i.setCategory(item.getCategory());
 
 			item = i;

@@ -61,8 +61,7 @@ public class ItemAction extends DefaultAction implements ModelDriven<ItemActionM
 	@Action(name = "/edit/{item.id}", method = HttpMethod.POST)
 	@Validations(requiredStrings = { 
 	@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
-	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull"),
-	@RequiredStringValidator(fieldName = "item.price", trim = true, key = "message.pos.item.price.notnull")})
+	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull")})
 	public ActionResult updateService() {
 		return addService();
 	}
@@ -70,8 +69,7 @@ public class ItemAction extends DefaultAction implements ModelDriven<ItemActionM
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = { 
 	@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
-	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull"),
-	@RequiredStringValidator(fieldName = "item.price", trim = true, key = "message.pos.item.price.notnull")})
+	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull")})
 	public ActionResult addService() {
 		itemService.save(model.getItem());
 

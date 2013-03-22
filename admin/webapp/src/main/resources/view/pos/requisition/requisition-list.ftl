@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.theader.title" /></tile>
-		<meta name="header" content="<@s.text name="page.theader.header" />">
+		<title><@s.text name="page.requisition.title" /></tile>
+		<meta name="header" content="<@s.text name="page.requisition.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/transaction/add" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/pos/requisition/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,18 +26,20 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.theader.user" /></th>
-							<th><@s.text name="label.admin.theader.date" /></th>
+							<th><@s.text name="label.admin.requisition.title" /></th>
+							<th><@s.text name="label.admin.requisition.description" /></th>
+							<th><@s.text name="label.admin.requisition.duedate" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<@s.url value="/pos/transaction/detail/" var="detailUrl" />
-						<#list transactionHeaders.entityList as s>
+						<@s.url value="/pos/requisition/edit/" var="editUrl" />
+						<#list requisitions.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${detailUrl + s.id}">${s.user.name.first!} ${s.user.name.last!}</a></td>
-							<td>${s.logInformation.createDate!}</td>
+							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
+							<td>${s.description!}</td>
+							<td>${s.duedate!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -50,9 +52,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${transactionHeaders.rowCount?string('#')},
+				items: ${requisitions.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(transactionHeaders.currentPage + 1)?string('#')},
+				currentPage: ${(requisitions.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});
