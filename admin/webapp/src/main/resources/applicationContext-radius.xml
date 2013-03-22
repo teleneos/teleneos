@@ -37,4 +37,6 @@
 		destroy-method="destroy" p:configFile="jradius-config.xml" />
 
 	<bean id="accountingHandler" class="net.bogor.itu.radius.AccountingHandler" />
+
+	<bean id="authorizationHandler" class="net.bogor.itu.radius.AuthorizationHandler" />
 </beans>

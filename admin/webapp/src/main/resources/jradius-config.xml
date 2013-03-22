@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<jradius-config debug="true">
+<jradius-config debug="false">
 
 	<!-- General Configurations debug: set to true to get extra debuggin messages 
 		timeout: how long to wait for packets, 0 indicated indefinately -->
-	<debug>true</debug>
+	<!-- <debug>true</debug> -->
 	<timeout>0</timeout>
 
 	<!-- Loading a JRadius Dictionary -->
@@ -20,18 +20,6 @@
 		external configuration files. With the <chain-catalog/> configuraiton below, 
 		we load the exmaple FreeRADIUS packet handler chains. -->
 	<packet-handlers>
-		<!-- <packet-handler name="LocalUsers"> -->
-		<!-- <description>Generic FreeRADIUS Local Users Handler</description> -->
-		<!-- <class>net.jradius.example.LocalUsersHandler</class> -->
-		<!-- <users> -->
-		<!-- <user username="test" password="test"> -->
-		<!-- Reply-Message = Hello test user! -->
-		<!-- Session-Timeout = 3600 -->
-		<!-- Idle-Timeout = 300 -->
-		<!-- User-Name = test -->
-		<!-- </user> -->
-		<!-- </users> -->
-		<!-- </packet-handler> -->
 		<packet-handler name="AccountingHandler">
 			<description>Accounting Handler</description>
 			<class>bean:accountingHandler</class>
@@ -43,6 +31,11 @@
 					User-Name = test
 				</user>
 			</users>
+		</packet-handler>
+
+		<packet-handler name="AuthorizationHandler">
+			<description>Authorization</description>
+			<class>bean:authorizationHandler</class>
 		</packet-handler>
 	</packet-handlers>
 
@@ -62,9 +55,8 @@
 			<processor-class>bean:radiusProcessor</processor-class>
 			<processor-threads>128</processor-threads>
 
-			<packet-handler type="authorize" handler="AccountingHandler" />
-			<packet-handler type="post_auth" handler="AccountingHandler" />
-			<packet-handler type="preacct" handler="AccountingHandler" />
+			<packet-handler type="authorize" handler="AuthorizationHandler" />
+			<!-- <packet-handler type="post_auth" handler="AuthorizationHandler" /> -->
 			<packet-handler type="accounting" handler="AccountingHandler" />
 			<event-handler handler="event-handler" />
 
@@ -79,38 +71,8 @@
 			<property name="keepAlive" value="true" />
 		</listener>
 
-		<!-- <listener name="OTPProxyListener"> -->
-		<!-- <description>JRadius OTP Proxy Listener</description> -->
-		<!-- <class>bean:webServiceListener</class> -->
-		<!-- <processor-class> -->
-		<!-- net.jradius.webservice.OTPProxyProcessor -->
-		<!-- </processor-class> -->
-		<!-- <processor-threads>2</processor-threads> -->
-		<!-- <property name="port" value="1810" /> -->
-		<!-- <property name="backlog" value="1024" /> -->
-		<!-- <property name="useSSL" value="false" /> -->
-		<!-- <property name="keepAlive" value="false" /> -->
-		<!-- </listener> -->
-
-		<!-- <listener name="GenericWebSerices"> -->
-		<!-- <description>JRadius WebServices Listener</description> -->
-		<!-- <class>bean:webServiceListener</class> -->
-		<!-- <processor-class>net.jradius.webservice.WebServiceProcessor -->
-		<!-- </processor-class> -->
-		<!-- <processor-threads>2</processor-threads> -->
-		<!-- <property name="port" value="1812" /> -->
-		<!-- <property name="backlog" value="1024" /> -->
-		<!-- <property name="useSSL" value="false" /> -->
-		<!-- <packet-handler name="SSOProxy"> -->
-		<!-- <description>SSO Proxy Redirector</description> -->
-		<!-- <class>net.jradius.webservice.SSOProxyService</class> -->
-		<!-- </packet-handler> -->
-		<!-- </listener> -->
 	</listeners>
 
-	<!-- <realm-manager realm-factory="net.jradius.realm.StaticRealms"> <realm 
-		name="coova.org" server="localhost" sharedSecret="coova-anonymous" authPort="1812" 
-		acctPort="1813"/> </realm-manager> -->
 
 	<!-- Configuring the JRadiusSession Management Classes -->
 

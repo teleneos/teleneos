@@ -14,7 +14,8 @@
 
 	<bean id="userService" class="org.meruvian.yama.security.UserService" />
 
-	<sc:http name="user" pattern="/user/**">
+	<sc:http name="user" pattern="/user/**"
+		authentication-manager-ref="authManager">
 		<sc:remember-me authentication-success-handler-ref="userService" />
 		<sc:form-login login-page="/user/signin"
 			login-processing-url="/user/login" username-parameter="username"
@@ -24,7 +25,7 @@
 			invalidate-session="true" />
 	</sc:http>
 
-	<sc:http use-expressions="true">
+	<sc:http use-expressions="true" authentication-manager-ref="authManager">
 		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
@@ -43,7 +44,7 @@
 	</sc:http>
 
 	<!-- Database authentication -->
-	<sc:authentication-manager>
+	<sc:authentication-manager id="authManager">
 		<sc:authentication-provider
 			user-service-ref="userService">
 			<sc:password-encoder ref="passwordEncoder" />
