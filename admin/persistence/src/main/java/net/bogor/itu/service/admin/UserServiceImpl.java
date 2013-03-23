@@ -3,9 +3,7 @@ package net.bogor.itu.service.admin;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.admin.User;
-import net.bogor.itu.entity.radius.Radcheck;
 import net.bogor.itu.repository.admin.UserRepository;
-import net.bogor.itu.repository.radius.RadcheckRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -27,9 +25,6 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private BackendUserDAO backendUserRepo;
 
-	@Inject
-	private RadcheckRepository radcheckRepo;
-
 	@Override
 	@Transactional
 	public User save(User user) {
@@ -39,15 +34,8 @@ public class UserServiceImpl implements UserService {
 			BackendUser backendUser = user.getUser();
 			backendUser.setId(null);
 
-			Radcheck radcheck = new Radcheck();
-			radcheck.setUsername(backendUser.getUsername());
-			radcheck.setAttribute("Cleartext-Password");
-			radcheck.setOp(":=");
-			radcheck.setValue(backendUser.getPassword());
-
-			user.setRadcheck(radcheck);
-
-			radcheckRepo.persist(radcheck);
+			
+			
 			backendUserRepo.persist(backendUser);
 			userRepo.persist(user);
 		} else {
@@ -55,7 +43,6 @@ public class UserServiceImpl implements UserService {
 
 			User u = userRepo.findById(user.getId());
 			BackendUser b = u.getUser();
-			Radcheck r = u.getRadcheck();
 
 			b.setUsername(bu.getUsername());
 			b.setEmail(bu.getEmail());

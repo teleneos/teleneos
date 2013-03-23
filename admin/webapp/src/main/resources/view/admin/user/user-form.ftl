@@ -51,7 +51,26 @@
 					<#--
 					<@s.textfield key="label.user.address.country" name="user.address.countryId" cssClass="span4" />
 					-->
-
+					<#assign groups=groups.entityList>
+					<div class="control-group ">
+						<label class="control-label" for="add_master_group_type">Group Name <span class="required">*</span></label>
+							<div class="controls">
+								<select name="user.group.id" id="groupselect">
+								<option value="">-- Select Group --</option>
+								<#list groups as a>
+									<option value="${a.id}">${a.name}</option>
+								</#list>
+								</select>
+							</div>
+					</div>
+					<div class="control-group ">
+						<label class="control-label" for="add_master_group_type">Package Name <span class="required">*</span></label>
+							<div class="controls">
+								<select name="user.internetPackage.id" id="packageselect">
+									<option value="">-- Select Package --</option>
+								</select>
+							</div>
+					</div>
 					<div class="form-actions">
 						<#if user.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />
@@ -72,6 +91,23 @@
 				} else {
 					$('#alert').fadeOut();
 				}
+			});
+			
+			$('#groupselect').change(function(){
+				$.ajax({
+			        url: "package/"+this.value+".json",
+			        type: 'GET',
+			        dataType: 'json', // added data type
+			        success: function(res) {
+			        	console.log(res);
+			        	$('#packageselect').empty();
+			        	$('#packageselect').append($('<option></option>').val("").html("-- Select Package --"));
+			        	for (var i = 0; i < res.groupPackages.length; i++) {
+			        		$('#packageselect').append($('<option></option>').val(res.groupPackages[i].internetPackage.id).html(res.groupPackages[i].internetPackage.name));
+			        	}
+			        }
+			    });
+				
 			});
 			
 			$('.password').val('${pass!}');

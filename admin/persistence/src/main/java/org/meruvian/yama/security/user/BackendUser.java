@@ -43,7 +43,8 @@ public class BackendUser extends DefaultPersistence {
 	private String email;
 	private String website;
 	private String role;
-
+	
+	
 	@Field
 	@Column(unique = true)
 	@Analyzer(definition = "customanalyzer")
@@ -91,4 +92,5 @@ public class BackendUser extends DefaultPersistence {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
 }

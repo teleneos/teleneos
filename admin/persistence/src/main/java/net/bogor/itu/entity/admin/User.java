@@ -9,13 +9,15 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import net.bogor.itu.entity.Address;
 import net.bogor.itu.entity.Name;
-import net.bogor.itu.entity.radius.Radcheck;
+import net.bogor.itu.entity.master.GroupA;
+import net.bogor.itu.entity.master.InternetPackage;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
@@ -35,8 +37,9 @@ public class User extends DefaultPersistence {
 	private boolean male = true;
 	private String phone;
 	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
-	private Radcheck radcheck;
-
+	private GroupA group;
+	private InternetPackage internetPackage;
+	
 	@OneToOne
 	@JoinColumn(name = "backend_user_id")
 	public BackendUser getUser() {
@@ -100,14 +103,24 @@ public class User extends DefaultPersistence {
 	public void setUserGroups(List<UserGroup> userGroups) {
 		this.userGroups = userGroups;
 	}
-
-	@OneToOne
-	@JoinColumn(referencedColumnName = "username", name = "radcheck_username")
-	public Radcheck getRadcheck() {
-		return radcheck;
+	
+	@ManyToOne
+	@JoinColumn(name = "group_id")
+	public GroupA getGroup() {
+		return group;
 	}
 
-	public void setRadcheck(Radcheck radcheck) {
-		this.radcheck = radcheck;
+	public void setGroup(GroupA group) {
+		this.group = group;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "package_id")
+	public InternetPackage getInternetPackage() {
+		return internetPackage;
+	}
+
+	public void setInternetPackage(InternetPackage internetPackage) {
+		this.internetPackage = internetPackage;
 	}
 }

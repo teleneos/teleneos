@@ -101,6 +101,24 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			<@s.text name="menu.master" />
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/master/packages">
+					<@s.text name="menu.master.packagemanager" />
+				</a>
+			</li>
+			<li>
+				<a href="/master/group">
+					<@s.text name="menu.master.group" />
+				</a>
+			</li>
+		</ul>
+	</li>
 </ul>
 
 <ul class="nav pull-right">

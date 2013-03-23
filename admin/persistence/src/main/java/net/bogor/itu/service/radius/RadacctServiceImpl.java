@@ -35,4 +35,9 @@ public class RadacctServiceImpl implements RadacctService {
 			int limit, int page) {
 		return radacctRepo.findOnlineUser(username, limit, page);
 	}
+
+	@Override
+	public Radacct findFirstSession(String username) {
+		return radacctRepo.findFirstSession(username);
+	}
 }

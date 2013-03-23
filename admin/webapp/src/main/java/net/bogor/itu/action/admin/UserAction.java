@@ -6,6 +6,7 @@ package net.bogor.itu.action.admin;
 import javax.inject.Inject;
 
 import net.bogor.itu.service.admin.UserService;
+import net.bogor.itu.service.master.GroupService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -28,11 +29,17 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 public class UserAction extends DefaultAction implements
 		ModelDriven<UserActionModel> {
 
+	private static final long serialVersionUID = 2413426101731088386L;
+
 	private UserActionModel model = new UserActionModel();
 
 	@Inject
 	private UserService userService;
-
+	
+	@Inject
+	private GroupService groupService;
+	
+	
 	@Action
 	public ActionResult index() {
 		return new ActionResult("redirect", "/admin/user/list");
@@ -45,9 +52,16 @@ public class UserAction extends DefaultAction implements
 
 		return new ActionResult("freemarker", "/view/admin/user/user-list.ftl");
 	}
-
+	
+	@Action(name = "/package/{q}", method = HttpMethod.GET)
+	public ActionResult getPackage() {
+		model.setGroupPackages(groupService.getGroupPackages(model.getQ()));
+		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
+	}
+	
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
+		model.setGroups(groupService.findByKeyword("", 0, 0));
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
 

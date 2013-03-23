@@ -44,7 +44,15 @@ public class RadacctRepository extends
 
 		return list;
 	}
-
+	
+	public Radacct findFirstSession(String username) {
+		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 ORDER BY r.acctstarttime ASC LIMIT 0, 1";
+		TypedQuery<Radacct> query = entityManager
+				.createQuery(ql, Radacct.class);
+		query.setParameter(1, "%" + username);
+		return query.getResultList().get(0);
+	}
+	
 	public EntityListWrapper<Radacct> findOnlineUser(String username,
 			int limit, int page) {
 		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();

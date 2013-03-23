@@ -41,6 +41,8 @@
 							<th><@s.text name="label.user.name" /></th>
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
+							<th><@s.text name="label.admin.group" /></th>
+							<th><@s.text name="label.admin.package" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,6 +54,8 @@
 							<td>${u.name.first!} ${u.name.last!}</td>
 							<td>${byteString(0)}</td>
 							<td>${byteString(0)}</td>
+							<td><#if u.group??>${u.group.name!}<#else></#if></td>
+							<td><#if u.internetPackage??>${u.internetPackage.name!}<#else></#if></td>
 							<#--
 							<td>
 								<a href="<@s.url value="/admin/user/disconnect/${a.username!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
