@@ -15,7 +15,10 @@ import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
-
+/**
+ * @author Edy Setiawan
+ * 
+ */
 @Action(name = "/pos/requisition")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/requisition/requisition-form.ftl") })
 public class RequisitionAction extends DefaultAction implements

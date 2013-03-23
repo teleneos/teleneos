@@ -17,10 +17,10 @@ public class RequisitionDetailRepository extends
 	public EntityListWrapper<RequisitionDetail> findByKeyword(String keyword,
 			int limit, int page) { 
 
-		String criteria = "(rd.requisition.id = ?)";
+		String criteria = "(po.purchaseOrder.id = ?)";
 		Object[] params = {keyword};
 		
-		return findAll(limit, page, "rd", criteria, params);
+		return findAll(limit, page, "po", criteria, params);
 	}
 
 }

@@ -8,7 +8,7 @@
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
-						<div class="control-group ">
+					<div class="control-group ">
 						<label class="control-label" for="add_id">User <span class="required">*</span></label>
 						<div class="controls">
 							<@s.hidden name="id" id="user-id" />

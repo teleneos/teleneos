@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.requisition.title" /></tile>
-		<meta name="header" content="<@s.text name="page.requisition.header" />">
+		<title><@s.text name="page.purchaseorder.title" /></tile>
+		<meta name="header" content="<@s.text name="page.purchaseorder.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/requisition/add" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/pos/po/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,20 +26,22 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.requisition.title" /></th>
-							<th><@s.text name="label.admin.requisition.description" /></th>
-							<th><@s.text name="label.admin.requisition.duedate" /></th>
+							<th><@s.text name="label.admin.purchaseorder.title" /></th>
+							<th><@s.text name="label.admin.purchaseorder.description" /></th>
+							<th><@s.text name="label.admin.purchaseorder.duedate" /></th>
+							<th><@s.text name="label.admin.purchaseorder.businesspartner" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<@s.url value="/pos/requisition/detail/" var="editUrl" />
-						<#list requisitions.entityList as s>
+						<@s.url value="/pos/po/detail/" var="editUrl" />
+						<#list purchaseOrders.entityList as s>
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
 							<td>${s.description!}</td>
 							<td>${s.duedate!}</td>
+							<td>${s.businessPartner.name!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -52,9 +54,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${requisitions.rowCount?string('#')},
+				items: ${purchaseOrders.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(requisitions.currentPage + 1)?string('#')},
+				currentPage: ${(purchaseOrders.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});
