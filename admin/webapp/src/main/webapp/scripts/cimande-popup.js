@@ -34,8 +34,16 @@ $('#popup-dialog').on('show', function() {
 				
 				for(d in data[obj[0]].entityList) {
 					d = data[obj[0]].entityList[d];
+					var dt = d;
 					
-					addRow(d[obj[1]], d.id);
+					var objs = obj[1].split('.');
+					for (o in objs) {
+						o = objs[o];
+						
+						dt = dt[o];
+					}
+					
+					addRow(dt, d.id);
 				}
 				
 				$('.popup-btn').click(function() {
