@@ -29,7 +29,6 @@
 							<th><@s.text name="label.master.group.code" /></th>
 							<th><@s.text name="label.master.group.name" /></th>
 							<th><@s.text name="label.master.group.status" /></th>
-							<th><@s.text name="label.master.group.pms" /></th>
 							<th><@s.text name="label.master.group.club" /></th>
 						</tr>
 					</thead>
@@ -42,7 +41,6 @@
 							<td>${s.code!}</td>
 							<td>${s.name!}</td>
 							<td>${s.status!}</td>
-							<td>${s.pms?string}</td>
 							<td>${s.club?string}</td>
 						</tr>
 						<#assign no = no + 1 />

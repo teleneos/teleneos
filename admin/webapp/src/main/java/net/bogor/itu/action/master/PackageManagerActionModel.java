@@ -10,7 +10,8 @@ public class PackageManagerActionModel extends DefaultActionModel {
 	private EntityListWrapper<InternetPackage> internetPackages = new EntityListWrapper<InternetPackage>();
 	private int type;
 	private int status;
-
+	private String variable;
+	
 	public InternetPackage getInternetPackage() {
 		return internetPackage;
 	}
@@ -42,6 +43,14 @@ public class PackageManagerActionModel extends DefaultActionModel {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getVariable() {
+		return variable;
+	}
+
+	public void setVariable(String variable) {
+		this.variable = variable;
 	}
 
 }

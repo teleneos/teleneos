@@ -13,21 +13,6 @@
 					<@s.textfield key="label.master.group.name" required="true" name="group.name" cssClass="span4" />
 					<div class="control-group ">
 						<label class="control-label">
-							<@s.text name="label.master.group.pms" />
-						</label>
-						<div class="controls">
-							<label class="radio inline">
-								<input type="radio" name="group.pms" value="true" checked>
-								Yes
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="group.pms" value="false">
-								No
-							</label>
-						</div>
-					</div>
-					<div class="control-group ">
-						<label class="control-label">
 							<@s.text name="label.master.group.club" />
 						</label>
 						<div class="controls">
@@ -67,6 +52,15 @@
 							</#list>
 							</select>
 						</div>
+					</div>
+					<div class="control-group ">
+						<label class="control-label" for="add_master_packagemanager_status">Package Status <span class="required">*</span></label>
+							<div class="controls">
+								<select name="group.logInformation.statusFlag">
+									<option value="ACTIVE">Enable</option>
+									<option value="INACTIVE">Disable</option>
+								</select>
+							</div>
 					</div>
 					<div class="form-actions">
 						<#if group.id??>

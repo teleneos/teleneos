@@ -9,7 +9,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
@@ -21,7 +20,6 @@ public class GroupA extends DefaultPersistence {
 
 	private String code;
 	private String name;
-	private boolean pms;
 	private boolean club;
 	private Set<GroupPackage> groupPackages = new HashSet<GroupPackage>(0);
 	
@@ -39,14 +37,6 @@ public class GroupA extends DefaultPersistence {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean isPms() {
-		return pms;
-	}
-
-	public void setPms(boolean pms) {
-		this.pms = pms;
 	}
 
 	public boolean isClub() {

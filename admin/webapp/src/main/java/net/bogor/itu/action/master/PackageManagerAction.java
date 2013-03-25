@@ -1,5 +1,8 @@
 package net.bogor.itu.action.master;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.master.InternetPackage.Status;
@@ -81,6 +84,16 @@ public class PackageManagerAction extends DefaultAction implements
 	public ActionResult addService() {
 		model.getInternetPackage().setStatus(model.getStatus() == 0 ? Status.ENABLE : Status.DISABLE);
 		model.getInternetPackage().setType(model.getType() == 0 ? Type.COUNTDOWN : Type.FIXTIME);
+		if (model.getType() == 1) {
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			try {
+				model.getInternetPackage().setVariable(format.parse(model.getVariable()).getTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			model.getInternetPackage().setVariable(Long.parseLong(model.getVariable()));
+		}
 		service.save(model.getInternetPackage());
 		return redirectToIndex;
 	}

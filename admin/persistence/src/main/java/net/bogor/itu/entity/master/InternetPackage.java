@@ -24,7 +24,7 @@ public class InternetPackage extends DefaultPersistence {
 	private String code;
 	private String name;
 	private Type type;
-	private int variable;
+	private long variable;
 	private long price;
 	private Status status;
 
@@ -53,11 +53,11 @@ public class InternetPackage extends DefaultPersistence {
 		this.type = type;
 	}
 
-	public int getVariable() {
+	public long getVariable() {
 		return variable;
 	}
 
-	public void setVariable(int variable) {
+	public void setVariable(long variable) {
 		this.variable = variable;
 	}
 
