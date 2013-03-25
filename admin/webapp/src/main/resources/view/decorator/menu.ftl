@@ -76,27 +76,27 @@
 			</li>
 			<li>
 				<a href="/pos/requisition">
-					Requisition
+					<@s.text name="menu.pos.requisition" />
 				</a>
 			</li>
 			<li>
 				<a href="/pos/po">
-					Purchase Order
+					<@s.text name="menu.pos.purchaseorder" />
 				</a>	
 			</li>
 			<li>
 				<a href="/pos/invoice">
-					Invoice
+					<@s.text name="menu.pos.invoice" />
 				</a>	
 			</li>
 			<li>
 				<a href="/pos/goodreceiving">
-					Good Receiving
+					<@s.text name="menu.pos.goodreceiving" />
 				</a>	
 			</li>
 			<li>
 				<a href="/pos/transaction">
-					Sales
+					<@s.text name="menu.pos.sales" />
 				</a>	
 			</li>
 		</ul>
