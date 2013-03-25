@@ -35,6 +35,7 @@ $('#popup-dialog').on('show', function() {
 				for(d in data[obj[0]].entityList) {
 					d = data[obj[0]].entityList[d];
 					var dt = d;
+					var dts=null;
 					
 					var objs = obj[1].split('.');
 					for (o in objs) {

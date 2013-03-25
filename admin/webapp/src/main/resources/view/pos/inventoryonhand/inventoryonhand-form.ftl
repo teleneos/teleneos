@@ -14,7 +14,7 @@
 						<div class="controls">
 							<@s.hidden name="inventoryOnhand.item.id" id="item-id" />
 							<input type="text" id="item-name" value="<#if inventoryOnhand.item??> ${inventoryOnhand.item.name!} </#if>" readonly="true" class="span4">
-							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
+							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|category.name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
 						</div>
 					</div>
 					<@s.textfield key="label.admin.inventoryonhand.stock"  name="inventoryOnhand.stock" cssClass="span4" />

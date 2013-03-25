@@ -8,82 +8,59 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
-
 /**
  * @author Edy Setiawan
  * 
- */
+*/
 @Entity
-@Table(name = "tc_purchase_order")
-public class PurchaseOrder extends DefaultPersistence {
+@Table(name = "tc_invoice")
+public class Invoice extends DefaultPersistence {
 
 	private String title;
 	private String description;
 	private Date dueDate;
-	private Long buyer;
-	private Requisition requisition;
-	private BusinessPartner businessPartner;
+	private Long cash;
+	private PurchaseOrder purchaseOrder;
 	private int status;
-
+	
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Date getDueDate() {
 		return dueDate;
 	}
-
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-
-	public Long getBuyer() {
-		return buyer;
+	public Long getCash() {
+		return cash;
 	}
-
-	public void setBuyer(Long buyer) {
-		this.buyer = buyer;
+	public void setCash(Long cash) {
+		this.cash = cash;
 	}
-
+	
 	@ManyToOne
-	@JoinColumn(name="requisition_id")
-	public Requisition getRequisition() {
-		return requisition;
+	@JoinColumn(name="purchaseorder_id")
+	public PurchaseOrder getPurchaseOrder() {
+		return purchaseOrder;
 	}
-
-	public void setRequisition(Requisition requisition) {
-		this.requisition = requisition;
+	public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
 	}
-
-	@ManyToOne
-	@JoinColumn(name="businesspartner_id")
-	public BusinessPartner getBusinessPartner() {
-		return businessPartner;
-	}
-
-	public void setBusinessPartner(BusinessPartner businessPartner) {
-		this.businessPartner = businessPartner;
-	}
-
 	public int getStatus() {
 		return status;
 	}
-
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
 
 }

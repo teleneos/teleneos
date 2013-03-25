@@ -21,7 +21,6 @@
 						</div>
 					</div>
 					<@s.textfield key="label.admin.requisitiondetail.quantity" required="true"  name="requisitionDetail.quantity" cssClass="span4" />
-					<@s.textfield key="label.admin.requisitiondetail.duedate" required="true"  name="requisitionDetail.duedate" cssClass="span4" />
 					<div class="form-actions">
 						<@s.submit key="button.save" cssClass="btn btn-primary" />
 						<@s.reset key="button.reset" cssClass="btn" />
@@ -34,7 +33,6 @@
 							<th>#</th>
 							<th><@s.text name="label.admin.requisitiondetail.item" /></th>
 							<th><@s.text name="label.admin.requisitiondetail.quantity" /></th>
-							<th><@s.text name="label.admin.requisitiondetail.duedate" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,8 +42,8 @@
 							<td>${no}</td>
 							<td>${s.item.name!}</td>
 							<td>${s.quantity!}</td>
-							<td>${s.duedate!}</td>
 						</tr>
+						<#assign no = no + 1 />
 						</#list>
 					</tbody>
 				</table>

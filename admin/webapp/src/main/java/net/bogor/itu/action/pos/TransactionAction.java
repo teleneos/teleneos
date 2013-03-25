@@ -3,8 +3,10 @@ package net.bogor.itu.action.pos;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 
+import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.service.admin.UserService;
+import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailService;
 import net.bogor.itu.service.pos.TransactionHeaderService;
 
@@ -36,9 +38,12 @@ public class TransactionAction extends DefaultAction implements
 
 	@Inject
 	private TransactionDetailService tDetailService;
-	
+
 	@Inject
 	private UserService userService;
+
+	@Inject
+	private ItemService itemService;
 
 	@Action
 	public ActionResult transactionList() {
@@ -57,8 +62,9 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	public ActionResult addTransactionHeader() {
-		
-		model.getTransactionHeader().setUser(userService.findById(model.getId()));
+
+		model.getTransactionHeader().setUser(
+				userService.findById(model.getId()));
 
 		tHeaderService.save(model.getTransactionHeader());
 
@@ -72,8 +78,20 @@ public class TransactionAction extends DefaultAction implements
 	public ActionResult formDetail() {
 
 		model.setTransactionDetails(tDetailService.findByKeyword(model
-				.getTransactionHeader().getId(), 0, model
-				.getPage() - 1));
+				.getTransactionHeader().getId(), 0, model.getPage() - 1));
+
+		model.setTransactionHeader(tHeaderService.findById(model
+				.getTransactionHeader().getId()));
+
+		return new ActionResult("freemarker",
+				"/view/pos/transaction/transaction-detail-form.ftl");
+	}
+	
+	@Action(name = "/detail/{transactionHeader.id}.htm", method = HttpMethod.GET)
+	public ActionResult printDetail() {
+
+		model.setTransactionDetails(tDetailService.findByKeyword(model
+				.getTransactionHeader().getId(), 0, model.getPage() - 1));
 
 		model.setTransactionHeader(tHeaderService.findById(model
 				.getTransactionHeader().getId()));
@@ -87,12 +105,16 @@ public class TransactionAction extends DefaultAction implements
 		TransactionHeader tHeader = model.getTransactionHeader();
 		model.getTransactionDetail().setTransactionHeader(
 				tHeaderService.findById(tHeader.getId()));
+		
+		model.setItem(itemService.findById(model.getTransactionDetail().getItem().getId()));
+		model.getTransactionDetail().setPrice(model.getItem().getPrice());
+		
 		tDetailService.save(model.getTransactionDetail());
 
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-	
+
 	@Action(name = "/cash", method = HttpMethod.POST)
 	public ActionResult addCashTransaction() {
 		TransactionHeader tHeader = model.getTransactionHeader();

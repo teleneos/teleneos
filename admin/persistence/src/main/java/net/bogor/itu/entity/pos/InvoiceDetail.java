@@ -12,16 +12,26 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity
-@Table(name = "tc_transaction_detail")
-public class TransactionDetail extends DefaultPersistence {
+@Table(name = "tc_invoice_detail")
+public class InvoiceDetail extends DefaultPersistence {
 
+	private Invoice invoice;
 	private Item item;
 	private int quantity;
 	private Long price;
-	private TransactionHeader transactionHeader;
 
 	@ManyToOne
-	@JoinColumn(name = "item_id")
+	@JoinColumn(name="invoice_id")
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	@ManyToOne
+	@JoinColumn(name="item_id")
 	public Item getItem() {
 		return item;
 	}
@@ -44,16 +54,6 @@ public class TransactionDetail extends DefaultPersistence {
 
 	public void setPrice(Long price) {
 		this.price = price;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "transcation_header_id")
-	public TransactionHeader getTransactionHeader() {
-		return transactionHeader;
-	}
-
-	public void setTransactionHeader(TransactionHeader transactionHeader) {
-		this.transactionHeader = transactionHeader;
 	}
 
 }

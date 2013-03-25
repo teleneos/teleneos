@@ -35,12 +35,13 @@ public class PurchaseOrderImplService implements PurchaseOrderService{
 			purchaseOrderRepository.persist(purchaseOrder);
 		} else {
 			PurchaseOrder po = purchaseOrderRepository.load(purchaseOrder.getId());
-			po.setTitle(purchaseOrder.getTitle());
-			po.setDescription(purchaseOrder.getDescription());
-			po.setDueDate(purchaseOrder.getDueDate());
-			po.setBuyer(purchaseOrder.getBuyer());
-			po.setRequisition(purchaseOrder.getRequisition());
-			po.setBusinessPartner(purchaseOrder.getBusinessPartner());
+//			po.setTitle(purchaseOrder.getTitle());
+//			po.setDescription(purchaseOrder.getDescription());
+//			po.setDueDate(purchaseOrder.getDueDate());
+//			po.setBuyer(purchaseOrder.getBuyer());
+//			po.setRequisition(purchaseOrder.getRequisition());
+//			po.setBusinessPartner(purchaseOrder.getBusinessPartner());
+			po.setStatus(purchaseOrder.getStatus());
 
 			purchaseOrder = po;
 		}

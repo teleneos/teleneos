@@ -1,7 +1,18 @@
 <html>
 	<head>
-		<title><@s.text name="page.tdetail.title" /></tile>
+		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
+		<script>
+			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
+			function printDiv(divId) {
+				var mywindow = window.open('', 'my div', '');
+				mywindow.document.body.innerHTML=printDivCSS + document.getElementById(divId).innerHTML
+				mywindow.window.focus()
+			    mywindow.window.print()
+			    
+			}	
+		</script>
+</script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -18,13 +29,13 @@
 						<div class="controls">
 							<@s.hidden name="id" id="user-id" />
 							<input type="text" id="user-name" readonly="true" class="span4">
-							<button class="btn openpopup" type="button" title="<@s.text name="page.user.title" />" object-name="users|user.user.namefirst" field-target="user-id|user-name" href="<@s.url value="/admin/user/list" />">Choose</button>
+							<button class="btn openpopup" type="button" title="<@s.text name="page.user.title" />" object-name="users|user" field-target="user-id|user-name" href="<@s.url value="/admin/user/list" />">Choose</button>
 						</div>
 					</div>
 					</#if>
 					<#if !transactionHeader.cash??>
 					<div class="control-group ">
-						<label class="control-label" for="add_transactionDetail_item_id">Item Name <span class="required">*</span></label>
+						<label class="control-label" for="add_transactionDetail_item_id"><@s.text name="page.item.title" /> <span class="required">*</span></label>
 						<div class="controls">
 							<@s.hidden name="transactionDetail.item.id" id="item-id" />
 							<input type="text" id="item-name" readonly="true" class="span4">
@@ -55,12 +66,12 @@
 						<#assign totalQnty = 0 />
 						<@s.url value="/pos/transaction/edit/" var="editUrl" />
 						<#list transactionDetails.entityList as s>
-						<#assign price = s.quantity * s.item.price /> 
+						<#assign price = s.quantity * s.price /> 
 						<tr>
 							<td>${no}</td>
 							<td>${s.item.name!}</td>
 							<td style="text-align: center;">${s.quantity!}</td>
-							<td style="text-align: right;">${s.item.price!}</td>
+							<td style="text-align: right;">${s.price!}</td>
 							<td style="text-align: right;">${price}</td>
 						</tr>
 						<#assign no = no + 1 />
@@ -95,12 +106,22 @@
 				<@s.hidden name="transactionHeader.id" />
 				<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
 				<div class="form-actions">
-					<@s.submit key="button.save" cssClass="btn btn-primary" />
+					<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
 				</div>
 				</@s.form>
+				<#else>
+				<form theme="bootstrap" class="form-horizontal">
+				<div class="form-actions">
+					<input type="button" value="Print" onclick="javascript:printDiv('print')" class="btn btn-primary"/>
+				
+				</div>
+				</form>
 				</#if>
 				</#if>
 			</div>
+		</div>
+		<div id="print" style="visibility: hidden;">
+		<#include "/view/pos/invoice/invoice-print.ftl" />
 		</div>		
 	</body>
 </html>

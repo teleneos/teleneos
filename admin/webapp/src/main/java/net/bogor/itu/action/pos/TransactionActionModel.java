@@ -1,5 +1,6 @@
 package net.bogor.itu.action.pos;
 
+import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.ItemCategory;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
@@ -18,7 +19,8 @@ public class TransactionActionModel extends DefaultActionModel {
 	private TransactionDetail transactionDetail = new TransactionDetail();
 	private EntityListWrapper<TransactionDetail> transactionDetails = new EntityListWrapper<TransactionDetail>();
 	private String id;
-	
+	private Item item = new Item();
+
 	public TransactionHeader getTransactionHeader() {
 		return transactionHeader;
 	}
@@ -60,6 +62,13 @@ public class TransactionActionModel extends DefaultActionModel {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
 
 }

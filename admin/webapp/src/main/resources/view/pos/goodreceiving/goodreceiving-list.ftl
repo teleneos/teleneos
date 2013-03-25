@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.purchaseorder.title" /></tile>
-		<meta name="header" content="<@s.text name="page.purchaseorder.header" />">
+		<title><@s.text name="page.goodreceiving.title" /></tile>
+		<meta name="header" content="<@s.text name="page.goodreceiving.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/po/add" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/pos/goodreceiving/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,24 +26,22 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.purchaseorder.title" /></th>
-							<th><@s.text name="label.admin.purchaseorder.description" /></th>
-							<th><@s.text name="label.admin.purchaseorder.duedate" /></th>
-							<th><@s.text name="label.admin.purchaseorder.businesspartner" /></th>
-							<th><@s.text name="label.admin.purchaseorder.requisition" /></th>
+							<th><@s.text name="label.admin.goodreceiving.title" /></th>
+							<th><@s.text name="label.admin.goodreceiving.description" /></th>
+							<th><@s.text name="label.admin.goodreceiving.date" /></th>
+							<th><@s.text name="label.admin.goodreceiving.invoice" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<@s.url value="/pos/po/detail/" var="editUrl" />
-						<#list purchaseOrders.entityList as s>
+						<@s.url value="/pos/goodreceiving/detail/" var="editUrl" />
+						<#list goodReceivings.entityList as s>
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
 							<td>${s.description!}</td>
 							<td>${s.duedate!}</td>
-							<td>${s.businessPartner.name!}</td>
-							<td>${s.requisition.title!}</td>
+							<td>${s.invoice.title!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -56,9 +54,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${purchaseOrders.rowCount?string('#')},
+				items: ${goodReceivings.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(purchaseOrders.currentPage + 1)?string('#')},
+				currentPage: ${(goodReceivings.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

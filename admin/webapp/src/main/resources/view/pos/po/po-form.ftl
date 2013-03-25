@@ -20,6 +20,14 @@
 							<button class="btn openpopup" type="button" title="<@s.text name="page.businesspartner.title" />" object-name="businessPartners|name" field-target="businessPartner-id|businessPartner-name" href="<@s.url value="/pos/businesspartner" />">Choose</button>
 						</div>
 					</div>
+					<div class="control-group ">
+						<label class="control-label" for="add_id"><@s.text name="label.admin.purchaseorder.requisition" /> <span class="required">*</span></label>
+						<div class="controls">
+							<@s.hidden name="purchaseOrder.requisition.id" id="requisition-id" />
+							<input type="text" id="requisition-name" readonly="true" class="span4">
+							<button class="btn openpopup" type="button" title="<@s.text name="page.requisition.title" />" object-name="requisitions|title" field-target="requisition-id|requisition-name" href="<@s.url value="/pos/requisition" />">Choose</button>
+						</div>
+					</div>
 					<div class="form-actions">
 						<#if purchaseOrder.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

@@ -13,7 +13,7 @@
 						<div class="controls">
 							<@s.hidden name="id" id="user-id" />
 							<input type="text" id="user-name" readonly="true" class="span4">
-							<button class="btn openpopup" type="button" title="<@s.text name="page.user.title" />" object-name="users|user.name.first" field-target="user-id|user-name" href="<@s.url value="/admin/user/list" />">Choose</button>
+							<button class="btn openpopup" type="button" title="<@s.text name="page.user.title" />" object-name="users|name.first" field-target="user-id|user-name" href="<@s.url value="/admin/user/list" />">Choose</button>
 						</div>
 					</div>
 					<div class="form-actions">

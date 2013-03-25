@@ -5,6 +5,7 @@
 		<pattern>/images/*</pattern>
 		<pattern>*.json</pattern>
 		<pattern>*.xml</pattern>
+		<pattern>*.htm</pattern>
 	</excludes>
 
 	<decorator name="admin" page="/view/decorator/default-decorator.ftl">

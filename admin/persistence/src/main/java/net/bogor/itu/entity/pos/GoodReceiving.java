@@ -14,15 +14,13 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity
-@Table(name = "tc_purchase_order")
-public class PurchaseOrder extends DefaultPersistence {
+@Table(name = "tc_good_receiving")
+public class GoodReceiving extends DefaultPersistence {
 
 	private String title;
 	private String description;
 	private Date dueDate;
-	private Long buyer;
-	private Requisition requisition;
-	private BusinessPartner businessPartner;
+	private Invoice invoice;
 	private int status;
 
 	public String getTitle() {
@@ -49,32 +47,14 @@ public class PurchaseOrder extends DefaultPersistence {
 		this.dueDate = dueDate;
 	}
 
-	public Long getBuyer() {
-		return buyer;
-	}
-
-	public void setBuyer(Long buyer) {
-		this.buyer = buyer;
-	}
-
 	@ManyToOne
-	@JoinColumn(name="requisition_id")
-	public Requisition getRequisition() {
-		return requisition;
+	@JoinColumn(name="invoice_id")
+	public Invoice getInvoice() {
+		return invoice;
 	}
 
-	public void setRequisition(Requisition requisition) {
-		this.requisition = requisition;
-	}
-
-	@ManyToOne
-	@JoinColumn(name="businesspartner_id")
-	public BusinessPartner getBusinessPartner() {
-		return businessPartner;
-	}
-
-	public void setBusinessPartner(BusinessPartner businessPartner) {
-		this.businessPartner = businessPartner;
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 	public int getStatus() {
@@ -84,6 +64,5 @@ public class PurchaseOrder extends DefaultPersistence {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
 
 }

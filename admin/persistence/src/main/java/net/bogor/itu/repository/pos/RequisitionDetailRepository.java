@@ -17,7 +17,7 @@ public class RequisitionDetailRepository extends
 	public EntityListWrapper<RequisitionDetail> findByKeyword(String keyword,
 			int limit, int page) { 
 
-		String criteria = "(po.purchaseOrder.id = ?)";
+		String criteria = "(po.requisition.id = ?)";
 		Object[] params = {keyword};
 		
 		return findAll(limit, page, "po", criteria, params);

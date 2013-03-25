@@ -1,7 +1,7 @@
 package net.bogor.itu.repository.pos;
 
+import net.bogor.itu.entity.pos.Invoice;
 import net.bogor.itu.entity.pos.PurchaseOrder;
-import net.bogor.itu.entity.pos.Requisition;
 import net.bogor.itu.persistence.PersistenceRepository;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,18 +14,17 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public class PurchaseOrderRepository extends
-		PersistenceRepository<PurchaseOrder> {
-
-	public EntityListWrapper<PurchaseOrder> findByKeyword(String keyword,
+public class InvoiceRepository extends PersistenceRepository<Invoice>{
+	
+	public EntityListWrapper<Invoice> findByKeyword(String keyword,
 			String order, String orderBy, int limit, int page, String condition) {
 
 		String criteria = "(th.title LIKE ? AND th.description LIKE ? "
-				+ "AND th.requisition.title LIKE ? AND th.businessPartner.name LIKE ?)";
+				+ "AND th.purchaseOrder.title LIKE ?)";
 		criteria = criteria.replace("AND", condition);
 		criteria += " AND th.logInformation.statusFlag = ? ORDER BY "
 				+ StringUtils.defaultIfEmpty(order, "th.id") + " " + orderBy;
-		Object[] params = { keyword, keyword, keyword, keyword,
+		Object[] params = { keyword, keyword, keyword,
 				StatusFlag.ACTIVE };
 		for (int i = 0; i < params.length - 1; i++) {
 			if (params[i] instanceof String || params[i] == null) {

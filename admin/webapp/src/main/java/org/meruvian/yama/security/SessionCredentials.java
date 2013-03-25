@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.bogor.itu.entity.admin.User;
+
 import org.apache.struts2.ServletActionContext;
 import org.meruvian.yama.security.user.BackendUser;
 

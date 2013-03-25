@@ -1,8 +1,9 @@
 package net.bogor.itu.action.pos;
 
+import net.bogor.itu.entity.pos.Invoice;
+import net.bogor.itu.entity.pos.InvoiceDetail;
 import net.bogor.itu.entity.pos.PurchaseOrder;
 import net.bogor.itu.entity.pos.PurchaseOrderDetail;
-import net.bogor.itu.entity.pos.RequisitionDetail;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -11,18 +12,53 @@ import org.meruvian.yama.persistence.EntityListWrapper;
  * @author Edy Setiawan
  * 
  */
-public class PurchaseOrderActionModel extends DefaultActionModel {
+public class InvoiceActionModel extends DefaultActionModel {
 
+	private Invoice invoice = new Invoice();
+	private EntityListWrapper<Invoice> invoices = new EntityListWrapper<Invoice>();
+	private InvoiceDetail invoiceDetail = new InvoiceDetail();
+	private EntityListWrapper<InvoiceDetail> invoiceDetails = new EntityListWrapper<InvoiceDetail>();
 	private PurchaseOrder purchaseOrder = new PurchaseOrder();
 	private EntityListWrapper<PurchaseOrder> purchaseOrders = new EntityListWrapper<PurchaseOrder>();
 	private PurchaseOrderDetail purchaseOrderDetail = new PurchaseOrderDetail();
 	private EntityListWrapper<PurchaseOrderDetail> purchaseOrderDetails = new EntityListWrapper<PurchaseOrderDetail>();
-	private EntityListWrapper<RequisitionDetail> requisitionDetails = new EntityListWrapper<RequisitionDetail>();
-	private RequisitionDetail requisitionDetail = new RequisitionDetail();
 	private String price;
 	private String quantity;
 	private String item;
-	
+
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	public EntityListWrapper<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(EntityListWrapper<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+
+	public InvoiceDetail getInvoiceDetail() {
+		return invoiceDetail;
+	}
+
+	public void setInvoiceDetail(InvoiceDetail invoiceDetail) {
+		this.invoiceDetail = invoiceDetail;
+	}
+
+	public EntityListWrapper<InvoiceDetail> getInvoiceDetails() {
+		return invoiceDetails;
+	}
+
+	public void setInvoiceDetails(
+			EntityListWrapper<InvoiceDetail> invoiceDetails) {
+		this.invoiceDetails = invoiceDetails;
+	}
+
 	public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}
@@ -57,31 +93,6 @@ public class PurchaseOrderActionModel extends DefaultActionModel {
 		this.purchaseOrderDetails = purchaseOrderDetails;
 	}
 
-	public EntityListWrapper<RequisitionDetail> getRequisitionDetails() {
-		return requisitionDetails;
-	}
-
-	public void setRequisitionDetails(
-			EntityListWrapper<RequisitionDetail> requisitionDetails) {
-		this.requisitionDetails = requisitionDetails;
-	}
-
-	public RequisitionDetail getRequisitionDetail() {
-		return requisitionDetail;
-	}
-
-	public void setRequisitionDetail(RequisitionDetail requisitionDetail) {
-		this.requisitionDetail = requisitionDetail;
-	}
-
-	public String getItem() {
-		return item;
-	}
-
-	public void setItem(String item) {
-		this.item = item;
-	}
-
 	public String getPrice() {
 		return price;
 	}
@@ -97,6 +108,13 @@ public class PurchaseOrderActionModel extends DefaultActionModel {
 	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
-	
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
 
 }

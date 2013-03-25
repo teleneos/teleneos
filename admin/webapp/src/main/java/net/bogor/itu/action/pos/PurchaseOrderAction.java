@@ -1,10 +1,16 @@
 package net.bogor.itu.action.pos;
 
+import java.util.Map;
+
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 
 import net.bogor.itu.entity.pos.PurchaseOrder;
+import net.bogor.itu.entity.pos.PurchaseOrderDetail;
+import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.PurchaseOrderDetailService;
 import net.bogor.itu.service.pos.PurchaseOrderService;
+import net.bogor.itu.service.pos.RequisitionDetailService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -30,76 +36,126 @@ private ActionResult redirectToIndex = new ActionResult("redirect",
 private PurchaseOrderService purchaseOrderService;
 
 @Inject
+private RequisitionDetailService requisitionDetailService;
+
+@Inject
 private PurchaseOrderDetailService purchaseOrderDetailService;
 
-@Action
-public ActionResult purchaseOrderList() {
-	model.setPurchaseOrders(purchaseOrderService.findByKeyword(model.getQ(),
-			null, "ASC", model.getMax(), model.getPage() - 1));
+@Inject
+private ItemService itemService;
 
-	return new ActionResult("freemarker",
-			"/view/pos/po/po-list.ftl");
-}
+	@Action
+	public ActionResult purchaseOrderList() {
+		model.setPurchaseOrders(purchaseOrderService.findByKeyword(
+				model.getQ(), null, "ASC", model.getMax(), model.getPage() - 1));
 
-@Action(name = "/add", method = HttpMethod.GET)
-public ActionResult addForm() {
-	return new ActionResult("freemarker",
-			"/view/pos/po/po-form.ftl");
-}
+		return new ActionResult("freemarker", "/view/pos/po/po-list.ftl");
+	}
 
-@Action(name = "/edit/{purchaseOrder.id}", method = HttpMethod.GET)
-public ActionResult editForm() {
-	String id = model.getPurchaseOrder().getId();
-	if (id == null)
-		return redirectToIndex;
+	@Action(name = "/add", method = HttpMethod.GET)
+	public ActionResult addForm() {
+		return new ActionResult("freemarker", "/view/pos/po/po-form.ftl");
+	}
 
-	model.setPurchaseOrder(purchaseOrderService.findById(id));
-	if (model.getPurchaseOrder() == null)
-		return redirectToIndex;
+	@Action(name = "/edit/{purchaseOrder.id}", method = HttpMethod.GET)
+	public ActionResult editForm() {
+		String id = model.getPurchaseOrder().getId();
+		if (id == null)
+			return redirectToIndex;
 
-	return new ActionResult("freemarker",
-			"/view/pos/po/po-form.ftl");
-}
+		model.setPurchaseOrder(purchaseOrderService.findById(id));
+		if (model.getPurchaseOrder() == null)
+			return redirectToIndex;
 
-@Action(name = "/edit/{purchaseOrder.id}", method = HttpMethod.POST)
-public ActionResult updateRequisition() {
-	return addRequisition();
-}
+		return new ActionResult("freemarker", "/view/pos/po/po-form.ftl");
+	}
 
-@Action(name = "/add", method = HttpMethod.POST)
-public ActionResult addRequisition() {
-	purchaseOrderService.save(model.getPurchaseOrder());
+	@Action(name = "/edit/{purchaseOrder.id}", method = HttpMethod.POST)
+	public ActionResult updateRequisition() {
+		return addRequisition();
+	}
 
-	PurchaseOrder purchaseOrder= model.getPurchaseOrder();
+	@Action(name = "/add", method = HttpMethod.POST)
+	public ActionResult addRequisition() {
+		purchaseOrderService.save(model.getPurchaseOrder());
 
-	return new ActionResult("/pos/po/detail/"
-			+ purchaseOrder.getId()).setType("redirect");
-}
+		PurchaseOrder purchaseOrder = model.getPurchaseOrder();
 
-@Action(name = "/detail/{purchaseOrder.id}", method = HttpMethod.GET)
-public ActionResult formDetail() {
+		return new ActionResult("/pos/po/detail/" + purchaseOrder.getId())
+				.setType("redirect");
+	}
 
-	model.setPurchaseOrderDetails(purchaseOrderDetailService.findByKeyword(
-			model.getPurchaseOrder().getId(), 0, model.getPage() - 1));
+	@Action(name = "/detail/{purchaseOrder.id}", method = HttpMethod.GET)
+	public ActionResult formDetail() {
 
-	model.setPurchaseOrder(purchaseOrderService.findById(model.getPurchaseOrder()
-			.getId()));
+		model.setPurchaseOrderDetails(purchaseOrderDetailService.findByKeyword(
+				model.getPurchaseOrder().getId(), 0, 0));
 
-	return new ActionResult("freemarker",
-			"/view/pos/po/po-detail-form.ftl");
-}
+		model.setPurchaseOrder(purchaseOrderService.findById(model
+				.getPurchaseOrder().getId()));
 
-@Action(name = "/detail/{purchaseOrder.id}", method = HttpMethod.POST)
-public ActionResult formAddDetail() {
+		model.setRequisitionDetails(requisitionDetailService.findByKeyword(
+				model.getPurchaseOrder().getRequisition().getId(), 0, 0));
 
-	purchaseOrderDetailService.save(model.getPurchaseOrderDetail());
+		return new ActionResult("freemarker", "/view/pos/po/po-detail-form.ftl");
+	}
 
-	return formDetail();
-}
+	@Action(name = "/detail/{purchaseOrder.id}", method = HttpMethod.POST)
+	public ActionResult formAddDetail() {
 
-@Override
-public PurchaseOrderActionModel getModel() {
-	return model;
-}
+		requisitionDetailService.save(model.getRequisitionDetail());
+
+		return new ActionResult("/pos/po/detail/"
+				+ model.getPurchaseOrder().getId()).setType("redirect");
+	}
+
+	@Action(name = "/purchaseorder", method = HttpMethod.POST)
+	public ActionResult addPurchaseOrder() {
+
+		String item = model.getItem();
+		int i = (item.split(",").length);
+		String is[] = new String[i];
+		is = item.split(",");
+
+		String quantity = model.getQuantity();
+		int q = (quantity.split(",").length);
+		String qs[] = new String[q];
+		qs = quantity.split(",");
+
+		String price = model.getPrice();
+		int p = (price.split(",").length);
+		String ps[] = new String[p];
+		ps = price.split(",");
+
+		for (int j = 0; j < i; j++) {
+			item = is[j].replace(" ", "");
+			quantity = qs[j].replace(" ", "");
+			price = ps[j].replace(" ", "");
+
+			PurchaseOrderDetail poD = new PurchaseOrderDetail();
+
+			poD.setPurchaseOrder(purchaseOrderService.findById(model
+					.getPurchaseOrder().getId()));
+			poD.setItem(itemService.findById(item));
+			poD.setQuantity(Integer.parseInt(quantity));
+			poD.setPrice(Long.parseLong(price));
+
+			purchaseOrderDetailService.save(poD);
+
+		}
+
+		PurchaseOrder po = new PurchaseOrder();
+		po.setId(model.getPurchaseOrder().getId());
+		po.setStatus(1);
+		purchaseOrderService.save(po);
+
+		return new ActionResult("/pos/po/detail/"
+				+ model.getPurchaseOrder().getId()).setType("redirect");
+	}
+
+	@Override
+	public PurchaseOrderActionModel getModel() {
+		return model;
+	}
 
 }

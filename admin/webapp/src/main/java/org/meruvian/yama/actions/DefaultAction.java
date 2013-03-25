@@ -18,8 +18,12 @@ package org.meruvian.yama.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.bogor.itu.entity.admin.User;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.meruvian.yama.security.SessionCredentials;
+import org.meruvian.yama.security.user.BackendUser;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -47,5 +51,9 @@ public class DefaultAction extends ActionSupport implements
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+	
+	public BackendUser getCurrentUser() {
+		return SessionCredentials.currentUser();
 	}
 }
