@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.security.user.BackendUser;
 import org.meruvian.yama.security.user.BackendUserDAO;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private BackendUserDAO backendUserRepo;
 
+	@Inject
+	private PasswordEncoder encoder;
+
 	@Override
 	@Transactional
 	public User save(User user) {
@@ -34,8 +38,6 @@ public class UserServiceImpl implements UserService {
 			BackendUser backendUser = user.getUser();
 			backendUser.setId(null);
 
-			
-			
 			backendUserRepo.persist(backendUser);
 			userRepo.persist(user);
 		} else {
@@ -47,6 +49,11 @@ public class UserServiceImpl implements UserService {
 			b.setUsername(bu.getUsername());
 			b.setEmail(bu.getEmail());
 			b.setWebsite(bu.getWebsite());
+			if (!b.getPassword().equals(bu.getPassword())) {
+				b.setPassword(encoder.encodePassword(bu.getPassword(), null));
+			}
+			b.getLogInformation().setStatusFlag(
+					bu.getLogInformation().getStatusFlag());
 
 			u.setAddress(user.getAddress());
 			u.setBirthDate(user.getBirthDate());

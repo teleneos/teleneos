@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.master.GroupService;
 
+import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -35,11 +36,10 @@ public class UserAction extends DefaultAction implements
 
 	@Inject
 	private UserService userService;
-	
+
 	@Inject
 	private GroupService groupService;
-	
-	
+
 	@Action
 	public ActionResult index() {
 		return new ActionResult("redirect", "/admin/user/list");
@@ -52,16 +52,18 @@ public class UserAction extends DefaultAction implements
 
 		return new ActionResult("freemarker", "/view/admin/user/user-list.ftl");
 	}
-	
+
 	@Action(name = "/package/{q}", method = HttpMethod.GET)
 	public ActionResult getPackage() {
 		model.setGroupPackages(groupService.getGroupPackages(model.getQ()));
+
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
-	
+
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
 		model.setGroups(groupService.findByKeyword("", 0, 0));
+
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
 
@@ -72,13 +74,23 @@ public class UserAction extends DefaultAction implements
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") })
 	public ActionResult userSubmit() {
+		if (StringUtils.isBlank(model.getUser().getGroup().getId())) {
+			model.getUser().setGroup(null);
+		}
+
+		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
+			model.getUser().setInternetPackage(null);
+		}
+
 		userService.save(model.getUser());
 
-		return new ActionResult("redirect", "/admin/user");
+		return new ActionResult("redirect", "/admin/user/edit/"
+				+ model.getUser().getUser().getUsername() + "?success");
 	}
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
 	public ActionResult userEditForm() {
+		model.setGroups(groupService.findByKeyword("", 0, 0));
 		model.setUser(userService.findByUsername(model.getQ()));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
@@ -93,7 +105,8 @@ public class UserAction extends DefaultAction implements
 	public ActionResult userEditSubmit() {
 		userSubmit();
 
-		return new ActionResult("redirect", "/admin/user");
+		return new ActionResult("redirect", "/admin/user/edit/" + model.getQ()
+				+ "?success");
 	}
 
 	@Override

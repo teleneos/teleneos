@@ -1,5 +1,6 @@
 package net.bogor.itu.repository.radius;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import net.bogor.itu.entity.radius.Radacct;
@@ -23,10 +24,10 @@ public class RadacctRepository extends
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstoptime DESC";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
-		query.setParameter(1, "%" + username);
+		query.setParameter(1, username);
 
 		if (limit > 0) {
 			query.setMaxResults(limit);
@@ -35,34 +36,34 @@ public class RadacctRepository extends
 
 		list.setEntityList(query.getResultList());
 
-		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username LIKE ?1 ORDER BY r.acctstoptime DESC";
+		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstoptime DESC";
 		TypedQuery<Long> lquery = entityManager.createQuery(ql, Long.class);
-		lquery.setParameter(1, "%" + username);
+		lquery.setParameter(1, username);
 
 		list.setRowCount(lquery.getSingleResult());
 		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), limit));
 
 		return list;
 	}
-	
+
 	public Radacct findFirstSession(String username) {
-		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 ORDER BY r.acctstarttime ASC LIMIT 0, 1";
+		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstarttime ASC LIMIT 0, 1";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
-		query.setParameter(1, "%" + username);
+		query.setParameter(1, username);
 		return query.getResultList().get(0);
 	}
-	
+
 	public EntityListWrapper<Radacct> findOnlineUser(String username,
 			int limit, int page) {
 		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
-		query.setParameter(1, "%" + username);
+		query.setParameter(1, username);
 
 		if (limit > 0) {
 			query.setMaxResults(limit);
@@ -71,9 +72,9 @@ public class RadacctRepository extends
 
 		list.setEntityList(query.getResultList());
 
-		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username = ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
 		TypedQuery<Long> lquery = entityManager.createQuery(ql, Long.class);
-		lquery.setParameter(1, "%" + username);
+		lquery.setParameter(1, username);
 
 		list.setRowCount(lquery.getSingleResult());
 		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), limit));
@@ -83,5 +84,17 @@ public class RadacctRepository extends
 
 	public Radacct findById(Long id) {
 		return entityManager.find(Radacct.class, id);
+	}
+
+	/**
+	 * @param username
+	 * @return total download, upload, and total online time
+	 */
+	public Object[] findStatistic(String username) {
+		String q = "SELECT SUM(a.acctinputoctets), SUM(a.acctoutputoctets), SUM(a.acctsessiontime) FROM Radacct a WHERE a.username = ?1";
+		Query query = entityManager.createQuery(q);
+		query.setParameter(1, username);
+
+		return (Object[]) query.getSingleResult();
 	}
 }

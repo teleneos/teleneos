@@ -1,19 +1,18 @@
 package net.bogor.itu.action.admin;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.radius.RadiusSerivce;
+import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.radius.RadacctService;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.yama.actions.DefaultAction;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -28,19 +27,14 @@ public class OnlineUserAction extends DefaultAction implements
 
 	@Inject
 	private RadacctService radacctService;
+
+	@Inject
+	private UserService userService;
+
+	@Inject
+	private RadiusSerivce radiusSerivce;
+
 	private OnlineUserActionModel model = new OnlineUserActionModel();
-
-	@Value("${radius.client.remote_intet_address}")
-	private String radiusInetAddress;
-
-	@Value("${radius.client.shared_secret}")
-	private String radiusSharedSecret;
-
-	@Value("${radius.server.coa_port}")
-	private String radiusCoAPort;
-
-	@Value("${radius.client.disconnect_shell_location}")
-	private String disconnectSh;
 
 	@Action
 	public ActionResult index() {
@@ -56,17 +50,21 @@ public class OnlineUserAction extends DefaultAction implements
 				"/view/admin/user/online-user-list.ftl");
 	}
 
+	@Action(name = "report/{q}")
+	public ActionResult userReport() {
+		model.setAccts(radacctService.findByUsername(model.getQ(),
+				model.getMax(), model.getPage() - 1));
+		model.setUser(userService.findByUsername(model.getQ()));
+		model.setStatistic(radacctService.findStatistic(model.getQ()));
+
+		return new ActionResult("freemarker",
+				"/view/admin/user/user-usage-report-list.ftl");
+	}
+
 	@Action(name = "/disconnect/{q}")
 	public ActionResult disconnectUser() throws IOException {
 		try {
-			ProcessBuilder builder = new ProcessBuilder(disconnectSh,
-					model.getQ(), radiusInetAddress, radiusCoAPort,
-					radiusSharedSecret);
-			Process process = builder.start();
-			StringWriter writer = new StringWriter();
-			IOUtils.copy(process.getInputStream(), writer);
-
-			LOG.info(writer.toString());
+			radiusSerivce.logout(model.getQ());
 		} catch (Exception e) {
 			LOG.error("Failed stopping connection", e);
 		}

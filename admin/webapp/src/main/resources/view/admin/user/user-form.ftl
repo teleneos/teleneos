@@ -51,6 +51,7 @@
 					<#--
 					<@s.textfield key="label.user.address.country" name="user.address.countryId" cssClass="span4" />
 					-->
+					<@s.select key="label.editprofile.role" list=['ADMINISTRATOR', 'USER'] name="user.user.role"  />
 					<#assign groups=groups.entityList>
 					<div class="control-group ">
 						<label class="control-label" for="add_master_group_type">Group Name <span class="required">*</span></label>
@@ -71,6 +72,7 @@
 								</select>
 							</div>
 					</div>
+					<@s.select key="label.editprofile.status" list=['ACTIVE', 'INACTIVE'] name="user.user.logInformation.statusFlag"  />					
 					<div class="form-actions">
 						<#if user.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />
@@ -92,6 +94,10 @@
 					$('#alert').fadeOut();
 				}
 			});
+			
+			<#if user.user??>
+			$('#pass1, #pass2').val('${user.user.password!}');
+			</#if>
 			
 			$('#groupselect').change(function(){
 				$.ajax({

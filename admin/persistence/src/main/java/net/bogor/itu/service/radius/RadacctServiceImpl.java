@@ -40,4 +40,9 @@ public class RadacctServiceImpl implements RadacctService {
 	public Radacct findFirstSession(String username) {
 		return radacctRepo.findFirstSession(username);
 	}
+
+	@Override
+	public Object[] findStatistic(String username) {
+		return radacctRepo.findStatistic(username);
+	}
 }

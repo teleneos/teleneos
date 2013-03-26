@@ -54,7 +54,7 @@
 							<td>${byteString(a.acctinputoctets)}</td>
 							<td>${byteString(a.acctoutputoctets)}</td>
 							<td>
-								<a href="<@s.url value="/admin/user/disconnect/${a.username!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
+								<a href="<@s.url value="/admin/user/disconnect/${a.calledstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
 									<i class="icon-off"></i>
 								</a>
 							</td>

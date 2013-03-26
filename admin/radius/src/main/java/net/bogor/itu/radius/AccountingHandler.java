@@ -19,70 +19,66 @@ import net.jradius.packet.attribute.AttributeList;
 import net.jradius.server.JRadiusRequest;
 import net.jradius.server.JRadiusServer;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Dian Aditya
  * 
  */
 public class AccountingHandler extends PacketHandlerBase {
+	private static final Log LOG = LogFactory.getLog(AccountingHandler.class);
 
-	@Value("${radius.client.remote_intet_address}")
-	private String radiusInetAddress;
-
-	@Value("${radius.client.shared_secret}")
-	private String radiusSharedSecret;
-
-	@Value("${radius.server.coa_port}")
-	private String radiusCoAPort;
-
-	@Value("${radius.client.disconnect_shell_location}")
-	private String disconnectSh;
-	
 	@Inject
 	private UserService userService;
-	
+
 	@Inject
 	private RadacctService radacctService;
-	
+
 	@Inject
 	private RadiusSerivce radiusSerivce;
-	
+
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
 		RadiusPacket req = request.getRequestPacket();
 		AttributeList rp = req.getAttributes();
-		String username = rp.get(Attr_UserName.TYPE).getValue().getValueObject().toString();
-		String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue().getValueObject().toString();
-		System.err.println("Attribute List: " + rp.getAttributeList());
-		System.err.println("Username: "+ username);
+		String username = rp.get(Attr_UserName.TYPE).getValue()
+				.getValueObject().toString();
+		String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue()
+				.getValueObject().toString();
+
+		LOG.info("Attribute List: " + rp.getAttributeList());
+
 		User user = userService.findByUsername(username);
-		request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 		Radacct radacct = null;
-		try{
+		try {
 			radacct = radacctService.findFirstSession(username);
-			SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
-			System.err.println("Timestamp: "+ format.parse(timestamp).getTime());
-			System.err.println("Radacct Start Time: "+ radacct.getAcctstarttime().getTime());
+			SimpleDateFormat format = new SimpleDateFormat(
+					"EEE MMM dd hh:mm:ss z yyyy");
+			LOG.info("Timestamp: " + format.parse(timestamp).getTime());
+			LOG.info("Radacct Start Time: "
+					+ radacct.getAcctstarttime().getTime());
 			long firstlogin = radacct.getAcctstarttime().getTime();
-			long timestampmilis = format.parse(timestamp).getTime();
 			long variablemilis = user.getInternetPackage().getVariable() * 60000;
 			long toend = firstlogin + variablemilis;
-			System.err.println("Package variable: "+ user.getInternetPackage().getVariable() * 60000);
-			System.err.println("Compare "+format.parse(timestamp).compareTo(new Date(toend)));
-			if(user.getInternetPackage().getType().equals(Type.COUNTDOWN)){
+			LOG.info("Package variable: "
+					+ user.getInternetPackage().getVariable() * 60000);
+			if (user.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
 				if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
-					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE).getValue().getValueObject().toString());
+					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+							.getValue().getValueObject().toString());
 				}
-			}else if(user.getInternetPackage().getType().equals(Type.FIXTIME)){
-				if (format.parse(timestamp).compareTo(new Date(user.getInternetPackage().getVariable())) > 0) {
-					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE).getValue().getValueObject().toString());
+			} else if (user.getInternetPackage().getType().equals(Type.FIXTIME)) {
+				if (format.parse(timestamp).compareTo(
+						new Date(user.getInternetPackage().getVariable())) > 0) {
+					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+							.getValue().getValueObject().toString());
 				}
 			}
-		}catch (IndexOutOfBoundsException e) {
-			System.err.println(e.getMessage());
+		} catch (IndexOutOfBoundsException e) {
+			LOG.error(e.getMessage(), e);
 		}
-		
+
 		request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 		return false;
 	}

@@ -91,6 +91,8 @@ public class BackendUserServiceImpl implements BackendUserService {
 			BackendUser temp = userDAO.findById(user.getId());
 			temp.getLogInformation().setUpdateBy(user.getId());
 			temp.getLogInformation().setUpdateDate(new Date());
+			temp.getLogInformation().setStatusFlag(
+					user.getLogInformation().getStatusFlag());
 			temp.setEmail(user.getEmail());
 			temp.setWebsite(user.getWebsite());
 			temp.setRole(user.getRole());

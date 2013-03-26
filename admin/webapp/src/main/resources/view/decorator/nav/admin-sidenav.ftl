@@ -11,6 +11,7 @@
 				<@s.text name="menu.admin.onlineuser" />
 			</a>
 		</li>
+		<#--
 		<li>
 			<a href="/admin/service">
 				<@s.text name="menu.admin.service" />
@@ -21,5 +22,6 @@
 				<@s.text name="menu.admin.group" />
 			</a>
 		</li>
+		-->
 	</ul>
 </div>

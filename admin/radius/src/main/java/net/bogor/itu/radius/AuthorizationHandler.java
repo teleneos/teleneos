@@ -57,16 +57,12 @@ public class AuthorizationHandler extends PacketHandlerBase {
 		UserDetails user = userService.loadUserByUsername((String) username
 				.getValue().getValueObject());
 
-		System.out.println(username.getValue().getValueObject());
-		System.out.println(new String(password.getValue().getBytes()));
-
 		Authentication authentication = new UsernamePasswordAuthenticationToken(
 				user, new String(password.getValue().getBytes()),
 				user.getAuthorities());
 
 		try {
 			authentication = manager.authenticate(authentication);
-			System.out.println(authentication);
 
 			SecurityContextHolder.getContext()
 					.setAuthentication(authentication);
