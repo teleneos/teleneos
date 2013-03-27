@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.goodreceivingdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.goodreceivingdetail.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -10,7 +11,7 @@
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
 					<@s.textfield key="label.admin.goodreceiving.title" readonly="true" value="${goodReceiving.title!}" cssClass="span4" />
 					<@s.textfield key="label.admin.goodreceiving.description" readonly="true" value="${goodReceiving.description!}" cssClass="span4" />
-					<@s.textfield key="label.admin.goodreceiving.date" readonly="true" value="${goodReceiving.duedate!}" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.goodreceiving.date" readonly="true" value="${goodReceiving.duedate!}" cssClass="span4" /> -->
 					<@s.textfield key="label.admin.goodreceiving.purchaseorder" readonly="true" value="${goodReceiving.invoice.title!}" cssClass="span4" />
 				</@s.form>
 				<table class="table table-striped table-condensed">

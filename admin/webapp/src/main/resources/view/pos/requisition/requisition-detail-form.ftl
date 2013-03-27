@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.requisitiondetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.requisitiondetail.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -11,7 +12,7 @@
 					<input type="hidden" value="${requisition.id!}" name="requisitionDetail.requisition.id"> 
 					<@s.textfield key="label.admin.requisition.title" readonly="true" value="${requisition.title!}" cssClass="span4" />
 					<@s.textfield key="label.admin.requisition.description" readonly="true" value="${requisition.description!}" cssClass="span4" />
-					<@s.textfield key="label.admin.requisition.duedate" readonly="true" value="${requisition.duedate!}" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.requisition.duedate" readonly="true" value="${requisition.duedate!}" cssClass="span4" /> -->
 					<div class="control-group ">
 						<label class="control-label" for="add_transactionDetail_item_id"><@s.text name="page.item.title" /><span class="required">*</span></label>
 						<div class="controls">

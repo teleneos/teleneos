@@ -28,7 +28,7 @@
 							<th>#</th>
 							<th><@s.text name="label.admin.invoice.title" /></th>
 							<th><@s.text name="label.admin.invoice.description" /></th>
-							<th><@s.text name="label.admin.invoice.datedate" /></th>
+							<!-- <th><@s.text name="label.admin.invoice.datedate" /></th> -->
 							<th><@s.text name="label.admin.invoice.purchaseorder" /></th>
 						</tr>
 					</thead>
@@ -40,7 +40,7 @@
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
 							<td>${s.description!}</td>
-							<td>${s.duedate!}</td>
+							<!-- <td>${s.duedate!}</td> -->
 							<td>${s.purchaseOrder.title!}</td>
 						</tr>
 						<#assign no = no + 1 />

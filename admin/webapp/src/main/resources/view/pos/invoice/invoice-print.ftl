@@ -3,18 +3,18 @@
 		<tr>
 			<th style="text-align: center;" colspan="3">TELECENTRE</th>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<th style="text-align: center;" colspan="3">JL SWADAYA 2 NO 39</th>
 		</tr>
 		<tr>
 			<th style="text-align: center;" colspan="3">+62 8573 149 5681</th>
-		</tr>
+		</tr> -->
 		<tr>
 			<th style="text-align: center;" colspan="3"><hr></th>
 		</tr>
 		<tr>
 			<td>No Invoice</td>
-			<td>: 020C-1934-409987</td>
+			<td>: ${noInvoice(transactionHeader.counter)}</td>
 			<td style="text-align: right;">${transactionHeader.logInformation.createDate?string('dd-MM-yyyy')}</td>
 		</tr>
 		<tr>

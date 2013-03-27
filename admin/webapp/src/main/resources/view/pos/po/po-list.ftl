@@ -28,7 +28,7 @@
 							<th>#</th>
 							<th><@s.text name="label.admin.purchaseorder.title" /></th>
 							<th><@s.text name="label.admin.purchaseorder.description" /></th>
-							<th><@s.text name="label.admin.purchaseorder.duedate" /></th>
+							<!-- <th><@s.text name="label.admin.purchaseorder.duedate" /></th> -->
 							<th><@s.text name="label.admin.purchaseorder.businesspartner" /></th>
 							<th><@s.text name="label.admin.purchaseorder.requisition" /></th>
 						</tr>
@@ -41,7 +41,7 @@
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
 							<td>${s.description!}</td>
-							<td>${s.duedate!}</td>
+							<!-- <td>${s.duedate!}</td> -->
 							<td>${s.businessPartner.name!}</td>
 							<td>${s.requisition.title!}</td>
 						</tr>

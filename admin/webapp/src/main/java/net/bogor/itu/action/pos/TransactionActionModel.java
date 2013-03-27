@@ -4,6 +4,7 @@ import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.ItemCategory;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
+import net.bogor.itu.entity.radius.Radacct;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -20,6 +21,7 @@ public class TransactionActionModel extends DefaultActionModel {
 	private EntityListWrapper<TransactionDetail> transactionDetails = new EntityListWrapper<TransactionDetail>();
 	private String id;
 	private Item item = new Item();
+	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
 
 	public TransactionHeader getTransactionHeader() {
 		return transactionHeader;
@@ -70,5 +72,14 @@ public class TransactionActionModel extends DefaultActionModel {
 	public void setItem(Item item) {
 		this.item = item;
 	}
+
+	public EntityListWrapper<Radacct> getAccts() {
+		return accts;
+	}
+
+	public void setAccts(EntityListWrapper<Radacct> accts) {
+		this.accts = accts;
+	}
+	
 
 }

@@ -11,7 +11,7 @@
 					<@s.hidden name="requisition.id" />
 					<@s.textfield key="label.admin.requisition.title" required="true" name="requisition.title" cssClass="span4" />
 					<@s.textfield key="label.admin.requisition.description"  name="requisition.description" cssClass="span6" />
-					<@s.textfield key="label.admin.requisition.duedate"  name="requisition.duedate" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.requisition.duedate"  name="requisition.duedate" cssClass="span4" /> -->
 					<div class="form-actions">
 						<#if requisition.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

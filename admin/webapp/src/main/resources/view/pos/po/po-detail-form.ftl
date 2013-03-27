@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.purchaseorderdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.purchaseorderdetail.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -12,7 +13,7 @@
 					<input type="hidden" value="${purchaseOrder.requisition.id!}" name="requisitionDetail.requisition.id"> 
 					<@s.textfield key="label.admin.purchaseorder.title" readonly="true" value="${purchaseOrder.title!}" cssClass="span4" />
 					<@s.textfield key="label.admin.purchaseorder.description" readonly="true" value="${purchaseOrder.description!}" cssClass="span4" />
-					<@s.textfield key="label.admin.purchaseorder.duedate" readonly="true" value="${purchaseOrder.duedate!}" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.purchaseorder.duedate" readonly="true" value="${purchaseOrder.duedate!}" cssClass="span4" /> -->
 					<@s.textfield key="label.admin.purchaseorder.businesspartner" readonly="true" value="${purchaseOrder.businessPartner.name!}" cssClass="span4" />
 					<@s.textfield key="label.admin.purchaseorder.requisition" readonly="true" value="${purchaseOrder.requisition.title!}" cssClass="span4" />
 					<#if purchaseOrder.status==0>
@@ -48,7 +49,7 @@
 							<td>${no}</td>
 							<td>${s.item.name!}<input type="hidden" name="item" value="${s.item.id!}"></td>
 							<td><input type="text" name="quantity" value="${s.quantity!}"></td>
-							<td><input type="text" name="price"></td>
+							<td><input type="text" name="price" value="<#if s.price??>${s.price?string('#')!}<#else>${s.item.price?string('#')!}</#if>"></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list> 

@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.invoicedetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.invoicedetail.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -12,7 +13,7 @@
 					<input type="hidden" value="${invoice.purchaseOrder.id!}" name="purchaseOrderDetail.purchaseOrder.id"> 
 					<@s.textfield key="label.admin.invoice.title" readonly="true" value="${invoice.title!}" cssClass="span4" />
 					<@s.textfield key="label.admin.invoice.description" readonly="true" value="${invoice.description!}" cssClass="span4" />
-					<@s.textfield key="label.admin.invoice.date" readonly="true" value="${invoice.duedate!}" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.invoice.date" readonly="true" value="${invoice.duedate!}" cssClass="span4" /> -->
 					<@s.textfield key="label.admin.invoice.purchaseorder" readonly="true" value="${invoice.purchaseOrder.title!}" cssClass="span4" />
 					<#if invoice.status==0>
 					<div class="control-group ">
@@ -35,9 +36,9 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.purchaseroderdetail.item" /></th>
-							<th><@s.text name="label.admin.purchaseroderdetail.quantity" /></th>
-							<th><@s.text name="label.admin.purchaseroderdetail.price" /></th>
+							<th><@s.text name="label.admin.invoicedetail.item" /></th>
+							<th style="text-align:right;"><@s.text name="label.admin.invoicedetail.quantity" /></th>
+							<th style="text-align:right;"><@s.text name="label.admin.invoicedetail.price" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,8 +47,8 @@
 						<tr>
 							<td>${no}</td>
 							<td>${s.item.name!}<input type="hidden" name="item" value="${s.item.id!}"></td>
-							<td><input type="text" name="quantity" value="${s.quantity!}"></td>
-							<td><input type="text" name="price" value="${s.price!}"></td>
+							<td style="text-align:right;"><input type="text" name="quantity" value="${s.quantity!}"></td>
+							<td style="text-align:right;"><input type="text" name="price" value="<#if s.price??>${s.price?string('#')!}<#else>${s.item.price?string('#')!}</#if>"></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list> 

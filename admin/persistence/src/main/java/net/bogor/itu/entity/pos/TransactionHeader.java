@@ -17,22 +17,22 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_transaction_header")
 public class TransactionHeader extends DefaultPersistence {
 
-	private String code;
+	private long counter;
 	private User user;
 	private Long cash;
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
+	}
+
+	public long getCounter() {
+		return counter;
+	}
+
+	public void setCounter(long counter) {
+		this.counter = counter;
 	}
 
 	public void setUser(User user) {

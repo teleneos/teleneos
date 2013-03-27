@@ -28,7 +28,7 @@
 							<th>#</th>
 							<th><@s.text name="label.admin.requisition.title" /></th>
 							<th><@s.text name="label.admin.requisition.description" /></th>
-							<th><@s.text name="label.admin.requisition.duedate" /></th>
+							<!-- <th><@s.text name="label.admin.requisition.duedate" /></th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -39,7 +39,7 @@
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
 							<td>${s.description!}</td>
-							<td>${s.duedate!}</td>
+							<!-- <td>${s.duedate!}</td> -->
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

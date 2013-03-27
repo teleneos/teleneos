@@ -5,10 +5,12 @@ import javax.swing.JOptionPane;
 
 import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionHeader;
+import net.bogor.itu.radius.RadiusSerivce;
 import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailService;
 import net.bogor.itu.service.pos.TransactionHeaderService;
+import net.bogor.itu.service.radius.RadacctService;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
@@ -44,7 +46,10 @@ public class TransactionAction extends DefaultAction implements
 
 	@Inject
 	private ItemService itemService;
-
+	
+	@Inject
+	private RadacctService radacctService;
+	
 	@Action
 	public ActionResult transactionList() {
 		model.setTransactionHeaders(tHeaderService.findByKeyword(model.getQ(),
@@ -82,24 +87,14 @@ public class TransactionAction extends DefaultAction implements
 
 		model.setTransactionHeader(tHeaderService.findById(model
 				.getTransactionHeader().getId()));
+		
+		model.setAccts(radacctService.findByUsername(model.getTransactionHeader().getUser().getUser().getUsername(),
+				model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker",
 				"/view/pos/transaction/transaction-detail-form.ftl");
 	}
 	
-	@Action(name = "/detail/{transactionHeader.id}.htm", method = HttpMethod.GET)
-	public ActionResult printDetail() {
-
-		model.setTransactionDetails(tDetailService.findByKeyword(model
-				.getTransactionHeader().getId(), 0, model.getPage() - 1));
-
-		model.setTransactionHeader(tHeaderService.findById(model
-				.getTransactionHeader().getId()));
-
-		return new ActionResult("freemarker",
-				"/view/pos/transaction/transaction-detail-form.ftl");
-	}
-
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.POST)
 	public ActionResult addFormDetail() {
 		TransactionHeader tHeader = model.getTransactionHeader();

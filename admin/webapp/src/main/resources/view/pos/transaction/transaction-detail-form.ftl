@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 		<script>
 			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
 			function printDiv(divId) {
@@ -15,14 +16,32 @@
 </script>
 	</head>
 	<body>
+	<#function noInvoice counter>
+			<#if counter &gt;= 100000>
+				<#return counter?string('#')/>
+			<#elseif counter &gt;= 10000>
+				<#return '0' + counter?string('#')/>
+			<#elseif counter &gt;= 1000>
+				<#return '00' + counter?string('#')/>
+			<#elseif counter &gt;= 100>
+				<#return '000' + counter?string('#') />
+			<#elseif counter &gt;= 10>
+				<#return '0000' + counter?string('#') />
+			<#else>
+				<#return '00000' + counter?string('#') />
+			</#if>
+		</#function>
+	
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
 					<@s.hidden name="transactionHeader.id" />
 					<#if transactionHeader.id??>
+					<@s.textfield key="label.admin.theader.noinvoice" readonly="true" value="${noInvoice(transactionHeader.counter)}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.user.name.first!} ${transactionHeader.user.name.last!}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.date" readonly="true" value="${transactionHeader.logInformation.createDate!}" cssClass="span4" />
+					<@s.textfield key="label.admin.theader.admin" readonly="true" value="${currentUser.username!}" cssClass="span4" />
 					<#else>
 					<div class="control-group ">
 						<label class="control-label" for="add_id"><@s.text name="menu.admin.user" /> <span class="required">*</span></label>
@@ -122,6 +141,6 @@
 		</div>
 		<div id="print" style="visibility: hidden;">
 		<#include "/view/pos/invoice/invoice-print.ftl" />
-		</div>		
+		</div>
 	</body>
 </html>

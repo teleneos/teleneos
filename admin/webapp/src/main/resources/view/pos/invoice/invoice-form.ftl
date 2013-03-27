@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.invoice.title" /></title>
 		<meta name="header" content="<@s.text name="page.invoice.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -11,7 +12,7 @@
 					<@s.hidden name="invoice.id" />
 					<@s.textfield key="label.admin.invoice.title" required="true" name="invoice.title" cssClass="span4" />
 					<@s.textfield key="label.admin.invoice.description"  name="invoice.description" cssClass="span6" />
-					<@s.textfield key="label.admin.invoice.date"  name="invoice.duedate" cssClass="span4" />
+					<!-- <@s.textfield key="label.admin.invoice.date"  name="invoice.duedate" cssClass="span4" /> -->
 					<div class="control-group ">
 						<label class="control-label" for="add_id"><@s.text name="label.admin.invoice.purchaseorder" /> <span class="required">*</span></label>
 						<div class="controls">

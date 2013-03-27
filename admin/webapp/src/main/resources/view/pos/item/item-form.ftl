@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.item.title" /></title>
 		<meta name="header" content="<@s.text name="page.item.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
