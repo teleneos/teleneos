@@ -60,10 +60,10 @@ public class RadacctRepository extends
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
-		query.setParameter(1, username);
+		query.setParameter(1, username + "%");
 
 		if (limit > 0) {
 			query.setMaxResults(limit);
@@ -72,9 +72,9 @@ public class RadacctRepository extends
 
 		list.setEntityList(query.getResultList());
 
-		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username = ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
 		TypedQuery<Long> lquery = entityManager.createQuery(ql, Long.class);
-		lquery.setParameter(1, username);
+		lquery.setParameter(1, username + "%");
 
 		list.setRowCount(lquery.getSingleResult());
 		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), limit));

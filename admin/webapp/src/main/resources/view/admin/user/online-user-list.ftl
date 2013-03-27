@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.onlineuser.title" /></tile>
+		<title><@s.text name="page.onlineuser.title" /></title>
 		<meta name="header" content="<@s.text name="page.onlineuser.header" />">
 	</head>
 	<body>
@@ -34,6 +34,7 @@
 						<tr>
 							<th class="span1">#</th>
 							<th><@s.text name="label.admin.onlineuser.id" /></th>
+							<th><@s.text name="label.admin.onlineuser.sessionid" /></th>
 							<th><@s.text name="label.admin.onlineuser.username" /></th>
 							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
 							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
@@ -48,13 +49,14 @@
 						<tr>
 							<td>${no}</td>
 							<td>${a.radacctid?string('#')}</td>
+							<td>${a.acctsessionid}</td>
 							<td>${a.username!}</td>
 							<td>${a.nasipaddress!}</td>
 							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
 							<td>${byteString(a.acctinputoctets)}</td>
 							<td>${byteString(a.acctoutputoctets)}</td>
 							<td>
-								<a href="<@s.url value="/admin/user/disconnect/${a.calledstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
+								<a href="<@s.url value="/admin/user/disconnect/${a.callingstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
 									<i class="icon-off"></i>
 								</a>
 							</td>

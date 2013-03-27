@@ -3,6 +3,7 @@ package net.bogor.itu.service.master;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.master.InternetPackage;
+import net.bogor.itu.entity.master.PaymentMethod;
 import net.bogor.itu.repository.master.PackageManagerRepository;
 
 import org.apache.commons.lang.StringUtils;
@@ -50,6 +51,14 @@ public class PackageManagerImplService implements PackageManagerService {
 	@Override
 	public EntityListWrapper<InternetPackage> all() {
 		return packageManagerRepository.findAll(0, 0);
+	}
+
+	@Override
+	public EntityListWrapper<InternetPackage> findByPaymentMethod(
+			boolean freeCharge, PaymentMethod method, String groupId,
+			int limit, int page) {
+		return packageManagerRepository.findByPaymentMethod(freeCharge, method,
+				groupId, limit, page);
 	}
 
 }

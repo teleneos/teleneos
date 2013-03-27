@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.theader.title" /></tile>
+		<title><@s.text name="page.theader.title" /></title>
 		<meta name="header" content="<@s.text name="page.theader.header" />">
 	</head>
 	<body>

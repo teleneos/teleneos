@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
-import net.bogor.itu.entity.master.InternetPackage.Status;
-import net.bogor.itu.entity.master.InternetPackage.Type;
 import net.bogor.itu.service.master.PackageManagerService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
@@ -19,33 +17,33 @@ import org.meruvian.yama.actions.DefaultAction;
 import com.opensymphony.xwork2.ModelDriven;
 
 @Action(name = "/master/packages")
-@Results({ 
-	@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-form.ftl"), 
-	@Result(name = DefaultAction.INDEX, type = "freemarker", location = "/view/master/packagemanager/packagemanager-list.ftl")
-	})
+@Results({
+		@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-form.ftl"),
+		@Result(name = DefaultAction.INDEX, type = "freemarker", location = "/view/master/packagemanager/packagemanager-list.ftl") })
 public class PackageManagerAction extends DefaultAction implements
 		ModelDriven<PackageManagerActionModel> {
 
 	private static final long serialVersionUID = 735436507412605816L;
-	
+
 	private PackageManagerActionModel model = new PackageManagerActionModel();
-	private ActionResult redirectToIndex = new ActionResult("redirect", "/master/packages");
-	
-	@Inject 
+	private ActionResult redirectToIndex = new ActionResult("redirect",
+			"/master/packages");
+
+	@Inject
 	private PackageManagerService service;
-	
+
 	@Action
 	public String packageList() {
-		model.setInternetPackages(service.findByName(model.getQ(),null,"ASC", model.getMax(),
-				model.getPage() - 1));
+		model.setInternetPackages(service.findByName(model.getQ(), null, "ASC",
+				model.getMax(), model.getPage() - 1));
 		return DefaultAction.INDEX;
 	}
-	
+
 	@Action(name = "/add", method = HttpMethod.GET)
 	public String addForm() {
 		return DefaultAction.INPUT;
 	}
-	
+
 	@Action(name = "/edit/{internetPackage.id}", method = HttpMethod.GET)
 	public ActionResult editForm() {
 		String id = model.getInternetPackage().getId();
@@ -58,46 +56,63 @@ public class PackageManagerAction extends DefaultAction implements
 		return new ActionResult("freemarker",
 				"/view/master/packagemanager/packagemanager-list.ftl");
 	}
-	
+
 	@Action(name = "/edit/{internetPackage.id}", method = HttpMethod.POST)
-//	@Validations(
-//			requiredStrings = { 
-//				@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull"),
-//				@RequiredStringValidator(fieldName = "internetPackage.type", trim = true, key = "message.master.package.type.notnull")}, 
-//			requiredFields = {
-//				@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
-//				@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull")
-//			})
+	// @Validations(
+	// requiredStrings = {
+	// @RequiredStringValidator(fieldName = "internetPackage.name", trim = true,
+	// key = "message.master.package.name.notnull"),
+	// @RequiredStringValidator(fieldName = "internetPackage.type", trim = true,
+	// key = "message.master.package.type.notnull")},
+	// requiredFields = {
+	// @RequiredFieldValidator(fieldName = "internetPackage.variable", key =
+	// "message.master.package.variable.notnull"),
+	// @RequiredFieldValidator(fieldName = "internetPackage.price", key =
+	// "message.master.package.price.notnull")
+	// })
 	public ActionResult updateService() {
 		return addService();
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
-//	@Validations(
-//			requiredStrings = { 
-//				@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull")}, 
-//			requiredFields = {
-//				@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
-//				@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull"),
-//				@RequiredFieldValidator(fieldName = "internetPackage.type", key = "message.master.package.type.notnull")
-//			})
+	// @Validations(
+	// requiredStrings = {
+	// @RequiredStringValidator(fieldName = "internetPackage.name", trim = true,
+	// key = "message.master.package.name.notnull")},
+	// requiredFields = {
+	// @RequiredFieldValidator(fieldName = "internetPackage.variable", key =
+	// "message.master.package.variable.notnull"),
+	// @RequiredFieldValidator(fieldName = "internetPackage.price", key =
+	// "message.master.package.price.notnull"),
+	// @RequiredFieldValidator(fieldName = "internetPackage.type", key =
+	// "message.master.package.type.notnull")
+	// })
 	public ActionResult addService() {
-		model.getInternetPackage().setStatus(model.getStatus() == 0 ? Status.ENABLE : Status.DISABLE);
-		model.getInternetPackage().setType(model.getType() == 0 ? Type.COUNTDOWN : Type.FIXTIME);
 		if (model.getType() == 1) {
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			try {
-				model.getInternetPackage().setVariable(format.parse(model.getVariable()).getTime());
+				model.getInternetPackage().setVariable(
+						format.parse(model.getVariable()).getTime());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-		}else{
-			model.getInternetPackage().setVariable(Long.parseLong(model.getVariable()));
+		} else {
+			model.getInternetPackage().setVariable(
+					Long.parseLong(model.getVariable()));
 		}
 		service.save(model.getInternetPackage());
 		return redirectToIndex;
 	}
-	
+
+	@Action(name = "/list/{variable}/{method}/{q}")
+	public ActionResult serviceList() {
+		model.setInternetPackages(service.findByPaymentMethod(model
+				.getVariable().equalsIgnoreCase("free"), model.getMethod(),
+				model.getQ(), 0, 0));
+
+		return new ActionResult("/blank.html");
+	}
+
 	@Override
 	public PackageManagerActionModel getModel() {
 		return model;

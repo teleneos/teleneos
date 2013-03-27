@@ -19,7 +19,7 @@ public class GroupImplService implements GroupService {
 
 	@Inject
 	private GroupRepository repository;
-	
+
 	@Override
 	public GroupA findById(String id) {
 		return repository.findById(id);
@@ -34,6 +34,13 @@ public class GroupImplService implements GroupService {
 		} else {
 			GroupA g = repository.load(group.getId());
 			g.setName(group.getName());
+			g.setFreeOfCharge(group.isFreeOfCharge());
+			g.setCode(group.getCode());
+			g.setClub(group.isClub());
+			g.setPaymentMethod(group.getPaymentMethod());
+			g.setPaymentPeriod(group.getPaymentPeriod());
+			g.setGroupPackages(group.getGroupPackages());
+
 			group = g;
 		}
 		return group;
@@ -44,7 +51,7 @@ public class GroupImplService implements GroupService {
 			int page) {
 		if (StringUtils.isBlank(keyword))
 			return repository.findAll(limit, page);
-		return repository.findByKeyword(keyword, limit, page );
+		return repository.findByKeyword(keyword, limit, page);
 	}
 
 	@Override

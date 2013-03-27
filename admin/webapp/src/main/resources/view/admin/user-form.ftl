@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.editprofile.title" /></tile>
+		<title><@s.text name="page.editprofile.title" /></title>
 		<meta name="header" content="<@s.text name="page.editprofile.header" />">
 	</head>
 	<body>

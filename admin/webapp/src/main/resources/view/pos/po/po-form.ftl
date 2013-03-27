@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.purchaseorder.title" /></tile>
+		<title><@s.text name="page.purchaseorder.title" /></title>
 		<meta name="header" content="<@s.text name="page.purchaseorder.header" />">
 	</head>
 	<body>

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.changepassword.title" /></tile>
+		<title><@s.text name="page.changepassword.title" /></title>
 		<meta name="header" content="<@s.text name="page.changepassword.header" />">
 	</head>
 	<body>

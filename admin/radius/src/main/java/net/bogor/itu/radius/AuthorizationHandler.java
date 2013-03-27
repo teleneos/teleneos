@@ -5,10 +5,9 @@ package net.bogor.itu.radius;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import net.jradius.dictionary.Attr_AuthType;
-import net.jradius.dictionary.Attr_CHAPChallenge;
-import net.jradius.dictionary.Attr_CHAPPassword;
 import net.jradius.dictionary.Attr_UserName;
 import net.jradius.dictionary.Attr_UserPassword;
 import net.jradius.handler.PacketHandlerBase;
@@ -46,22 +45,18 @@ public class AuthorizationHandler extends PacketHandlerBase {
 		AttributeList rp = req.getAttributes();
 
 		Attr_UserName username = (Attr_UserName) rp.get(Attr_UserName.TYPE);
-		Attr_CHAPPassword chapPassword = (Attr_CHAPPassword) rp
-				.get(Attr_CHAPPassword.TYPE);
-		Attr_CHAPChallenge chapChallenge = (Attr_CHAPChallenge) rp
-				.get(Attr_CHAPChallenge.TYPE);
 
 		Attr_UserPassword password = (Attr_UserPassword) rp
 				.get(Attr_UserPassword.TYPE);
 
-		UserDetails user = userService.loadUserByUsername((String) username
-				.getValue().getValueObject());
-
-		Authentication authentication = new UsernamePasswordAuthenticationToken(
-				user, new String(password.getValue().getBytes()),
-				user.getAuthorities());
-
 		try {
+			UserDetails user = userService.loadUserByUsername((String) username
+					.getValue().getValueObject());
+
+			Authentication authentication = new UsernamePasswordAuthenticationToken(
+					user, new String(password.getValue().getBytes()),
+					user.getAuthorities());
+
 			authentication = manager.authenticate(authentication);
 
 			SecurityContextHolder.getContext()
@@ -69,6 +64,8 @@ public class AuthorizationHandler extends PacketHandlerBase {
 
 			ci.add(new Attr_AuthType("Accept"), true);
 		} catch (BadCredentialsException e) {
+			ci.add(new Attr_AuthType("Reject"), true);
+		} catch (NoResultException e) {
 			ci.add(new Attr_AuthType("Reject"), true);
 		}
 

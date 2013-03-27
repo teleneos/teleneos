@@ -7,6 +7,7 @@ $('#popup-dialog').on('show', function() {
 		jQuery.ajax({
 			type : 'GET',
 			dataType : 'json',
+			accepts : 'application/json',
 			url : $(this).attr('action') + ".json",
 			data : $(this).serialize(),
 			success : function(data) {

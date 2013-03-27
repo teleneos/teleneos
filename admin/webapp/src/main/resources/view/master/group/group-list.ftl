@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.group.title" /></tile>
+		<title><@s.text name="page.group.title" /></title>
 		<meta name="header" content="<@s.text name="page.group.header" />">
 	</head>
 	<body>
@@ -28,20 +28,28 @@
 							<th>#</th>
 							<th><@s.text name="label.master.group.code" /></th>
 							<th><@s.text name="label.master.group.name" /></th>
-							<th><@s.text name="label.master.group.status" /></th>
-							<th><@s.text name="label.master.group.club" /></th>
+							<th><@s.text name="label.master.group.foc" /></th>
+							<th><@s.text name="label.master.group.package" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 />
-						<@s.url value="master/group/edit/" var="editUrl" />
+						<@s.url value="/master/group/edit/" var="editUrl" />
 						<#list groups.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td>${s.code!}</td>
+							<td><a href="${editUrl}${s.id}">${s.code!}</a></td>
 							<td>${s.name!}</td>
-							<td>${s.status!}</td>
-							<td>${s.club?string}</td>
+							<td>
+								<i class="icon-<#if s.freeOfCharge>ok<#else>remove</#if>"></i>
+							</td>
+							<td>
+								<ul>
+									<#list s.groupPackages as g>
+									<li>${g.internetPackage.name!}</li>
+									</#list>
+								</ul>
+							</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

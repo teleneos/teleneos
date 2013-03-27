@@ -4,7 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -21,8 +24,11 @@ public class GroupA extends DefaultPersistence {
 	private String code;
 	private String name;
 	private boolean club;
+	private boolean freeOfCharge = true;
+	private PaymentMethod paymentMethod = PaymentMethod.POSTPAID;
+	private long paymentPeriod = 0;
 	private Set<GroupPackage> groupPackages = new HashSet<GroupPackage>(0);
-	
+
 	public String getCode() {
 		return code;
 	}
@@ -46,10 +52,42 @@ public class GroupA extends DefaultPersistence {
 	public void setClub(boolean club) {
 		this.club = club;
 	}
-	
+
+	@Column(name = "free_of_charge")
+	public boolean isFreeOfCharge() {
+		return freeOfCharge;
+	}
+
+	public void setFreeOfCharge(boolean freeOfCharge) {
+		this.freeOfCharge = freeOfCharge;
+	}
+
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "payment_method")
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	/**
+	 * 
+	 * @return Payment period in minutes
+	 */
+	@Column(name = "payment_period")
+	public long getPaymentPeriod() {
+		return paymentPeriod;
+	}
+
+	public void setPaymentPeriod(long paymentPeriod) {
+		this.paymentPeriod = paymentPeriod;
+	}
+
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
-	@OrderColumn(name="grp_idx")
+	@OrderColumn(name = "grp_idx")
 	public Set<GroupPackage> getGroupPackages() {
 		return groupPackages;
 	}

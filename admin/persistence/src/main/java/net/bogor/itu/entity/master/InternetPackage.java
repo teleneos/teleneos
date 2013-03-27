@@ -12,21 +12,21 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 public class InternetPackage extends DefaultPersistence {
 
 	private static final long serialVersionUID = 4319476619149651343L;
-	
+
 	public enum Type {
-		COUNTDOWN, FIXTIME
+		COUNTDOWN, FIXTIME, NON_COUNTDOWN
 	}
 
 	public enum Status {
 		ENABLE, DISABLE
 	}
-	
+
 	private String code;
 	private String name;
-	private Type type;
-	private long variable;
+	private Type type = Type.COUNTDOWN;
+	private long variable = 0;
 	private long price;
-	private Status status;
+	private Status status = Status.ENABLE;
 
 	public String getName() {
 		return name;
@@ -35,7 +35,7 @@ public class InternetPackage extends DefaultPersistence {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getCode() {
 		return code;
 	}
@@ -68,7 +68,7 @@ public class InternetPackage extends DefaultPersistence {
 	public void setPrice(long price) {
 		this.price = price;
 	}
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	public Status getStatus() {
 		return status;

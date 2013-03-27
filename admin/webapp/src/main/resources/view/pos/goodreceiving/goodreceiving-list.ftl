@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.goodreceiving.title" /></tile>
+		<title><@s.text name="page.goodreceiving.title" /></title>
 		<meta name="header" content="<@s.text name="page.goodreceiving.header" />">
 	</head>
 	<body>

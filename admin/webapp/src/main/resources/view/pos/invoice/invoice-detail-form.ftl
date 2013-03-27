@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.invoicedetail.title" /></tile>
+		<title><@s.text name="page.invoicedetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.invoicedetail.header" />">
 	</head>
 	<body>

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.packagemanager.title" /></tile>
+		<title><@s.text name="page.packagemanager.title" /></title>
 		<meta name="header" content="<@s.text name="page.packagemanager.header" />">
 	</head>
 	<body>

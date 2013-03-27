@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
 			b.setUsername(bu.getUsername());
 			b.setEmail(bu.getEmail());
 			b.setWebsite(bu.getWebsite());
+			b.setRole(bu.getRole());
 			if (!b.getPassword().equals(bu.getPassword())) {
 				b.setPassword(encoder.encodePassword(bu.getPassword(), null));
 			}
