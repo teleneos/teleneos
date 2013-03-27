@@ -39,8 +39,8 @@
 					<@s.hidden name="transactionHeader.id" />
 					<#if transactionHeader.id??>
 					<@s.textfield key="label.admin.theader.noinvoice" readonly="true" value="${noInvoice(transactionHeader.counter)}" cssClass="span4" />
-					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.user.name.first!} ${transactionHeader.user.name.last!}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.date" readonly="true" value="${transactionHeader.logInformation.createDate?string('dd-MM-yyyy')!} ${transactionHeader.logInformation.createDate?string('hh:mm')!}" cssClass="span4" />
+					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.user.user.username!}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.admin" readonly="true" value="${currentUser.username!}" cssClass="span4" />
 					<#else>
 					<div class="control-group ">
@@ -63,8 +63,7 @@
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
 					<div class="form-actions">
-						<@s.submit key="button.save" cssClass="btn btn-primary" />
-						<@s.reset key="button.reset" cssClass="btn" />
+						<@s.submit key="button.add" cssClass="btn btn-primary" />
 					</div>
 					</#if>
 				</@s.form>

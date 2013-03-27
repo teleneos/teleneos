@@ -37,7 +37,7 @@
 						<tr>
 							<td>${no}</td>
 							<td><a href="${detailUrl + s.id}">${s.user.name.first!} ${s.user.name.last!}</a></td>
-							<td>${s.logInformation.createDate!}</td>
+							<td><strong>${s.logInformation.createDate?string('dd-MM-yyyy')!}</strong> ${s.logInformation.createDate?string('hh:mm')!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
