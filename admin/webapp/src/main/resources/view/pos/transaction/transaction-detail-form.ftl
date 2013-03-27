@@ -69,7 +69,7 @@
 					</div>
 					</#if>
 					<#if !transactionHeader.cash??>
-					<@s.radio key="" name="change" list={'true' : 'Item', 'false' : 'Internet Package'} listKey="key" listValue="value" />
+					<@s.radio key="" name="change" list={'true' : 'Item', 'false' : 'Internet Package'} listKey="key" listValue="value" value="true" />
 					<div class="control-group " id="item">
 						<label class="control-label" for="add_transactionDetail_item_id"><@s.text name="page.item.title" /> <span class="required">*</span></label>
 						<div class="controls">
