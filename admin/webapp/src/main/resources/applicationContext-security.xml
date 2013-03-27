@@ -28,10 +28,11 @@
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
 		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR')" />
-	    <sc:intercept-url pattern="/master/**" access="hasRole('ADMINISTRATOR')" />
+		<sc:intercept-url pattern="/master/**" access="hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
 		<sc:intercept-url pattern="/user/signin" access="permitAll" />
 		<sc:intercept-url pattern="/user/signup" access="permitAll" />
+		<sc:intercept-url pattern="/user/**" access="hasRole('USER')" />
 		<sc:intercept-url pattern="/**" method="POST"
 			access="isFullyAuthenticated()" />
 

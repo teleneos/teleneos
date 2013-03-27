@@ -5,11 +5,19 @@
 			<@s.text name="page.home" />
 		</a>
 	</li>
+	<#if user != 'null'>
+	<li>
+		<a href='<@s.url value="/user/statistic" />'>
+			<i class="icon-home icon-white"></i>
+			<@s.text name="My Report" />
+		</a>
+	</li>
+	</#if>
 </ul>
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />
-<#if user != 'null'>
 
+<#if user != 'null'>
 <ul class="nav pull-right">
 	<li class="divider-vertical"></li>
 	<li class="dropdown">

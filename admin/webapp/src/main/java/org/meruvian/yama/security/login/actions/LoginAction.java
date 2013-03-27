@@ -22,6 +22,7 @@ import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.yama.actions.DefaultAction;
 import org.meruvian.yama.security.SessionCredentials;
+import org.meruvian.yama.security.user.BackendUser;
 import org.meruvian.yama.security.user.service.BackendUserService;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -39,10 +40,17 @@ public class LoginAction extends DefaultAction {
 
 	@Action(method = HttpMethod.GET)
 	public ActionResult loginform() throws Exception {
-		if (SessionCredentials.currentUser() == null) {
+		BackendUser user = SessionCredentials.currentUser();
+
+		if (user == null) {
 			return new ActionResult("freemarker", "/view/security/login.ftl");
 		} else {
-			return new ActionResult("freemarker", "/view/admin/backend-index.ftl");
+			if ("USER".equals(user.getRole())) {
+				return new ActionResult("redirect", "/user");
+			}
+
+			return new ActionResult("freemarker",
+					"/view/admin/backend-index.ftl");
 		}
 	}
 }
