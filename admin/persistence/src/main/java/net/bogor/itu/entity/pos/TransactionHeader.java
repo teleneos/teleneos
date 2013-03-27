@@ -1,8 +1,12 @@
 package net.bogor.itu.entity.pos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import net.bogor.itu.entity.admin.User;
@@ -20,6 +24,7 @@ public class TransactionHeader extends DefaultPersistence {
 	private long counter;
 	private User user;
 	private Long cash;
+	private List<TransactionDetail> details = new ArrayList<TransactionDetail>();
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -47,4 +52,12 @@ public class TransactionHeader extends DefaultPersistence {
 		this.cash = cash;
 	}
 
+	@OneToMany(mappedBy = "transactionHeader")
+	public List<TransactionDetail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<TransactionDetail> details) {
+		this.details = details;
+	}
 }

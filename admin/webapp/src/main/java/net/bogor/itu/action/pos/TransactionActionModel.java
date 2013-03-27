@@ -1,5 +1,6 @@
 package net.bogor.itu.action.pos;
 
+import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.ItemCategory;
 import net.bogor.itu.entity.pos.TransactionDetail;
@@ -22,6 +23,8 @@ public class TransactionActionModel extends DefaultActionModel {
 	private String id;
 	private Item item = new Item();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
+	private InternetPackage internetPackage = new InternetPackage();
+	private String change;
 
 	public TransactionHeader getTransactionHeader() {
 		return transactionHeader;
@@ -80,6 +83,22 @@ public class TransactionActionModel extends DefaultActionModel {
 	public void setAccts(EntityListWrapper<Radacct> accts) {
 		this.accts = accts;
 	}
-	
+
+	public InternetPackage getInternetPackage() {
+		return internetPackage;
+	}
+
+	public void setInternetPackage(InternetPackage internetPackage) {
+		this.internetPackage = internetPackage;
+	}
+
+	public String getChange() {
+		return change;
+	}
+
+	public void setChange(String change) {
+		this.change = change;
+	}
+
 
 }

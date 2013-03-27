@@ -1,18 +1,15 @@
 package net.bogor.itu.action.pos;
 
 import javax.inject.Inject;
-import javax.swing.JOptionPane;
 
-import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionHeader;
-import net.bogor.itu.radius.RadiusSerivce;
 import net.bogor.itu.service.admin.UserService;
+import net.bogor.itu.service.master.PackageManagerService;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailService;
 import net.bogor.itu.service.pos.TransactionHeaderService;
 import net.bogor.itu.service.radius.RadacctService;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -46,10 +43,13 @@ public class TransactionAction extends DefaultAction implements
 
 	@Inject
 	private ItemService itemService;
-	
+
 	@Inject
 	private RadacctService radacctService;
-	
+
+	@Inject
+	private PackageManagerService packageManagerService;
+
 	@Action
 	public ActionResult transactionList() {
 		model.setTransactionHeaders(tHeaderService.findByKeyword(model.getQ(),
@@ -87,23 +87,36 @@ public class TransactionAction extends DefaultAction implements
 
 		model.setTransactionHeader(tHeaderService.findById(model
 				.getTransactionHeader().getId()));
-		
-		model.setAccts(radacctService.findByUsername(model.getTransactionHeader().getUser().getUser().getUsername(),
+
+		model.setAccts(radacctService.findByUsername(model
+				.getTransactionHeader().getUser().getUser().getUsername(),
 				model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker",
 				"/view/pos/transaction/transaction-detail-form.ftl");
 	}
-	
+
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.POST)
 	public ActionResult addFormDetail() {
 		TransactionHeader tHeader = model.getTransactionHeader();
 		model.getTransactionDetail().setTransactionHeader(
 				tHeaderService.findById(tHeader.getId()));
-		
-		model.setItem(itemService.findById(model.getTransactionDetail().getItem().getId()));
-		model.getTransactionDetail().setPrice(model.getItem().getPrice());
-		
+
+		if (model.getChange().equalsIgnoreCase("true")) {
+			// model.setInternetPackage(null);
+			model.setItem(itemService.findById(model.getTransactionDetail()
+					.getItem().getId()));
+			model.getTransactionDetail().setInternetPackage(null);
+			model.getTransactionDetail().setPrice(model.getItem().getPrice());
+		} else {
+			// model.setItem(null);
+			model.setInternetPackage(packageManagerService.findById(model
+					.getTransactionDetail().getInternetPackage().getId()));
+			model.getTransactionDetail().setItem(null);
+			model.getTransactionDetail().setPrice(
+					model.getInternetPackage().getPrice());
+		}
+
 		tDetailService.save(model.getTransactionDetail());
 
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())

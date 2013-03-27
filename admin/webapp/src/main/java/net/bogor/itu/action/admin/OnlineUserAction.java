@@ -50,12 +50,12 @@ public class OnlineUserAction extends DefaultAction implements
 				"/view/admin/user/online-user-list.ftl");
 	}
 
-	@Action(name = "report/{q}")
+	@Action(name = "report/{uid}")
 	public ActionResult userReport() {
-		model.setAccts(radacctService.findByUsername(model.getQ(),
+		model.setAccts(radacctService.findByUsername(model.getUid(),
 				model.getMax(), model.getPage() - 1));
-		model.setUser(userService.findByUsername(model.getQ()));
-		model.setStatistic(radacctService.findStatistic(model.getQ()));
+		model.setUser(userService.findByUsername(model.getUid()));
+		model.setStatistic(radacctService.findStatistic(model.getUid()));
 
 		return new ActionResult("freemarker",
 				"/view/admin/user/user-usage-report-list.ftl");

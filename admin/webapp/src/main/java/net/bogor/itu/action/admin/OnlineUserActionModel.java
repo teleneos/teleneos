@@ -15,6 +15,15 @@ public class OnlineUserActionModel extends DefaultActionModel {
 	private User user = new User();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
 	private Object[] statistic;
+	private String uid;
+	
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 
 	public Radacct getAcct() {
 		return acct;

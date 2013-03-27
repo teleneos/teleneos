@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import net.bogor.itu.entity.master.InternetPackage;
+
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -19,6 +21,7 @@ public class TransactionDetail extends DefaultPersistence {
 	private int quantity;
 	private Long price;
 	private TransactionHeader transactionHeader;
+	private InternetPackage internetPackage;
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
@@ -54,6 +57,16 @@ public class TransactionDetail extends DefaultPersistence {
 
 	public void setTransactionHeader(TransactionHeader transactionHeader) {
 		this.transactionHeader = transactionHeader;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "internetpackage_id")
+	public InternetPackage getInternetPackage() {
+		return internetPackage;
+	}
+
+	public void setInternetPackage(InternetPackage internetPackage) {
+		this.internetPackage = internetPackage;
 	}
 
 }

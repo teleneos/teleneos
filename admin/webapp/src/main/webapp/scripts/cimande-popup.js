@@ -31,7 +31,7 @@ $('#popup-dialog').on('show', function() {
 					td2.append(btn);
 				}
 				
-				addRow('None', '');
+				/*addRow('None', '');*/
 				
 				for(d in data[obj[0]].entityList) {
 					d = data[obj[0]].entityList[d];

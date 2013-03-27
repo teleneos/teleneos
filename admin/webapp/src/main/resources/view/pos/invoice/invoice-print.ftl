@@ -55,13 +55,17 @@
 						s.quantity * s.price />
 						<tr>
 							<td>${no}</td>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;${s.item.name!}</td>
-							<td style="text-align: center;">${s.quantity!}</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<#if s.item??>${s.item.name!}</#if><#if s.internetPackage??>${s.internetPackage.code!}</#if></td>
+							<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
 							<td style="text-align: right;">${s.price!}</td>
-							<td style="text-align: right;">${price}</td>
+							<td style="text-align: right;"><#if s.item??>${price}<#else>${s.internetPackage.price!0}</#if></td>
 						</tr>
 						<#assign no = no + 1 /> <#assign totalPrice = totalPrice + price
-						/> <#assign totalQnty = totalQnty + s.quantity /> </#list>
+						/> 
+						<#if s.internetPackage??>
+							<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
+						</#if>
+						<#assign totalQnty = totalQnty + s.quantity /> </#list>
 						<#assign no = no - 1 />
 
 						<tr>

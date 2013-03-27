@@ -3,7 +3,7 @@
 		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
 		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
-		<script>
+		<script type="text/javascript">
 			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
 			function printDiv(divId) {
 				var mywindow = window.open('', 'my div', '');
@@ -11,9 +11,25 @@
 				mywindow.window.focus()
 			    mywindow.window.print()
 			    
-			}	
+			}
+			
+			$(function() {
+			$('#package').hide();
+			$('input[name="change"]').change(function() {
+				if ($(this).val() == 'true') {
+					$('#package').hide();
+					$('#item').fadeIn();
+					$('input[name="transactionDetail.quantity"]').parents('.control-group').fadeIn();
+				} else {
+					$('#item').hide();
+					$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
+					$('#package').fadeIn();
+				}
+			});
+			
+			$('input[name="change"]:checked').change();
+			});
 		</script>
-</script>
 	</head>
 	<body>
 	<#function noInvoice counter>
@@ -53,12 +69,21 @@
 					</div>
 					</#if>
 					<#if !transactionHeader.cash??>
-					<div class="control-group ">
+					<@s.radio key="" name="change" list={'true' : 'Item', 'false' : 'Internet Package'} listKey="key" listValue="value" />
+					<div class="control-group " id="item">
 						<label class="control-label" for="add_transactionDetail_item_id"><@s.text name="page.item.title" /> <span class="required">*</span></label>
 						<div class="controls">
 							<@s.hidden name="transactionDetail.item.id" id="item-id" />
 							<input type="text" id="item-name" readonly="true" class="span4">
 							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
+						</div>
+					</div>
+					<div class="control-group " id="package">
+						<label class="control-label" for="add_id">Package<span class="required">*</span></label>
+						<div class="controls">
+							<@s.hidden name="transactionDetail.internetPackage.id" id="package-id" />
+							<input type="text" id="package-name" readonly="true" class="span4">
+							<button class="btn openpopup" type="button" title="Package" object-name="internetPackages|code" field-target="package-id|package-name" href="/master/packages">Choose</button>
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
@@ -87,13 +112,16 @@
 						<#assign price = s.quantity * s.price /> 
 						<tr>
 							<td>${no}</td>
-							<td>${s.item.name!}</td>
-							<td style="text-align: center;">${s.quantity!}</td>
+							<td><#if s.item??>${s.item.name!}</#if><#if s.internetPackage??>${s.internetPackage.code!}</#if></td>
+							<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
 							<td style="text-align: right;">${s.price!}</td>
-							<td style="text-align: right;">${price}</td>
+							<td style="text-align: right;"><#if s.item??>${price}<#else>${s.internetPackage.price!0}</#if></td>
 						</tr>
 						<#assign no = no + 1 />
-						<#assign totalPrice = totalPrice + price />
+						<#assign totalPrice = totalPrice + price!0 />
+						<#if s.internetPackage??>
+							<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
+						</#if>
 						<#assign totalQnty = totalQnty + s.quantity />
 						</#list>
 						<#assign no = no - 1 />

@@ -45,7 +45,7 @@ public class PackageManagerImplService implements PackageManagerService {
 
 	@Override
 	public InternetPackage findById(String id) {
-		return findById(id);
+		return packageManagerRepository.findById(id);
 	}
 
 	@Override
