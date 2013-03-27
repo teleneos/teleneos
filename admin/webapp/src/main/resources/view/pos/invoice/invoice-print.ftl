@@ -19,7 +19,8 @@
 		</tr>
 		<tr>
 			<td>User</td>
-			<td colspan="2">: ${transactionHeader.user.user.username!}</td>
+			<td>: ${transactionHeader.user.user.username!}</td>
+			<td style="text-align: right;">${transactionHeader.logInformation.createDate?string('hh:mm')}</td>
 		</tr>
 		<tr>
 			<td>Admin</td>
@@ -37,7 +38,7 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>&nbsp;&nbsp;&nbsp;&nbsp;<@s.text
+							<th><@s.text
 								name="label.admin.tdetail.item" /></th>
 							<th style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;<@s.text
 								name="label.admin.tdetail.quantity" /></th>
@@ -54,7 +55,7 @@
 						s.quantity * s.price />
 						<tr>
 							<td>${no}</td>
-							<td>${s.item.name!}</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;${s.item.name!}</td>
 							<td style="text-align: center;">${s.quantity!}</td>
 							<td style="text-align: right;">${s.price!}</td>
 							<td style="text-align: right;">${price}</td>
@@ -65,7 +66,7 @@
 
 						<tr>
 							<td></td>
-							<td><strong><@s.text
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><@s.text
 									name="label.admin.tdetail.total" /></strong></td>
 							<td style="text-align: center;"><strong>${totalQnty}</strong>
 							</td>
@@ -76,13 +77,13 @@
 						transactionHeader.cash - totalPrice />
 						<tr>
 							<td></td>
-							<td colspan="2"><strong><@s.text
+							<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<strong><@s.text
 									name="label.admin.tdetail.cash" /></strong></td>
 							<td style="text-align: right;" colspan="2"><strong>${transactionHeader.cash!}</strong></td>
 						</tr>
 						<tr>
 							<td></td>
-							<td colspan="2"><strong><@s.text
+							<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<strong><@s.text
 									name="label.admin.tdetail.cashback" /></strong></td>
 							<td style="text-align: right;" colspan="2"><strong>${cashBack!}</strong></td>
 						</tr>
