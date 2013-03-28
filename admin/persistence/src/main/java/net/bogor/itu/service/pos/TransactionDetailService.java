@@ -1,7 +1,6 @@
 package net.bogor.itu.service.pos;
 
 import net.bogor.itu.entity.pos.TransactionDetail;
-import net.bogor.itu.entity.pos.TransactionHeader;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
 
@@ -17,5 +16,9 @@ public interface TransactionDetailService {
 	
 	EntityListWrapper<TransactionDetail> findByKeyword(String keyword, int limit,
 			int page);
+	
+	EntityListWrapper<Object[]> report(String from, String to);
+
+	EntityListWrapper<Object[]> internet(String periodfrom, String periodto);
 	
 }

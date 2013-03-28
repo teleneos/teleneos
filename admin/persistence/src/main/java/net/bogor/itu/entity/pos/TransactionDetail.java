@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import net.bogor.itu.entity.master.InternetPackage;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -48,7 +49,8 @@ public class TransactionDetail extends DefaultPersistence {
 	public void setPrice(Long price) {
 		this.price = price;
 	}
-
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "transcation_header_id")
 	public TransactionHeader getTransactionHeader() {

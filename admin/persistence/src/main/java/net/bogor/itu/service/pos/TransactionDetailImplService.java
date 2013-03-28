@@ -1,5 +1,7 @@
 package net.bogor.itu.service.pos;
 
+import java.text.ParseException;
+
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.pos.TransactionDetail;
@@ -16,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(readOnly = true)
-public class TransactionDetailImplService implements TransactionDetailService{
-	
+public class TransactionDetailImplService implements TransactionDetailService {
+
 	@Inject
 	private TransactionDetailRepository tDetailRepository;
 
@@ -34,7 +36,8 @@ public class TransactionDetailImplService implements TransactionDetailService{
 
 			tDetailRepository.persist(transactionDetail);
 		} else {
-			TransactionDetail td = tDetailRepository.load(transactionDetail.getId());
+			TransactionDetail td = tDetailRepository.load(transactionDetail
+					.getId());
 			td.setItem(transactionDetail.getItem());
 			td.setQuantity(transactionDetail.getQuantity());
 			td.setTransactionHeader(transactionDetail.getTransactionHeader());
@@ -50,6 +53,27 @@ public class TransactionDetailImplService implements TransactionDetailService{
 		if (StringUtils.isBlank(keyword))
 			return tDetailRepository.findAll(limit, page);
 		return tDetailRepository.findByKeyword(keyword, limit, page);
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> report(String from, String to) {
+		try {
+			return tDetailRepository.report(from, to);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> internet(String periodfrom,
+			String periodto) {
+		try {
+			return tDetailRepository.internet(periodfrom, periodto);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

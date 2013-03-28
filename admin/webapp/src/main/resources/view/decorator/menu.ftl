@@ -122,10 +122,17 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="/report" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			<@s.text name="menu.report" />
 			<b class="caret"></b>
 		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/report/store">
+					<@s.text name="menu.report.accounting" />
+				</a>
+			</li>
+		</ul>
 	</li>
 </ul>
 
