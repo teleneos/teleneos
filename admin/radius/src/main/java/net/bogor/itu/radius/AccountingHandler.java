@@ -7,9 +7,12 @@ import javax.inject.Inject;
 
 import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.InternetPackage.Type;
+import net.bogor.itu.entity.radius.ConnectionHistory;
 import net.bogor.itu.entity.radius.Radacct;
 import net.bogor.itu.service.admin.UserService;
+import net.bogor.itu.service.radius.ConnectionHistoryService;
 import net.bogor.itu.service.radius.RadacctService;
+import net.jradius.dictionary.Attr_AcctUniqueSessionId;
 import net.jradius.dictionary.Attr_CallingStationId;
 import net.jradius.dictionary.Attr_EventTimestamp;
 import net.jradius.dictionary.Attr_UserName;
@@ -38,6 +41,9 @@ public class AccountingHandler extends PacketHandlerBase {
 	@Inject
 	private RadiusSerivce radiusSerivce;
 
+	@Inject 
+	private ConnectionHistoryService historyService;
+	
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
 		RadiusPacket req = request.getRequestPacket();
@@ -46,10 +52,22 @@ public class AccountingHandler extends PacketHandlerBase {
 				.getValueObject().toString();
 		String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue()
 				.getValueObject().toString();
-
-		LOG.info("Attribute List: " + rp.getAttributeList());
-
 		User user = userService.findByUsername(username);
+		System.err.println("--start persisting history--");
+		if ("1".equalsIgnoreCase(req.getAttributeValue("Acct-Status-Type").toString())) {
+			ConnectionHistory connectionHistory = new ConnectionHistory();
+//			Radacct radacct = new Radacct();
+//			radacct.setRadacctid(1L);
+//			radacct.setAcctuniqueid(rp.get(Attr_AcctUniqueSessionId.TYPE)
+//				.getValue().getValueObject().toString());
+			connectionHistory.setRadacct(rp.get(Attr_AcctUniqueSessionId.TYPE)
+					.getValue().getValueObject().toString());
+			connectionHistory.setUser(user);
+			historyService.save(connectionHistory);
+			System.err.println("--done persisting history--");
+		}
+		
+		LOG.info("Attribute List: " + rp.getAttributeList());
 		Radacct radacct = null;
 		try {
 			radacct = radacctService.findFirstSession(username);
@@ -76,7 +94,7 @@ public class AccountingHandler extends PacketHandlerBase {
 				}
 			}
 		} catch (IndexOutOfBoundsException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error(e.getMessage());
 		}
 
 		request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);

@@ -32,6 +32,7 @@
 		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
 		<sc:intercept-url pattern="/user/signin" access="permitAll" />
 		<sc:intercept-url pattern="/user/signup" access="permitAll" />
+		<sc:intercept-url pattern="/user" access="hasRole('USER')" />
 		<sc:intercept-url pattern="/user/**" access="hasRole('USER')" />
 		<sc:intercept-url pattern="/**" method="POST"
 			access="isFullyAuthenticated()" />

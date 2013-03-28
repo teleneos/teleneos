@@ -48,7 +48,8 @@ public class AuthorizationHandler extends PacketHandlerBase {
 
 		Attr_UserPassword password = (Attr_UserPassword) rp
 				.get(Attr_UserPassword.TYPE);
-
+		System.err.println(rp);
+		System.err.println(new String(password.getValue().getBytes()));
 		try {
 			UserDetails user = userService.loadUserByUsername((String) username
 					.getValue().getValueObject());

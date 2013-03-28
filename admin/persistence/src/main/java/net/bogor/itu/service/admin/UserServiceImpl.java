@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
 			BackendUser backendUser = user.getUser();
 			backendUser.setId(null);
-
+			backendUser.setPassword(encoder.encodePassword(backendUser.getPassword(), null));
 			backendUserRepo.persist(backendUser);
 			userRepo.persist(user);
 		} else {

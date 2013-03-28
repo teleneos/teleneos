@@ -46,6 +46,8 @@
 							<td>
 							<#if s.type="FIXTIME">
 								${s.variable?number_to_date!}
+								<#elseif s.type="NON_COUNTDOWN">
+								-
 								<#else>
 								${s.variable!} minute
 							</#if>

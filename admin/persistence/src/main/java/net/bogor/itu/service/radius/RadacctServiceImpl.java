@@ -45,4 +45,15 @@ public class RadacctServiceImpl implements RadacctService {
 	public Object[] findStatistic(String username) {
 		return radacctRepo.findStatistic(username);
 	}
+
+	@Override
+	public Radacct findByUniq(String uniq) {
+		return radacctRepo.findByUniq(uniq);
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> findDetailByUsername(String username,
+			int limit, int page) {
+		return radacctRepo.findDetailByUsername(username, limit, page);
+	}
 }

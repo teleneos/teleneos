@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.master.InternetPackage.Type;
 import net.bogor.itu.service.master.PackageManagerService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
@@ -88,7 +89,7 @@ public class PackageManagerAction extends DefaultAction implements
 	// "message.master.package.type.notnull")
 	// })
 	public ActionResult addService() {
-		if (model.getType() == 1) {
+		if (model.getInternetPackage().getType().equals(Type.FIXTIME)) {
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				model.getInternetPackage().setVariable(

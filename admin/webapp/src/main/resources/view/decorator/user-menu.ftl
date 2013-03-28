@@ -5,14 +5,13 @@
 			<@s.text name="page.home" />
 		</a>
 	</li>
-	<#if user != 'null'>
-	<li>
-		<a href='<@s.url value="/user/statistic" />'>
-			<i class="icon-home icon-white"></i>
-			<@s.text name="My Report" />
-		</a>
-	</li>
-	</#if>
+<!-- 	<#if user != 'null'> -->
+<!-- 	<li> -->
+<!-- 		<a href='<@s.url value="/user/statistic" />'> -->
+<!-- 			<@s.text name="Subscription" /> -->
+<!-- 		</a> -->
+<!-- 	</li> -->
+<!-- 	</#if> -->
 </ul>
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />

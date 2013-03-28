@@ -18,13 +18,40 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RadacctRepository extends
 		PersistenceRepository<DefaultPersistence> {
+	public EntityListWrapper<Object[]> findDetailByUsername(String username,
+			int limit, int page) {
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
+		list.setLimit(limit);
+		list.setCurrentPage(page);
+		
+		String ql = "SELECT r, c, u FROM Radacct r, ConnectionHistory c, User u WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 AND c.radacct = r.acctuniqueid AND c.user.id = u.id ORDER BY r.acctstoptime DESC";
+		Query query = entityManager.createQuery(ql);
+		query.setParameter(1, username);
+
+		if (limit > 0) {
+			query.setMaxResults(limit);
+		}
+		query.setFirstResult(page);
+
+		list.setEntityList(query.getResultList());
+
+		ql = "SELECT COUNT(r) FROM Radacct r, ConnectionHistory c, User u WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 AND c.radacct = r.acctuniqueid AND c.user.id = u.id";
+		TypedQuery<Long> lquery = entityManager.createQuery(ql, Long.class);
+		lquery.setParameter(1, username);
+
+		list.setRowCount(lquery.getSingleResult());
+		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), limit));
+
+		return list;
+	}
+	
 	public EntityListWrapper<Radacct> findByUsername(String username,
 			int limit, int page) {
 		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r FROM Radacct r WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 ORDER BY r.acctstoptime DESC";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
 		query.setParameter(1, username);
@@ -36,7 +63,7 @@ public class RadacctRepository extends
 
 		list.setEntityList(query.getResultList());
 
-		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstoptime DESC";
+		ql = "SELECT COUNT(r) FROM Radacct r WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 ORDER BY r.acctstoptime DESC";
 		TypedQuery<Long> lquery = entityManager.createQuery(ql, Long.class);
 		lquery.setParameter(1, username);
 
@@ -84,6 +111,10 @@ public class RadacctRepository extends
 
 	public Radacct findById(Long id) {
 		return entityManager.find(Radacct.class, id);
+	}
+	
+	public Radacct findByUniq(String uniq) {
+		return (Radacct) entityManager.createQuery("SELECT r FROM Radacct r WHERE r.acctuniqueid=?1").setParameter(1, uniq).getSingleResult();
 	}
 
 	/**

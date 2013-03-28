@@ -16,6 +16,7 @@
 	
 	<decorator name="user" page="/view/decorator/user-decorator.ftl">
 		<pattern>/user/*</pattern>
+		<pattern>/user</pattern>
 	</decorator>
 
 	<decorator name="security" page="/view/decorator/security-decorator.ftl">

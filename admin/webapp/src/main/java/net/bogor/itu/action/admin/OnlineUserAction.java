@@ -56,7 +56,7 @@ public class OnlineUserAction extends DefaultAction implements
 				model.getMax(), model.getPage() - 1));
 		model.setUser(userService.findByUsername(model.getUid()));
 		model.setStatistic(radacctService.findStatistic(model.getUid()));
-
+		
 		return new ActionResult("freemarker",
 				"/view/admin/user/user-usage-report-list.ftl");
 	}

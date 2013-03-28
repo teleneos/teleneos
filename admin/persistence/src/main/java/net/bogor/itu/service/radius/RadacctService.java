@@ -20,4 +20,9 @@ public interface RadacctService {
 	Radacct findFirstSession(String username);
 
 	Object[] findStatistic(String username);
+	
+	Radacct findByUniq(String uniq);
+	
+	EntityListWrapper<Object[]> findDetailByUsername(String username,
+			int limit, int page);
 }

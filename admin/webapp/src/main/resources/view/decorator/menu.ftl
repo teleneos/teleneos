@@ -121,6 +121,12 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			<@s.text name="menu.report" />
+			<b class="caret"></b>
+		</a>
+	</li>
 </ul>
 
 <ul class="nav pull-right">

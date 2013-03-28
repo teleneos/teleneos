@@ -29,13 +29,12 @@
 			</#if>
 		</#function>
 		<div class="row-fluid">
-			<#include "/view/decorator/nav/admin-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
 					<table class="table-condensed table-bordered">
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
-							<td class="span3">${q!}</td>
+							<td class="span3">${user.user.username!}</td>
 							<td class="span2"><strong><@s.text name="label.user.name" /></strong></td>
 							<td class="span3">${user.name.first!} ${user.name.last!}</td>
 						</tr>
@@ -48,49 +47,49 @@
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalonline" /></strong></td>
 							<td class="span3">${timeFormat(statistic[2]!0)}</td>
-							<td class="span2"></td>
-							<td class="span3"></td>
+							<td class="span2"><strong><@s.text name="label.admin.onlineuser.package" /></strong></td>
+							<td class="span3">${user.internetPackage.name!}</td>
 						</tr>
 					</table>
 				</div>
 				<hr>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th class="span1">#</th>
-							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
-							<th><@s.text name="label.admin.onlineuser.accid" /></th>
-							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
-							<th><@s.text name="label.admin.onlineuser.stoptime" /></th>
-							<th><@s.text name="label.admin.onlineuser.download" /></th>
-							<th><@s.text name="label.admin.onlineuser.upload" /></th>
-							<th><@s.text name="label.admin.onlineuser.package" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<#list listacc.entityList as x>
-						<#assign a = x[0] />
-						<#assign b = x[2] />
-						<tr>
-							<td>${no}</td>
-							<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
-							<td>${a.radacctid!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
-							<td>
-								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('hh:mm:ss')}</strong>
-								<span class="label">${timeFormat(a.acctsessiontime)}</span>
-							</td>
-							<td>${byteString(a.acctinputoctets)}</td>
-							<td>${byteString(a.acctoutputoctets)}</td>
-							<td>${b.internetPackage.name}</td>
-							<td></td>
-						</tr>
-						<#assign no = no + 1 />
-						</#list>
-					</tbody>
-				</table>
-				<div id="pagination"></div>
+<!-- 				<table class="table table-striped table-condensed"> -->
+<!-- 					<thead> -->
+<!-- 						<tr> -->
+<!-- 							<th class="span1">#</th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.accid" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.starttime" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.stoptime" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.download" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.upload" /></th> -->
+<!-- 							<th><@s.text name="label.admin.onlineuser.package" /></th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<!-- 					<tbody> -->
+<!-- 						<#assign no = 1 + ((page - 1) * max) /> -->
+<!-- 						<#list listacc.entityList as x> -->
+<!-- 						<#assign a = x[0] /> -->
+<!-- 						<#assign b = x[2] /> -->
+<!-- 						<tr> -->
+<!-- 							<td>${no}</td> -->
+<!-- 							<td title="${a.callingstationid!}">${a.framedipaddress!}</td> -->
+<!-- 							<td>${a.radacctid!}</td> -->
+<!-- 							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td> -->
+<!-- 							<td> -->
+<!-- 								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('hh:mm:ss')}</strong> -->
+<!-- 								<span class="label">${timeFormat(a.acctsessiontime)}</span> -->
+<!-- 							</td> -->
+<!-- 							<td>${byteString(a.acctinputoctets)}</td> -->
+<!-- 							<td>${byteString(a.acctoutputoctets)}</td> -->
+<!-- 							<td>${b.internetPackage.name}</td> -->
+<!-- 							<td></td> -->
+<!-- 						</tr> -->
+<!-- 						<#assign no = no + 1 /> -->
+<!-- 						</#list> -->
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<!-- 				<div id="pagination"></div> -->
 			</div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
