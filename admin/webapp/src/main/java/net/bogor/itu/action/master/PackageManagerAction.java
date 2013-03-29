@@ -97,7 +97,7 @@ public class PackageManagerAction extends DefaultAction implements
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-		} else {
+		} else if (model.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
 			model.getInternetPackage().setVariable(
 					Long.parseLong(model.getVariable()));
 		}
