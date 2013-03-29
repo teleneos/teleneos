@@ -37,17 +37,6 @@
 			<version>1.2.17</version>
 		</dependency>
 		<dependency>
-			<groupId>net.jradius</groupId>
-			<artifactId>jradius-example</artifactId>
-			<version>${jradius.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>ipdr</groupId>
-					<artifactId>ipdrbase</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>

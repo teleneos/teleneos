@@ -16,10 +16,10 @@
 				<#include "/view/decorator/nav/report-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<form class="form-inline span10" method="post">
+				<form class="form-inline span10" method="get">
 					<div class=" pull-right">
-						<input id="periodfrom" type="text" name="periodfrom" value="" /> -
-						<input id="periodto" type="text" name="periodto" value="" />
+						<input id="periodfrom" type="text" name="periodfrom" value="${periodfrom!}" readonly /> -
+						<input id="periodto" type="text" name="periodto" value="${periodto!}" readonly />
 						<button class="btn" type="submit">
 							<i class="icon-search"></i>
 							<@s.text name="button.generate" />

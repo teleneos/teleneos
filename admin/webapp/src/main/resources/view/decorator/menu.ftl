@@ -1,7 +1,7 @@
 <ul class="nav">
 	<li>
 		<a href='<@s.url value="/" />'>
-			<i class="icon-home"></i>
+			<i class="icon-home icon-white"></i>
 			<@s.text name="page.home" />
 		</a>
 	</li>
@@ -140,7 +140,7 @@
 	<li class="divider-vertical"></li>
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			<i class="icon-user"></i>
+			<i class="icon-user icon-white"></i>
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">

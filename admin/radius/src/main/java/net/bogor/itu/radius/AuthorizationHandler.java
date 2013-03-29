@@ -16,6 +16,8 @@ import net.jradius.packet.attribute.AttributeList;
 import net.jradius.server.JRadiusRequest;
 import net.jradius.server.JRadiusServer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * 
  */
 public class AuthorizationHandler extends PacketHandlerBase {
+	private static final Log LOG = LogFactory
+			.getLog(AuthorizationHandler.class);
 
 	@Inject
 	@Named("authManager")
@@ -48,8 +52,7 @@ public class AuthorizationHandler extends PacketHandlerBase {
 
 		Attr_UserPassword password = (Attr_UserPassword) rp
 				.get(Attr_UserPassword.TYPE);
-		System.err.println(rp);
-		System.err.println(new String(password.getValue().getBytes()));
+
 		try {
 			UserDetails user = userService.loadUserByUsername((String) username
 					.getValue().getValueObject());
@@ -64,6 +67,8 @@ public class AuthorizationHandler extends PacketHandlerBase {
 					.setAuthentication(authentication);
 
 			ci.add(new Attr_AuthType("Accept"), true);
+
+			LOG.info("Authorization success for user: " + user.getUsername());
 		} catch (BadCredentialsException e) {
 			ci.add(new Attr_AuthType("Reject"), true);
 		} catch (NoResultException e) {

@@ -1,5 +1,10 @@
 package net.bogor.itu.action.admin;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
 
@@ -7,6 +12,7 @@ public class ReportActionModel extends DefaultActionModel {
 
 	private EntityListWrapper<Object[]> itemReports = new EntityListWrapper<Object[]>();
 	private String periodfrom, periodto;
+	private DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
 	public EntityListWrapper<Object[]> getItemReports() {
 		return itemReports;
@@ -17,7 +23,8 @@ public class ReportActionModel extends DefaultActionModel {
 	}
 
 	public String getPeriodfrom() {
-		return periodfrom;
+		return StringUtils.defaultIfBlank(periodfrom,
+				format.format(new Date(System.currentTimeMillis())));
 	}
 
 	public void setPeriodfrom(String periodfrom) {
@@ -25,7 +32,8 @@ public class ReportActionModel extends DefaultActionModel {
 	}
 
 	public String getPeriodto() {
-		return periodto;
+		return StringUtils.defaultIfBlank(periodto,
+				format.format(new Date(System.currentTimeMillis())));
 	}
 
 	public void setPeriodto(String periodto) {

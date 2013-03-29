@@ -35,7 +35,7 @@
 					<table class="table-condensed table-bordered">
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
-							<td class="span3">${q!}</td>
+							<td class="span3">${user.user.username}</td>
 							<td class="span2"><strong><@s.text name="label.user.name" /></strong></td>
 							<td class="span3">${user.name.first!} ${user.name.last!}</td>
 						</tr>

@@ -205,6 +205,11 @@
 			<artifactId>itu-radius</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>flot</artifactId>
+			<version>0.7</version>
+		</dependency>
 	</dependencies>
 
 	<description>The struts2 modules under the umbrella of Meruvian Yama project. Includes rest handler, annotation support for struts2, and many others.</description>
