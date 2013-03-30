@@ -24,14 +24,6 @@
 					</#if>
 					
 					<@s.hidden name="user.id" />
-					<#--
-					<@s.textfield key="label.editprofile.username" name="user.username" cssClass="span4" />
-					<@s.password id="newpass1" label="New Password" name="user.password" cssClass="span4 password" />
-					<@s.password id="newpass2" label="Confirm password" cssClass="span4 password" />
-					<@s.textfield key="label.editprofile.email" name="user.email" cssClass="span4" />
-					<@s.textfield key="label.editprofile.website" name="user.website" cssClass="span4" />
-					<@s.select key="label.editprofile.role" name="user.role" cssClass="span4" list=['ADMINISTRATOR'] />
-					-->
 					
 					<@s.actionmessage theme="bootstrap" />
 					<#if user.id??>
@@ -40,7 +32,7 @@
 					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" />
 					</#if>
 					<@s.password key="label.login.password" id="pass1" cssClass="span4" />
-					<@s.password id="pass2" name="user.user.password" cssClass="span4" />
+					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" />
 					
 					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" />
 					<@s.textfield key="label.user.name.last" name="user.name.last" cssClass="span4" />
