@@ -23,7 +23,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#assign totalQnty = 0 />
 						<#list invoiceDetails.entityList as s>
 						<#assign subTotal = s.quantity * s.price /> 

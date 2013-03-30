@@ -37,7 +37,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#list requisitionDetails.entityList as s>
 						<tr>
 							<td>${no}</td>

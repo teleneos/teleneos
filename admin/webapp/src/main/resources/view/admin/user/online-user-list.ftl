@@ -44,7 +44,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#list accts.entityList as a>
 						<tr>
 							<td>${no}</td>

@@ -39,7 +39,7 @@
 					<tbody>
 						<#assign serviceTypes = [action.getText('label.admin.service.servicetype.prepaid'), action.getText('label.admin.service.servicetype.postpaid')] />
 						<#assign priceCalcs = [action.getText('label.admin.service.pricecalc.download'), action.getText('label.admin.service.pricecalc.upload'), action.getText('label.admin.service.pricecalc.time')]>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<@s.url value="/admin/service/edit/" var="editUrl" />
 						<#list services.entityList as s>
 						<tr>

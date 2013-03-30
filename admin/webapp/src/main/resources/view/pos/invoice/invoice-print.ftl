@@ -49,7 +49,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 /> <#assign totalPrice = 0 /> <#assign totalQnty =
+						<#assign no = 1 + ((page - 1) * max) /> <#assign totalPrice = 0 /> <#assign totalQnty =
 						0 /> <@s.url value="/pos/transaction/edit/" var="editUrl" />
 						<#list transactionDetails.entityList as s> <#assign price =
 						s.quantity * s.price />

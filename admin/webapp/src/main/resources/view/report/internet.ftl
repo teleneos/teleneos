@@ -45,7 +45,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<#assign no = 1 />
+							<#assign no = 1 + ((page - 1) * max) />
 							<#assign qty = 0 />
 							<#assign total = 0 />
 							<#list itemReports.entityList as x>

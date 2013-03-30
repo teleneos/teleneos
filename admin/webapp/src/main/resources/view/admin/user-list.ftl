@@ -32,7 +32,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#list users.entityList as u>
 						<tr>
 							<td>${no}</td>

@@ -6,7 +6,7 @@
 		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-datepicker.js" />"></script>
 		<script type="text/javascript">
 		$(function(){
-			$('#variabledate').datepicker();
+			$('#variabledate').datepicker().keypress(false);
 			$("#variabledate").addClass("hide");
 			$("#variablemin").attr('name', 'variable');
 			$('#add_internetPackage_type').change(function() {
@@ -21,11 +21,11 @@
 					$("#variables").fadeIn();
 					$("#variabledate").removeClass("hide");
 					$("#variablemin").addClass("hide");
-					$(".min").fadeOut();
+					$(".min").hide();
 					$("#variablemin").attr('name', '');
 					$("#variabledate").attr('name', 'variable');
 				} else {
-					$("#variables").fadeOut();
+					$("#variables").hide();
 				}
 			}).change();
 		});
@@ -49,6 +49,7 @@
 					</div>
 	 				<#--<@s.textfield key="label.master.packagemanager.variable" required="true" name="internetPackage.variable" cssClass="span4" id="variable" /> -->
 					<@s.textfield key="label.master.packagemanager.price" required="true" name="internetPackage.price" cssClass="span4" />
+					<#--
 					<div class="control-group ">
 						<label class="control-label" for="add_master_packagemanager_status">Package Status <span class="required">*</span></label>
 						<div class="controls">
@@ -58,6 +59,8 @@
 							</select>
 						</div>
 					</div>
+					-->
+					<@s.select key="label.master.packagemanager.status" name="internetPackage.status" list={'ENABLE' : 'Enable', 'DISABLE' : 'DISABLE'} listKey="key" listValue="value" />
 					<div class="form-actions">
 						<#if internetPackage.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

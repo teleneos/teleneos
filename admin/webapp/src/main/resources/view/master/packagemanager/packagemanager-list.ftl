@@ -30,12 +30,12 @@
 							<th><@s.text name="label.master.packagemanager.name" /></th>
 							<th>Package Type</th>
 							<th><@s.text name="label.master.packagemanager.variable" /></th>
-<!-- 							<th><@s.text name="label.master.packagemanager.price" /></th> -->
+							<#-- <th><@s.text name="label.master.packagemanager.price" /></th> -->
 							<th>Package Status</th>
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<@s.url value="master/packages/edit/" var="editUrl" />
 						<#list internetPackages.entityList as s>
 						<tr>

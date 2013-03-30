@@ -101,6 +101,7 @@ public class PackageManagerAction extends DefaultAction implements
 			model.getInternetPackage().setVariable(
 					Long.parseLong(model.getVariable()));
 		}
+
 		service.save(model.getInternetPackage());
 		return redirectToIndex;
 	}

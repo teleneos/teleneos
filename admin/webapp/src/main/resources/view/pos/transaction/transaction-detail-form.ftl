@@ -104,7 +104,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#assign totalPrice = 0 />
 						<#assign totalQnty = 0 />
 						<@s.url value="/pos/transaction/edit/" var="editUrl" />

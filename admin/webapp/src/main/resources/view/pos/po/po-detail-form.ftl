@@ -43,7 +43,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						 <#list requisitionDetails.entityList as s>
 						<tr>
 							<td>${no}</td>
@@ -73,7 +73,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<#assign totalPrice = 0 />
 						<#assign totalQnty = 0 />
 						<#list purchaseOrderDetails.entityList as s>

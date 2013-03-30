@@ -37,7 +37,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 />
+						<#assign no = 1 + ((page - 1) * max) />
 						<@s.url value="/pos/item/edit/" var="editUrl" />
 						<#list items.entityList as s>
 						<tr>
