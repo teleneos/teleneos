@@ -113,7 +113,7 @@ public class PersistenceRepository<T extends DefaultPersistence> extends
 			query.setMaxResults(limit);
 		}
 
-		query.setFirstResult(page);
+		query.setFirstResult(page * limit);
 
 		EntityListWrapper<X> paging = new EntityListWrapper<X>();
 		paging.setCurrentPage(page);

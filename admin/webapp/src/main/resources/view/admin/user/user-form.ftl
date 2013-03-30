@@ -11,7 +11,7 @@
 					<#assign pass = user.password! />
 				</#if>
 			
-				<@s.form id="change-password" theme="bootstrap" cssClass="form-horizontal">
+				<@s.form id="user" theme="bootstrap" cssClass="form-horizontal">
 					<@s.text name="tooltip.changepassword.newpass" var="ttnewpass" />
 					<@s.text name="tooltip.changepassword.confirm" var="ttconfirm" />
 				
@@ -53,25 +53,8 @@
 					-->
 					<@s.select key="label.editprofile.role" list=['ADMINISTRATOR', 'USER'] name="user.user.role"  />
 					<#assign groups=groups.entityList>
-					<div class="control-group ">
-						<label class="control-label" for="add_master_group_type">Group Name <span class="required">*</span></label>
-							<div class="controls">
-								<select name="user.group.id" id="groupselect">
-								<option value="">-- Select Group --</option>
-								<#list groups as a>
-									<option value="${a.id}">${a.name}</option>
-								</#list>
-								</select>
-							</div>
-					</div>
-					<div class="control-group ">
-						<label class="control-label" for="add_master_group_type">Package Name <span class="required">*</span></label>
-							<div class="controls">
-								<select name="user.internetPackage.id" id="packageselect">
-									<option value="">-- Select Package --</option>
-								</select>
-							</div>
-					</div>
+					<@s.select key="label.master.group.name" name="user.group.id" required="true" list="groups.entityList" listKey="id" listValue="name" />
+					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id" required="true" />
 					<@s.select key="label.editprofile.status" list=['ACTIVE', 'INACTIVE'] name="user.user.logInformation.statusFlag"  />					
 					<div class="form-actions">
 						<#if user.id??>
@@ -99,22 +82,32 @@
 			$('#pass1, #pass2').val('${user.user.password!}');
 			</#if>
 			
-			$('#groupselect').change(function(){
+			$('#user_user_group_id').change(function(){
+				var val = $(this).val();
+			
 				$.ajax({
-			        url: "package/"+this.value+".json",
+			        url: "<@s.url value="/admin/user/package/" />" + val +".json",
 			        type: 'GET',
 			        dataType: 'json', // added data type
 			        success: function(res) {
 			        	console.log(res);
-			        	$('#packageselect').empty();
-			        	$('#packageselect').append($('<option></option>').val("").html("-- Select Package --"));
+			        	$('#user_user_internetPackage_id').empty();
+			        	$('#user_user_internetPackage_id').append($('<option></option>').val("").html("-- Select Package --"));
 			        	for (var i = 0; i < res.groupPackages.length; i++) {
-			        		$('#packageselect').append($('<option></option>').val(res.groupPackages[i].internetPackage.id).html(res.groupPackages[i].internetPackage.name));
+			        		var opt = $('<option></option>');
+			        		opt.val(res.groupPackages[i].internetPackage.id);
+			        		opt.html(res.groupPackages[i].internetPackage.name);
+			        		<#if user.internetPackage??>
+			        		if (opt.val() == '${user.internetPackage.id}') {
+			        			opt.attr('selected', 'selected');
+			        		}
+			        		</#if>
+			        		$('#user_user_internetPackage_id').append(opt);
 			        	}
 			        }
 			    });
 				
-			});
+			}).change();
 			
 			$('.password').val('${pass!}');
 		});

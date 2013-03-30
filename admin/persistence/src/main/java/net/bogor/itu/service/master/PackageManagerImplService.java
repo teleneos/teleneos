@@ -21,10 +21,8 @@ public class PackageManagerImplService implements PackageManagerService {
 	@Override
 	public EntityListWrapper<InternetPackage> findByName(String keyword,
 			String order, String orderBy, int limit, int page) {
-		if (StringUtils.isBlank(keyword))
-			return packageManagerRepository.findAll(limit, page);
-		return packageManagerRepository.findByKeyword(keyword, order, orderBy,
-				limit, page, "OR");
+
+		return packageManagerRepository.findByKeyword(keyword, limit, page);
 	}
 
 	@Override
