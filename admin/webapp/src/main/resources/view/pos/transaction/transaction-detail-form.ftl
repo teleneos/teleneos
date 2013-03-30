@@ -141,7 +141,7 @@
 						</tr>
 						<tr>
 							<td></td>
-							<td colspan="2"><strong><@s.text name="label.admin.tdetail.cashback" /></strong></td>
+							<td colspan="2"><strong><@s.text name="label.admin.tdetail.change" /></strong></td>
 							<td style="text-align: right;" colspan="2"><strong>${cashBack!}</strong></td>
 						</tr>
 						</#if>
