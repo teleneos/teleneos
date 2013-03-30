@@ -6,13 +6,12 @@ package net.bogor.itu.action.admin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.meruvian.yama.actions.DefaultActionModel;
-import org.meruvian.yama.persistence.EntityListWrapper;
-
 import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.GroupA;
 import net.bogor.itu.entity.master.GroupPackage;
-import net.bogor.itu.entity.master.InternetPackage;
+
+import org.meruvian.yama.actions.DefaultActionModel;
+import org.meruvian.yama.persistence.EntityListWrapper;
 
 /**
  * @author Dian Aditya
@@ -24,7 +23,8 @@ public class UserActionModel extends DefaultActionModel {
 	private EntityListWrapper<GroupA> groups = new EntityListWrapper<GroupA>();
 	private GroupA group = new GroupA();
 	private List<GroupPackage> groupPackages = new ArrayList<GroupPackage>();
-	
+	private EntityListWrapper<Object[]> details = new EntityListWrapper<Object[]>();
+
 	public User getUser() {
 		return user;
 	}
@@ -63,6 +63,14 @@ public class UserActionModel extends DefaultActionModel {
 
 	public void setGroupPackages(List<GroupPackage> groupPackages) {
 		this.groupPackages = groupPackages;
+	}
+
+	public EntityListWrapper<Object[]> getDetails() {
+		return details;
+	}
+
+	public void setDetails(EntityListWrapper<Object[]> details) {
+		this.details = details;
 	}
 
 }

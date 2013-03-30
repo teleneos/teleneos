@@ -52,11 +52,11 @@ public class OnlineUserAction extends DefaultAction implements
 
 	@Action(name = "report/{uid}")
 	public ActionResult userReport() {
-		model.setAccts(radacctService.findByUsername(model.getUid(),
+		model.setListacc(radacctService.findDetailByUsername(model.getUid(),
 				model.getMax(), model.getPage() - 1));
 		model.setUser(userService.findByUsername(model.getUid()));
 		model.setStatistic(radacctService.findStatistic(model.getUid()));
-		
+
 		return new ActionResult("freemarker",
 				"/view/admin/user/user-usage-report-list.ftl");
 	}

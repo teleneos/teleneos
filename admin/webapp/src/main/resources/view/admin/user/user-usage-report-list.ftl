@@ -97,9 +97,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${accts.rowCount?string('#')},
+				items: ${listacc.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(accts.currentPage + 1)?string('#')},
+				currentPage: ${(listacc.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?page='
 			});
 		});

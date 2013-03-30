@@ -23,7 +23,7 @@ public class RadacctRepository extends
 		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
 		list.setLimit(limit);
 		list.setCurrentPage(page);
-		
+
 		String ql = "SELECT r, c, u FROM Radacct r, ConnectionHistory c, User u WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 AND c.radacct = r.acctuniqueid AND c.user.id = u.id ORDER BY r.acctstoptime DESC";
 		Query query = entityManager.createQuery(ql);
 		query.setParameter(1, username);
@@ -31,7 +31,7 @@ public class RadacctRepository extends
 		if (limit > 0) {
 			query.setMaxResults(limit);
 		}
-		query.setFirstResult(page);
+		query.setFirstResult(page * limit);
 
 		list.setEntityList(query.getResultList());
 
@@ -44,7 +44,7 @@ public class RadacctRepository extends
 
 		return list;
 	}
-	
+
 	public EntityListWrapper<Radacct> findByUsername(String username,
 			int limit, int page) {
 		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();
@@ -59,7 +59,7 @@ public class RadacctRepository extends
 		if (limit > 0) {
 			query.setMaxResults(limit);
 		}
-		query.setFirstResult(page);
+		query.setFirstResult(page * limit);
 
 		list.setEntityList(query.getResultList());
 
@@ -112,9 +112,11 @@ public class RadacctRepository extends
 	public Radacct findById(Long id) {
 		return entityManager.find(Radacct.class, id);
 	}
-	
+
 	public Radacct findByUniq(String uniq) {
-		return (Radacct) entityManager.createQuery("SELECT r FROM Radacct r WHERE r.acctuniqueid=?1").setParameter(1, uniq).getSingleResult();
+		return (Radacct) entityManager
+				.createQuery("SELECT r FROM Radacct r WHERE r.acctuniqueid=?1")
+				.setParameter(1, uniq).getSingleResult();
 	}
 
 	/**

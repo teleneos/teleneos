@@ -15,9 +15,16 @@
  */
 package org.meruvian.yama.security.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import net.bogor.itu.entity.radius.Radacct;
 
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
@@ -43,8 +50,8 @@ public class BackendUser extends DefaultPersistence {
 	private String email;
 	private String website;
 	private String role;
-	
-	
+	private List<Radacct> accts = new ArrayList<Radacct>();
+
 	@Field
 	@Column(unique = true)
 	@Analyzer(definition = "customanalyzer")
@@ -92,5 +99,15 @@ public class BackendUser extends DefaultPersistence {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
+	@OneToMany
+	@JoinColumn(name = "username", referencedColumnName = "username")
+	public List<Radacct> getAccts() {
+		return accts;
+	}
+
+	public void setAccts(List<Radacct> accts) {
+		this.accts = accts;
+	}
+
 }

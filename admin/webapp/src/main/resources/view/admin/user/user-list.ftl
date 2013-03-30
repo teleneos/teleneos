@@ -15,6 +15,19 @@
 				<#return byte?string('0.#') + 'B' />
 			</#if>
 		</#function>
+		<#function timeFormat time>
+			<#if time &gt; (60 * 60 * 24 * 7)>
+				<#return (time / (60 * 60 * 24 * 7))?string('#') + ' Weeks' />
+			<#elseif time &gt; (60 * 60 * 24)>
+				<#return (time / (60 * 60 * 24))?string('#') + ' Days' />
+			<#elseif time &gt; (60 * 60)>
+				<#return (time / (60 * 60))?string('#') + ' Hours' />
+			<#elseif time &gt; 60>
+				<#return (time / 60)?string('#') + ' Min' />
+			<#else>
+				<#return time?string('#') + ' Sec' />
+			</#if>
+		</#function>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/admin-sidenav.ftl" />
 			<div class="span10">
@@ -41,19 +54,22 @@
 							<th><@s.text name="label.user.name" /></th>
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
+							<th><@s.text name="label.admin.onlineuser.totalonline" /></th>
 							<th><@s.text name="label.admin.group.name" /></th>
 							<th><@s.text name="label.master.packagemanager.name" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list users.entityList as u>
+						<#list details.entityList as d>
+						<#assign u = d[0] />
 						<tr <#if u.user.logInformation.statusFlag == 'INACTIVE'>class="muted"</#if>>
 							<td>${no}</td>
 							<td><a href="<@s.url value="/admin/user/edit/${u.user.username}" />">${u.user.username!}</a></td>
 							<td>${u.name.first!} ${u.name.last!}</td>
-							<td>${byteString(0)}</td>
-							<td>${byteString(0)}</td>
+							<td>${byteString(d[1]!0)}</td>
+							<td>${byteString(d[2]!0)}</td>
+							<td>${timeFormat(d[3]!0)}</td>
 							<td><#if u.group??>${u.group.name!}<#else></#if></td>
 							<td><#if u.internetPackage??>${u.internetPackage.name!}<#else></#if></td>
 							<td>
@@ -80,9 +96,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${users.rowCount?string('#')},
+				items: ${details.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(users.currentPage + 1)?string('#')},
+				currentPage: ${(details.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

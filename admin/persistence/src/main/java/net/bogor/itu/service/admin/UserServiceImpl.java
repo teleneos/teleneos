@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
 
 			BackendUser backendUser = user.getUser();
 			backendUser.setId(null);
-			backendUser.setPassword(encoder.encodePassword(backendUser.getPassword(), null));
+			backendUser.setPassword(encoder.encodePassword(
+					backendUser.getPassword(), null));
 			backendUserRepo.persist(backendUser);
 			userRepo.persist(user);
 		} else {
@@ -87,5 +88,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User remove(User user) {
 		return null;
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> findDetailByUsername(String username,
+			int limit, int page) {
+		return userRepo.findDetailByUsername(username, limit, page);
 	}
 }

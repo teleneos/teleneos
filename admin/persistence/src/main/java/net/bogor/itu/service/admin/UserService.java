@@ -20,5 +20,8 @@ public interface UserService {
 
 	EntityListWrapper<User> findByUsername(String username, int limit, int page);
 
+	EntityListWrapper<Object[]> findDetailByUsername(String username,
+			int limit, int page);
+
 	User remove(User user);
 }
