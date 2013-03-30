@@ -36,6 +36,9 @@ public class PackageManagerImplService implements PackageManagerService {
 			InternetPackage ic = packageManagerRepository.load(internetPackage
 					.getId());
 			ic.setName(internetPackage.getName());
+			ic.setPrice(internetPackage.getPrice());
+			ic.setStatus(internetPackage.getStatus());
+
 			internetPackage = ic;
 		}
 		return internetPackage;

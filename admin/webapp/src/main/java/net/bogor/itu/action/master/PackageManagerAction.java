@@ -55,7 +55,7 @@ public class PackageManagerAction extends DefaultAction implements
 			return redirectToIndex;
 
 		return new ActionResult("freemarker",
-				"/view/master/packagemanager/packagemanager-list.ftl");
+				"/view/master/packagemanager/packagemanager-form.ftl");
 	}
 
 	@Action(name = "/edit/{internetPackage.id}", method = HttpMethod.POST)
@@ -98,8 +98,12 @@ public class PackageManagerAction extends DefaultAction implements
 				e.printStackTrace();
 			}
 		} else if (model.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
-			model.getInternetPackage().setVariable(
-					Long.parseLong(model.getVariable()));
+			try {
+				model.getInternetPackage().setVariable(
+						Long.parseLong(model.getVariable()));
+			} catch (NumberFormatException e) {
+				model.getInternetPackage().setVariable(0);
+			}
 		}
 
 		service.save(model.getInternetPackage());

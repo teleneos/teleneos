@@ -30,30 +30,30 @@
 							<th><@s.text name="label.master.packagemanager.name" /></th>
 							<th>Package Type</th>
 							<th><@s.text name="label.master.packagemanager.variable" /></th>
-							<#-- <th><@s.text name="label.master.packagemanager.price" /></th> -->
+							<th><@s.text name="label.master.packagemanager.price" /></th>
 							<th>Package Status</th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
-						<@s.url value="master/packages/edit/" var="editUrl" />
+						<@s.url value="/master/packages/edit/" var="editUrl" />
 						<#list internetPackages.entityList as s>
-						<tr>
+						<tr <#if s.status.ordinal() == 1>class="muted"</#if>>
 							<td>${no}</td>
-							<td>${s.code!}</td>
+							<td><a href="${editUrl + s.id!}">${s.code!}</a></td>
 							<td>${s.name!}</td>
 							<td>${s.type!}</td>
 							<td>
 							<#if s.type="FIXTIME">
 								${s.variable?number_to_date!}
-								<#elseif s.type="NON_COUNTDOWN">
+							<#elseif s.type="NON_COUNTDOWN">
 								-
-								<#else>
+							<#else>
 								${s.variable!} minute
 							</#if>
 							
 							</td>
-<!-- 							<td>${s.price!}</td> -->
+							<td>${s.price!}</td>
 							<td>${s.status!}</td>
 						</tr>
 						<#assign no = no + 1 />
