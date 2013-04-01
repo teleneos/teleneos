@@ -47,13 +47,18 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/list")
 	public ActionResult userList() {
-		// model.setUsers(userService.findByUsername(model.getQ(),
-		// model.getMax(),
-		// model.getPage() - 1));
 		model.setDetails(userService.findDetailByUsername(model.getQ(),
 				model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-list.ftl");
+	}
+
+	@Action(name = "/list/nodetail")
+	public ActionResult users() {
+		model.setUsers(userService.findByUsername(model.getQ(), model.getMax(),
+				model.getPage() - 1));
+
+		return new ActionResult("/blank.html");
 	}
 
 	@Action(name = "/package/{q}", method = HttpMethod.GET)

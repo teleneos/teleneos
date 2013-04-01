@@ -2,8 +2,9 @@ package net.bogor.itu.action.pos;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.pos.TransactionHeader;
-import net.bogor.itu.service.admin.UserService;
+import net.bogor.itu.service.admin.GroupService;
 import net.bogor.itu.service.master.PackageManagerService;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailService;
@@ -18,6 +19,8 @@ import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * @author Edy Setiawan
@@ -29,8 +32,6 @@ public class TransactionAction extends DefaultAction implements
 		ModelDriven<TransactionActionModel> {
 
 	private TransactionActionModel model = new TransactionActionModel();
-	private ActionResult redirectToIndex = new ActionResult("redirect",
-			"/pos/transaction");
 
 	@Inject
 	private TransactionHeaderService tHeaderService;
@@ -39,13 +40,13 @@ public class TransactionAction extends DefaultAction implements
 	private TransactionDetailService tDetailService;
 
 	@Inject
-	private UserService userService;
-
-	@Inject
 	private ItemService itemService;
 
 	@Inject
 	private RadacctService radacctService;
+
+	@Inject
+	private GroupService groupService;
 
 	@Inject
 	private PackageManagerService packageManagerService;
@@ -66,14 +67,16 @@ public class TransactionAction extends DefaultAction implements
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
+	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "id", trim = true) })
+	@Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/transaction/transaction-form.ftl") })
 	public ActionResult addTransactionHeader() {
-
-		model.getTransactionHeader().setUser(
-				userService.findById(model.getId()));
-
-		tHeaderService.save(model.getTransactionHeader());
+		User user = new User();
+		user.setId(model.getId());
 
 		TransactionHeader tHeader = model.getTransactionHeader();
+		tHeader.setUser(user);
+
+		tHeaderService.save(tHeader);
 
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
@@ -81,7 +84,6 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.GET)
 	public ActionResult formDetail() {
-
 		model.setTransactionDetails(tDetailService.findByKeyword(model
 				.getTransactionHeader().getId(), 0, model.getPage() - 1));
 
