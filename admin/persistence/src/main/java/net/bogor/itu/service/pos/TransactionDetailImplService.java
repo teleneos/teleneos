@@ -76,4 +76,10 @@ public class TransactionDetailImplService implements TransactionDetailService {
 		return null;
 	}
 
+	@Override
+	@Transactional
+	public void remove(TransactionDetail detail) {
+		tDetailRepository.delete(tDetailRepository.load(detail.getId()));
+	}
+
 }

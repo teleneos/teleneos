@@ -101,6 +101,9 @@
 							<th style="text-align:center;"><@s.text name="label.admin.tdetail.quantity" /></th>
 							<th style="text-align: right;"><@s.text name="label.admin.tdetail.price" /></th>
 							<th style="text-align: right;"><@s.text name="label.admin.tdetail.subtotal" /></th>
+							<#if !transactionHeader.cash??>
+							<th style="text-align: right;"><@s.text name="label.admin.tdetail.action" /></th>
+							</#if>
 						</tr>
 					</thead>
 					<tbody>
@@ -116,6 +119,9 @@
 							<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
 							<td style="text-align: right;">${s.price!}</td>
 							<td style="text-align: right;"><#if s.item??>${price}<#else>${s.internetPackage.price!0}</#if></td>
+							<#if !transactionHeader.cash??>
+							<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
+							</#if>
 						</tr>
 						<#assign no = no + 1 />
 						<#assign totalPrice = totalPrice + price!0 />
@@ -137,7 +143,11 @@
 						<tr>
 							<td></td>
 							<td colspan="2"><strong><@s.text name="label.admin.tdetail.cash" /></strong></td>
+							<#if !transactionHeader.cash??>
+							<td style="text-align: right;" colspan="3"><strong>${transactionHeader.cash!}</strong></td>
+							<#else>
 							<td style="text-align: right;" colspan="2"><strong>${transactionHeader.cash!}</strong></td>
+							</#if>
 						</tr>
 						<tr>
 							<td></td>

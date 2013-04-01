@@ -21,4 +21,5 @@ public interface TransactionDetailService {
 
 	EntityListWrapper<Object[]> internet(String periodfrom, String periodto);
 	
+	void remove(TransactionDetail detail);
 }

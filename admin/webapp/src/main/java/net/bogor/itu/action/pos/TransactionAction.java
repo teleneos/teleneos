@@ -124,7 +124,14 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-
+	
+	@Action(name = "/remove/{transactionHeader.id}", method = HttpMethod.GET)
+	public ActionResult removeTransaction() {
+		tDetailService.remove(model.getTransactionDetail());
+		return new ActionResult("/pos/transaction/detail/" + model.getTransactionHeader().getId())
+				.setType("redirect");
+	}
+	
 	@Action(name = "/cash", method = HttpMethod.POST)
 	public ActionResult addCashTransaction() {
 		TransactionHeader tHeader = model.getTransactionHeader();

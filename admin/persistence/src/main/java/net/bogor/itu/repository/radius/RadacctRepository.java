@@ -74,7 +74,7 @@ public class RadacctRepository extends
 	}
 
 	public Radacct findFirstSession(String username) {
-		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 ORDER BY r.acctstarttime ASC LIMIT 0, 1";
+		String ql = "SELECT r FROM Radacct r WHERE r.username = ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstarttime ASC LIMIT 0, 1";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
 		query.setParameter(1, username);
