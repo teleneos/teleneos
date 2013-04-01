@@ -27,26 +27,27 @@
 					
 					<@s.actionmessage theme="bootstrap" />
 					<#if user.id??>
-					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" readonly="true" /> 
+					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" readonly="true" required="true"/> 
 					<#else>
-					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" />
+					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" required="true"/>
 					</#if>
-					<@s.password key="label.login.password" id="pass1" cssClass="span4" />
-					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" />
+					<@s.password key="label.login.password" id="pass1" cssClass="span4"/>
+					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" required="true"/>
 					
-					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" />
+					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.name.last" name="user.name.last" cssClass="span4" />
 					
-					<@s.textfield key="label.user.email" name="user.user.email" cssClass="span4" />
+					<@s.textfield key="label.user.email" name="user.user.email" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.phone" name="user.phone" cssClass="span4" />
 					
 					<#--
 					<@s.textfield key="label.user.address.country" name="user.address.countryId" cssClass="span4" />
 					-->
+					
 					<@s.select key="label.editprofile.role" list=['ADMINISTRATOR', 'USER'] name="user.user.role"  />
 					<#assign groups=groups.entityList>
-					<@s.select key="label.master.group.name" name="user.group.id" required="true" list="groups.entityList" listKey="id" listValue="name" />
-					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id" required="true" />
+					<@s.select key="label.master.group.name" name="user.group.id" list="groups.entityList" listKey="id" listValue="name" />
+					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id"/>
 					<@s.select key="label.editprofile.status" list=['ACTIVE', 'INACTIVE'] name="user.user.logInformation.statusFlag"  />					
 					<div class="form-actions">
 						<#if user.id??>

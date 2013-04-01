@@ -17,6 +17,7 @@ import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
@@ -28,7 +29,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Action(name = "/admin/user")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/admin/user/user-form.ftl") })
 public class UserAction extends DefaultAction implements
-		ModelDriven<UserActionModel> {
+		ModelDriven<UserActionModel>, Preparable {
 
 	private static final long serialVersionUID = 2413426101731088386L;
 
@@ -70,7 +71,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
-		model.setGroups(groupService.findByKeyword("", 0, 0));
+//		model.setGroups(groupService.findByKeyword("", 0, 0));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
@@ -98,7 +99,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
 	public ActionResult userEditForm() {
-		model.setGroups(groupService.findByKeyword("", 0, 0));
+//		model.setGroups(groupService.findByKeyword("", 0, 0));
 		model.setUser(userService.findByUsername(model.getQ()));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
@@ -120,5 +121,10 @@ public class UserAction extends DefaultAction implements
 	@Override
 	public UserActionModel getModel() {
 		return model;
+	}
+
+	@Override
+	public void prepare() throws Exception {
+		model.setGroups(groupService.findByKeyword("", 0, 0));
 	}
 }
