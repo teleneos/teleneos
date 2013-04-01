@@ -17,11 +17,11 @@ public class TransactionHeaderRepository extends
 	public EntityListWrapper<TransactionHeader> findByKeyword(String keyword,
 			String order, String orderBy, int limit, int page, String condition) {
 
-		String criteria = "(th.code LIKE ? AND th.user.name.first LIKE ? AND th.user.name.last LIKE ?)";
+		String criteria = "(th.user.name.first LIKE ? AND th.user.name.last LIKE ?)";
 		criteria = criteria.replace("AND", condition);
 		criteria += " AND th.logInformation.statusFlag = ? ORDER BY "
 				+ StringUtils.defaultIfEmpty(order, "th.id") + " " + orderBy;
-		Object[] params = { keyword, keyword, keyword,
+		Object[] params = {keyword, keyword,
 				StatusFlag.ACTIVE };
 		for (int i = 0; i < params.length - 1; i++) {
 			if (params[i] instanceof String || params[i] == null) {
