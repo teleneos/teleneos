@@ -17,8 +17,8 @@
 					<div class="control-group" id="variables">
 						<label class="control-label" for="add_master_packagemanager_status">Variable <span class="required">*</span></label>
 							<div class="controls">
-								<input type="text" name="" value="" id="variabledate" class="span4" class="date"/>
-								<input type="text" name="" value="" id="variablemin" class="span4" class="min"/>&nbsp;&nbsp;<span class="min">minutes</span>
+								<input type="text" name="" value="${internetPackage.variable?number_to_datetime?string("MM/dd/yyyy")}" id="variabledate" class="span4" class="date"/>
+								<input type="text" name="" value="${internetPackage.variable}" id="variablemin" class="span4" class="min"/>&nbsp;&nbsp;<span class="min">minutes</span>
 							</div>
 					</div>
 	 				<#--<@s.textfield key="label.master.packagemanager.variable" required="true" name="internetPackage.variable" cssClass="span4" id="variable" /> -->
