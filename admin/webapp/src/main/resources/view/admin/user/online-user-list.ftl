@@ -34,7 +34,6 @@
 						<tr>
 							<th class="span1">#</th>
 							<th><@s.text name="label.admin.onlineuser.id" /></th>
-							<th><@s.text name="label.admin.onlineuser.sessionid" /></th>
 							<th><@s.text name="label.admin.onlineuser.username" /></th>
 							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
 							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
@@ -49,9 +48,8 @@
 						<tr>
 							<td>${no}</td>
 							<td>${a.radacctid?string('#')}</td>
-							<td>${a.acctsessionid}</td>
 							<td>${a.username!}</td>
-							<td>${a.nasipaddress!}</td>
+							<td>${a.framedipaddress!}</td>
 							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
 							<td>${byteString(a.acctinputoctets)}</td>
 							<td>${byteString(a.acctoutputoctets)}</td>
