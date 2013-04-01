@@ -1,1 +1,1 @@
-<h1>Welcome to Meruvian Yama home page!</h1>
+<h1>Welcome to Telecentre Administrator home page!</h1>
