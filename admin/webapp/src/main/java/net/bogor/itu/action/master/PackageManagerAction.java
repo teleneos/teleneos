@@ -14,6 +14,7 @@ import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -106,7 +107,12 @@ public class PackageManagerAction extends DefaultAction implements
 			}
 		}
 
-		service.save(model.getInternetPackage());
+		try {
+			service.save(model.getInternetPackage());
+		} catch (DataIntegrityViolationException e) {
+			System.err.println(e.getMessage());
+			addFieldError("internetPackage.code", "Code "+model.getInternetPackage().getCode()+" already exist");
+		}
 		return redirectToIndex;
 	}
 

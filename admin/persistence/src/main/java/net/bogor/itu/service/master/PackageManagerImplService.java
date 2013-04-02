@@ -8,6 +8,7 @@ import net.bogor.itu.repository.master.PackageManagerRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class PackageManagerImplService implements PackageManagerService {
 
 	@Override
 	@Transactional
-	public InternetPackage save(InternetPackage internetPackage) {
+	public InternetPackage save(InternetPackage internetPackage) throws DataIntegrityViolationException {
 		if (StringUtils.isBlank(internetPackage.getId())) {
 			internetPackage.setId(null);
 

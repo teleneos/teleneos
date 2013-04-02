@@ -1,14 +1,18 @@
 package net.bogor.itu.entity.master;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 @Entity
-@Table(name = "tc_internet_package")
+@Table(name = "tc_internet_package", uniqueConstraints = { 
+		@UniqueConstraint(columnNames = "code") 
+		})
 public class InternetPackage extends DefaultPersistence {
 
 	private static final long serialVersionUID = 4319476619149651343L;
@@ -35,7 +39,8 @@ public class InternetPackage extends DefaultPersistence {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@Column(name = "code", unique = true)
 	public String getCode() {
 		return code;
 	}
