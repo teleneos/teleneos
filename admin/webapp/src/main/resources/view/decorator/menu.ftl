@@ -17,7 +17,7 @@
 		</a>
 		<ul class="dropdown-menu">
 			<li>
-				<a href="/admin/user">
+				<a href="/admin/user/list">
 					<@s.text name="menu.admin.user" />
 				</a>
 			</li>

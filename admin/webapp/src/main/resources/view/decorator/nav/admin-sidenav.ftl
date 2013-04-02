@@ -2,7 +2,7 @@
 	<ul class="nav nav-list">
 		<li id="nav-header" class="nav-header"><@s.text name="menu.admin" /></li>
 		<li>
-			<a href="/admin/user">
+			<a href="/admin/user/list">
 				<@s.text name="menu.admin.user" />
 			</a>
 		</li>
