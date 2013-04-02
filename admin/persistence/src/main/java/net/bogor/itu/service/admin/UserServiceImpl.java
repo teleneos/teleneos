@@ -62,7 +62,8 @@ public class UserServiceImpl implements UserService {
 			u.setMale(user.isMale());
 			u.setName(user.getName());
 			u.setPhone(user.getPhone());
-
+			u.setGroup(user.getGroup());
+			u.setInternetPackage(user.getInternetPackage());
 			user = u;
 		}
 
