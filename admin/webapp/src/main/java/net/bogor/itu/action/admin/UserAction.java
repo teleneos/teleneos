@@ -79,6 +79,7 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.passworda", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") })

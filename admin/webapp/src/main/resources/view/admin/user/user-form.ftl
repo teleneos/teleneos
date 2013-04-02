@@ -31,7 +31,7 @@
 					<#else>
 					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" required="true"/>
 					</#if>
-					<@s.password key="label.login.password" id="pass1" cssClass="span4"/>
+					<@s.password key="label.login.password" id="pass1" cssClass="span4" name="user.user.passworda" required="true"/>
 					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" required="true"/>
 					
 					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" required="true" />
