@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title><@s.text name="page.onlineuser.title" /></title>
-		<meta name="header" content="<@s.text name="page.onlineuser.header" />">
+		<meta name="header" content="<@s.text name="page.user.title" />">
 	</head>
 	<body>
 		<#function byteString byte>
