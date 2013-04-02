@@ -26,12 +26,12 @@
 					<@s.hidden name="user.id" />
 					
 					<@s.actionmessage theme="bootstrap" />
-					<#if user.id??>
+					<#if user.id?? && user.id!="">
 					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" readonly="true" required="true"/> 
 					<#else>
 					<@s.textfield key="label.login.username" name="user.user.username" cssClass="span4" required="true"/>
 					</#if>
-					<@s.password key="label.login.password" id="pass1" cssClass="span4" name="user.user.passworda" required="true"/>
+					<@s.password key="label.login.password" id="pass1" cssClass="span4" name="pass" required="true"/>
 					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" required="true"/>
 					
 					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" required="true" />
@@ -44,11 +44,11 @@
 					<@s.textfield key="label.user.address.country" name="user.address.countryId" cssClass="span4" />
 					-->
 					
-					<@s.select key="label.editprofile.role" list=['ADMINISTRATOR', 'USER'] name="user.user.role"  />
+					<@s.select key="label.editprofile.role" list={'':'-- Select Role --','ADMINISTRATOR':'ADMINISTRATOR','USER':'USER'} listKey="key" listValue="value" name="user.user.role"  />
 					<#assign groups=groups.entityList>
 					<@s.select key="label.master.group.name" name="user.group.id" list="groups.entityList" listKey="id" listValue="name" />
-					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id"/>
-					<@s.select key="label.editprofile.status" list=['ACTIVE', 'INACTIVE'] name="user.user.logInformation.statusFlag"  />					
+					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id" list={'':'-- Select Package --'} listKey="key" listValue="value"/>
+					<@s.select key="label.editprofile.status" list={'':'-- Select Status --','ACTIVE':'ACTIVE', 'INACTIVE':'INACTIVE'} name="user.user.logInformation.statusFlag" listKey="key" listValue="value" />					
 					<div class="form-actions">
 						<#if user.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

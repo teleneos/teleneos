@@ -24,6 +24,15 @@ public class UserActionModel extends DefaultActionModel {
 	private GroupA group = new GroupA();
 	private List<GroupPackage> groupPackages = new ArrayList<GroupPackage>();
 	private EntityListWrapper<Object[]> details = new EntityListWrapper<Object[]>();
+	private String pass;
+	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
 
 	public User getUser() {
 		return user;

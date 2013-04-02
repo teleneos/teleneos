@@ -5,6 +5,7 @@ package net.bogor.itu.action.admin;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.master.GroupA;
 import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.master.GroupService;
 
@@ -19,6 +20,7 @@ import org.meruvian.yama.actions.DefaultAction;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 
@@ -78,11 +80,17 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
-			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.passworda", trim = true, key = "message.admin.user.password.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
-			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") })
+				@RequiredStringValidator(fieldName = "user.internetPackage.id", trim = true, key = "message.admin.user.package.notnull"),
+				@RequiredStringValidator(fieldName = "user.group.id", trim = true, key = "message.admin.user.group.notnull"),
+				@RequiredStringValidator(fieldName = "user.user.role", trim = true, key = "message.admin.user.role.notnull"),
+				@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
+				@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+				@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+				@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
+				@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, 
+			emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid")},
+			requiredFields = {@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key="message.admin.user.flag.notnull")}
+	)
 	public ActionResult userSubmit() {
 		if (StringUtils.isBlank(model.getUser().getGroup().getId())) {
 			model.getUser().setGroup(null);
@@ -127,5 +135,9 @@ public class UserAction extends DefaultAction implements
 	@Override
 	public void prepare() throws Exception {
 		model.setGroups(groupService.findByKeyword("", 0, 0));
+		GroupA group = new GroupA();
+		group.setId("");
+		group.setName("-- Select Group --");
+		model.getGroups().getEntityList().add(0, group);
 	}
 }
