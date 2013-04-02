@@ -10,6 +10,7 @@ import net.bogor.itu.repository.master.GroupRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class GroupImplService implements GroupService {
 
 	@Override
 	@Transactional
-	public GroupA save(GroupA group) {
+	public GroupA save(GroupA group) throws DataIntegrityViolationException {
 		if (StringUtils.isBlank(group.getId())) {
 			group.setId(null);
 			repository.persist(group);

@@ -11,12 +11,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 @Entity
-@Table(name = "tc_group_2")
+@Table(name = "tc_group_2", uniqueConstraints = { 
+		@UniqueConstraint(columnNames = "code") 
+		})
 public class GroupA extends DefaultPersistence {
 
 	private static final long serialVersionUID = 345578434452418898L;
@@ -28,7 +31,8 @@ public class GroupA extends DefaultPersistence {
 	private PaymentMethod paymentMethod = PaymentMethod.POSTPAID;
 	private long paymentPeriod = 0;
 	private Set<GroupPackage> groupPackages = new HashSet<GroupPackage>(0);
-
+	
+	@Column(name = "code", unique = true)
 	public String getCode() {
 		return code;
 	}

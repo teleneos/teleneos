@@ -15,6 +15,7 @@ import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -73,8 +74,13 @@ public class GroupAction extends DefaultAction implements
 
 			group.getGroupPackages().add(groupPackage);
 		}
-
-		groupService.save(group);
+		try {
+			groupService.save(group);
+		} catch (DataIntegrityViolationException e) {
+			System.err.println(e.getMessage());
+			addFieldError("group.code", "Code "
+					+ group.getCode() + " already exist");
+		}
 
 		return redirectToIndex;
 	}
