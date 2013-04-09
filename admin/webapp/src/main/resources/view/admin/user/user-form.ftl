@@ -63,6 +63,10 @@
 		</div>
 		<script type="text/javascript">
 		$(function() {
+			$('input[name="user.user.username"]').keyup(function() {
+				$(this).val($(this).val().toLowerCase());
+			});
+			
 			$('#pass1, #pass2').keyup(function() {
 				if (!($('#pass1').val() === $('#pass2').val())) {
 					$('#alert').fadeIn();
