@@ -30,7 +30,7 @@ import com.opensymphony.xwork2.ModelDriven;
  * @author Dian Aditya
  * 
  */
-@Action(name = "/admin/user")
+//@Action(name = "/admin/user")
 public class UserAdminAction extends DefaultAction implements
 		ModelDriven<UserAdminActionModel> {
 	@Inject
