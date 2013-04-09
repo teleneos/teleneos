@@ -20,6 +20,7 @@ import org.meruvian.yama.actions.DefaultAction;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
@@ -87,7 +88,8 @@ public class UserAction extends DefaultAction implements
 				@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 				@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
-				@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, 
+				@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") },
+			regexFields = {@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters")},
 			emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid")},
 			requiredFields = {@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key="message.admin.user.flag.notnull")}
 	)
