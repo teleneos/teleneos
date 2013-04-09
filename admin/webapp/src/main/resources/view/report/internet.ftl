@@ -55,9 +55,9 @@
 								<td>${no}</td>
 								<td>${a.internetPackage.code!}</td>
 								<td>${a.internetPackage.name!}</td>
-								<td>${a.price!}</td>
+								<td style="text-align:right;">${a.price!}</td>
 								<td>${a.quantity!}</td>
-								<td>${a.quantity*a.price}</td>
+								<td style="text-align:right;">${a.quantity*a.price}</td>
 							</tr>
 							<#assign no = no + 1 />
 							<#assign qty = qty + a.quantity />
@@ -66,7 +66,7 @@
 							<tr>
 								<th colspan="4">Total</th>
 								<td>${qty}</td>
-								<td>${total}</td>
+								<td style="text-align:right;">${total}</td>
 							</tr>
 						</tbody>
 					</table>

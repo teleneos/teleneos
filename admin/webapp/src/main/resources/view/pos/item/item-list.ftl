@@ -48,7 +48,7 @@
 							<td>${s.uom.name!}</td>
 							<td>${s.itemType.name!}</td>
 							<td>${s.category.name!}</td>
-							<td>${s.price!}</td>
+							<td style="text-align:right;">${s.price!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
