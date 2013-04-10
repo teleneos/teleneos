@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:spring="http://camel.apache.org/schema/spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.0-M1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	<context:component-scan base-package="id.co.bonet.itu.noc" />
+	<context:property-placeholder location="classpath:/db.properties" />
+
+	<bean id="routeBuilder" class="id.co.bonet.itu.noc.log.ZabbixLogRouteBuilder" />
+
+	<spring:camelContext id="camelContext">
+		<spring:consumerTemplate id="consumer" />
+		<spring:template id="producer" />
+
+		<spring:routeBuilder ref="routeBuilder" />
+	</spring:camelContext>
+</beans>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Init user on startup -->
+	<bean id="user" class="id.co.bonet.itu.persistence.UserIntializer" />
+
+	<!-- Index database on startup -->
+	<!-- <bean id="dbIndexer" class="id.co.bonet.itu.persistence.FullSearchService" 
+		/> -->
+
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close" p:driverClass="${db.driver}" p:jdbcUrl="${db.url}"
+		p:username="${db.username}" p:password="${db.password}"
+		p:idleConnectionTestPeriodInMinutes="60" p:idleMaxAgeInSeconds="240"
+		p:maxConnectionsPerPartition="30" p:minConnectionsPerPartition="10"
+		p:partitionCount="3" p:acquireIncrement="5" p:statementsCacheSize="100"
+		p:releaseHelperThreads="3" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource" p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"
+		p:mappingResources="orm.xml">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+				p:generateDdl="true" p:showSql="false" p:databasePlatform="org.hibernate.dialect.MySQLDialect" />
+		</property>
+		<property name="packagesToScan">
+			<array>
+				<value>org.meruvian.yama.security.user</value>
+				<value>org.meruvian.yama.persistence</value>
+				<value>id.co.bonet.itu.entity</value>
+				<value>id.co.bonet.itu.noc</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		p:entityManagerFactory-ref="entityManagerFactory" />
+
+	<tx:annotation-driven />
+</beans>

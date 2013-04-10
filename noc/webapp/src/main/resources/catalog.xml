@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<catalog name="example">
+	<chain name="post_auth">
+		<init-session name="post_auth-init-session" description="Initialize The Radius Session" />
+
+		<command className="net.bogor.itu.radius.AccountingHandler" />
+
+		<class-post-auth name="post_auth-class"
+			description="Post-Auth Class Attribute Handler" />
+	</chain>
+</catalog>
