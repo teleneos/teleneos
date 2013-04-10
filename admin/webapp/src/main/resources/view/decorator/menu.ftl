@@ -114,11 +114,13 @@
 					<@s.text name="menu.master.packagemanager" />
 				</a>
 			</li>
+			<#--
 			<li>
 				<a href="/master/group">
 					<@s.text name="menu.master.group" />
 				</a>
 			</li>
+			-->
 		</ul>
 	</li>
 	<li class="dropdown">

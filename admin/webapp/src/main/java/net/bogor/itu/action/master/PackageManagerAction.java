@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import net.bogor.itu.entity.master.InternetPackage.Type;
 import net.bogor.itu.service.master.PackageManagerService;
 
+import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -90,23 +91,30 @@ public class PackageManagerAction extends DefaultAction implements
 	// "message.master.package.type.notnull")
 	// })
 	public ActionResult addService() {
-		if (model.getInternetPackage().getType().equals(Type.FIXTIME)) {
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-			try {
-				model.getInternetPackage().setVariable(
-						format.parse(model.getVariable()).getTime());
-			} catch (ParseException e) {
-				e.printStackTrace();
+		if (model.getInternetPackage().getType() != null) {
+			if (model.getInternetPackage().getType().equals(Type.FIXTIME)) {
+				SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+				try {
+					model.getInternetPackage().setVariable(
+							format.parse(model.getVariable()).getTime());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			} else if (model.getInternetPackage().getType()
+					.equals(Type.COUNTDOWN)) {
+				try {
+					model.getInternetPackage().setVariable(
+							Long.parseLong(model.getVariable()));
+				} catch (NumberFormatException e) {
+					model.getInternetPackage().setVariable(0);
+				}
 			}
-		} else if (model.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
-			try {
-				model.getInternetPackage().setVariable(
-						Long.parseLong(model.getVariable()));
-			} catch (NumberFormatException e) {
-				model.getInternetPackage().setVariable(0);
-			}
+		}else{
+			model.getInternetPackage().setType(Type.NON_COUNTDOWN);
+			model.setQ(StringUtils.defaultIfBlank(model.getQ(), "1"));
+			model.getInternetPackage().setVariable(model.getInternetPackage().getVariable()
+					* new Long(model.getQ()));
 		}
-
 		try {
 			service.save(model.getInternetPackage());
 		} catch (DataIntegrityViolationException e) {

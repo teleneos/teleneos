@@ -5,9 +5,8 @@ package net.bogor.itu.action.admin;
 
 import javax.inject.Inject;
 
-import net.bogor.itu.entity.master.GroupA;
+import net.bogor.itu.service.admin.InternetPackageService;
 import net.bogor.itu.service.admin.UserService;
-import net.bogor.itu.service.master.GroupService;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
@@ -18,7 +17,6 @@ import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -32,7 +30,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Action(name = "/admin/user")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/admin/user/user-form.ftl") })
 public class UserAction extends DefaultAction implements
-		ModelDriven<UserActionModel>, Preparable {
+		ModelDriven<UserActionModel> {
 
 	private static final long serialVersionUID = 2413426101731088386L;
 
@@ -41,8 +39,11 @@ public class UserAction extends DefaultAction implements
 	@Inject
 	private UserService userService;
 
+	// @Inject
+	// private GroupService groupService;
+
 	@Inject
-	private GroupService groupService;
+	private InternetPackageService packageService;
 
 	@Action
 	public ActionResult index() {
@@ -65,16 +66,16 @@ public class UserAction extends DefaultAction implements
 		return new ActionResult("/blank.html");
 	}
 
-	@Action(name = "/package/{q}", method = HttpMethod.GET)
+	@Action(name = "/packages", method = HttpMethod.GET)
 	public ActionResult getPackage() {
-		model.setGroupPackages(groupService.getGroupPackages(model.getQ()));
-
-		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
+		model.setPackages(packageService.getAll(model.getQ(), model.getMax(),
+				model.getPage() - 1));
+		return new ActionResult("/blank.html");
 	}
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
-//		model.setGroups(groupService.findByKeyword("", 0, 0));
+		// model.setGroups(groupService.findByKeyword("", 0, 0));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
@@ -94,10 +95,7 @@ public class UserAction extends DefaultAction implements
 			requiredFields = {@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key="message.admin.user.flag.notnull")}
 	)
 	public ActionResult userSubmit() {
-		if (StringUtils.isBlank(model.getUser().getGroup().getId())) {
-			model.getUser().setGroup(null);
-		}
-
+		System.err.println(model.getUser().getInternetPackage().getId());
 		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
 			model.getUser().setInternetPackage(null);
 		}
@@ -110,7 +108,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
 	public ActionResult userEditForm() {
-//		model.setGroups(groupService.findByKeyword("", 0, 0));
+		// model.setGroups(groupService.findByKeyword("", 0, 0));
 		model.setUser(userService.findByUsername(model.getQ()));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
@@ -134,12 +132,4 @@ public class UserAction extends DefaultAction implements
 		return model;
 	}
 
-	@Override
-	public void prepare() throws Exception {
-		model.setGroups(groupService.findByKeyword("", 0, 0));
-		GroupA group = new GroupA();
-		group.setId("");
-		group.setName("-- Select Group --");
-		model.getGroups().getEntityList().add(0, group);
-	}
 }

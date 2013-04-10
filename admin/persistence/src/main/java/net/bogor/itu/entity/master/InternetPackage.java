@@ -24,7 +24,9 @@ public class InternetPackage extends DefaultPersistence {
 	public enum Status {
 		ENABLE, DISABLE
 	}
-
+	
+	private PaymentMethod paymentMethod = PaymentMethod.POSTPAID;
+	private long paymentPeriod = 0;
 	private String code;
 	private String name;
 	private Type type = Type.COUNTDOWN;
@@ -81,6 +83,15 @@ public class InternetPackage extends DefaultPersistence {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "payment_method")
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 }

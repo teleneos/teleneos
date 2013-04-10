@@ -141,7 +141,14 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-
+	
+	@Action(name = "/userpackage/{username}", method = HttpMethod.GET)
+	public ActionResult userPackage() {
+		model.setListacc(radacctService.findDetailByUsername(model.getUsername(),
+				model.getMax(), model.getPage() - 1));
+		return new ActionResult("/pos/transaction").setType("redirect");
+	}
+	
 	@Override
 	public TransactionActionModel getModel() {
 		return model;

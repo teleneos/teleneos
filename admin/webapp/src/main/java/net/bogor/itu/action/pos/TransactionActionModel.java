@@ -25,6 +25,24 @@ public class TransactionActionModel extends DefaultActionModel {
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
 	private InternetPackage internetPackage = new InternetPackage();
 	private String change;
+	private EntityListWrapper<Object[]> listacc = new EntityListWrapper<Object[]>();
+	private String username;
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public EntityListWrapper<Object[]> getListacc() {
+		return listacc;
+	}
+
+	public void setListacc(EntityListWrapper<Object[]> listacc) {
+		this.listacc = listacc;
+	}
 
 	public TransactionHeader getTransactionHeader() {
 		return transactionHeader;

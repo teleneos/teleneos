@@ -3,6 +3,7 @@
 		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
 		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-tab.js" />"></script>
 		<script type="text/javascript">
 			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
 			function printDiv(divId) {
@@ -179,5 +180,8 @@
 		<div id="print" style="visibility: hidden;">
 		<#include "/view/pos/invoice/invoice-print.ftl" />
 		</div>
-	</body>
+</body>
+	<script type="text/javascript">
+	
+	</script>
 </html>

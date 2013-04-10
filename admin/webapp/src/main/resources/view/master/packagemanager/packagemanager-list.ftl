@@ -47,11 +47,10 @@
 							<#if s.type="FIXTIME">
 								${s.variable?number_to_date!}
 							<#elseif s.type="NON_COUNTDOWN">
-								-
+								@ ${s.variable!} minute
 							<#else>
 								${s.variable!} minute
 							</#if>
-							
 							</td>
 							<td>${s.price!}</td>
 							<td>${s.status!}</td>

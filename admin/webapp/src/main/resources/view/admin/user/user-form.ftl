@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.editprofile.title" /></title>
 		<meta name="header" content="<@s.text name="page.editprofile.header" />">
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -45,9 +46,14 @@
 					-->
 					
 					<@s.select key="label.editprofile.role" list={'':'-- Select Role --','ADMINISTRATOR':'ADMINISTRATOR','USER':'USER'} listKey="key" listValue="value" name="user.user.role"  />
-					<#assign groups=groups.entityList>
-					<@s.select key="label.master.group.name" name="user.group.id" list="groups.entityList" listKey="id" listValue="name" />
-					<@s.select key="label.master.packagemanager.name" name="user.internetPackage.id" list={'':'-- Select Package --'} listKey="key" listValue="value"/>
+					<div class="control-group ">
+						<label class="control-label" for="add_id">Package <span class="required">*</span></label>
+						<div class="controls">
+							<@s.hidden name="user.internetPackage.id" id="package-id" />
+							<input type="text" id="package-name" readonly="true" class="span4">
+							<button class="btn openpopup" type="button" title="<@s.text name="label.master.packagemanager.name" />" object-name="packages|name" field-target="package-id|package-name" href="<@s.url value="/admin/user/packages" />">Choose</button>
+						</div>
+					</div>
 					<@s.select key="label.editprofile.status" list={'':'-- Select Status --','ACTIVE':'ACTIVE', 'INACTIVE':'INACTIVE'} name="user.user.logInformation.statusFlag" listKey="key" listValue="value" />					
 					<div class="form-actions">
 						<#if user.id??>
@@ -74,33 +80,6 @@
 			<#if user.user??>
 			$('#pass1, #pass2').val('${user.user.password!}');
 			</#if>
-			
-			$('#user_user_group_id').change(function(){
-				var val = $(this).val();
-			
-				$.ajax({
-			        url: "<@s.url value="/admin/user/package/" />" + val +".json",
-			        type: 'GET',
-			        dataType: 'json', // added data type
-			        success: function(res) {
-			        	console.log(res);
-			        	$('#user_user_internetPackage_id').empty();
-			        	$('#user_user_internetPackage_id').append($('<option></option>').val("").html("-- Select Package --"));
-			        	for (var i = 0; i < res.groupPackages.length; i++) {
-			        		var opt = $('<option></option>');
-			        		opt.val(res.groupPackages[i].internetPackage.id);
-			        		opt.html(res.groupPackages[i].internetPackage.name);
-			        		<#if user.internetPackage??>
-			        		if (opt.val() == '${user.internetPackage.id}') {
-			        			opt.attr('selected', 'selected');
-			        		}
-			        		</#if>
-			        		$('#user_user_internetPackage_id').append(opt);
-			        	}
-			        }
-			    });
-				
-			}).change();
 			
 			$('.password').val('${pass!}');
 		});
