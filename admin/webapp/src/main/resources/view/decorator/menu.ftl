@@ -142,6 +142,7 @@
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			<i class="icon-user icon-white"></i>
 			<b class="caret"></b>
+			${user.username}
 		</a>
 		<ul class="dropdown-menu">
 			<li>
