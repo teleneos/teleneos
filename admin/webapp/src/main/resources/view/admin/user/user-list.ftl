@@ -55,7 +55,7 @@
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
 							<th><@s.text name="label.admin.onlineuser.totalonline" /></th>
-							<th><@s.text name="label.admin.group.name" /></th>
+							<#--<th><@s.text name="label.admin.group.name" /></th>-->
 							<th><@s.text name="label.master.packagemanager.name" /></th>
 						</tr>
 					</thead>
@@ -70,7 +70,7 @@
 							<td>${byteString(d[1]!0)}</td>
 							<td>${byteString(d[2]!0)}</td>
 							<td>${timeFormat(d[3]!0)}</td>
-							<td><#if u.group??>${u.group.name!}<#else></#if></td>
+							<#--<td><#if u.group??>${u.group.name!}<#else></#if></td>-->
 							<td><#if u.internetPackage??>${u.internetPackage.name!}<#else></#if></td>
 							<td>
 								<a href="<@s.url value="/admin/user/report/${u.user.username!}" />" title="<@s.text name="tooltip.user.report"><@s.param>${u.user.username!}</@s.param></@s.text>">
