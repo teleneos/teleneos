@@ -105,16 +105,36 @@
 	</li>
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			<@s.text name="menu.master" />
+			<@s.text name="menu.package" />
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
+			<li>
+				<a href="/package/prepaid">
+					<@s.text name="menu.package.prepaid" />
+				</a>
+			</li>
+			<li>
+				<a href="/package/postpaid">
+					<@s.text name="menu.package.postpaid" />
+				</a>
+			</li>
+			<li>
+				<a href="/package/reward">
+					<@s.text name="menu.package.reward" />
+				</a>
+			</li>
+			<li>
+				<a href="/package/subscribe">
+					<@s.text name="menu.package.subscribe" />
+				</a>
+			</li>
+			<#--
 			<li>
 				<a href="/master/packages">
 					<@s.text name="menu.master.packagemanager" />
 				</a>
 			</li>
-			<#--
 			<li>
 				<a href="/master/group">
 					<@s.text name="menu.master.group" />
