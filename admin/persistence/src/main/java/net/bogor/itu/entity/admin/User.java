@@ -47,6 +47,8 @@ public class User extends DefaultPersistence {
 	private GroupA group;
 	private InternetPackage internetPackage;
 	private Set<UserPackage> userPackages = new HashSet<UserPackage>(0);
+	private String occupation;
+	private String idcard;
 	
 	@OneToOne
 	@JoinColumn(name = "backend_user_id")
@@ -142,6 +144,21 @@ public class User extends DefaultPersistence {
 	public void setUserPackages(Set<UserPackage> userPackages) {
 		this.userPackages = userPackages;
 	}
-	
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public String getIdcard() {
+		return idcard;
+	}
+
+	public void setIdcard(String idcard) {
+		this.idcard = idcard;
+	}
 	
 }

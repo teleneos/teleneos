@@ -83,11 +83,13 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 //				@RequiredStringValidator(fieldName = "user.internetPackage.id", trim = true, key = "message.admin.user.package.notnull"),
-				@RequiredStringValidator(fieldName = "user.user.role", trim = true, key = "message.admin.user.role.notnull"),
+//				@RequiredStringValidator(fieldName = "user.user.role", trim = true, key = "message.admin.user.role.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
 				@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 				@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
+				@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
+				@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") },
 			regexFields = {@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters")},
 			emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid")},
@@ -97,7 +99,7 @@ public class UserAction extends DefaultAction implements
 //		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
 			model.getUser().setInternetPackage(null);
 //		}
-
+		model.getUser().getUser().setRole("USER");
 		userService.save(model.getUser());
 		
 //		return new ActionResult("redirect", "/admin/user/edit/"

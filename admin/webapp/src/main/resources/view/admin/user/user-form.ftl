@@ -34,19 +34,21 @@
 					</#if>
 					<@s.password key="label.login.password" id="pass1" cssClass="span4" name="pass" required="true"/>
 					<@s.password key="label.login.confirmpassword" id="pass2" name="user.user.password" cssClass="span4" required="true"/>
+
+					<@s.textfield key="label.user.email" name="user.user.email" cssClass="span4" required="true" />
 					
 					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.name.last" name="user.name.last" cssClass="span4" />
 					
-					<@s.textfield key="label.user.email" name="user.user.email" cssClass="span4" required="true" />
+					<@s.textfield key="label.user.idcard" name="user.idcard" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.phone" name="user.phone" cssClass="span4" />
+					
+					<@s.textarea key="label.user.address" name="user.address.street1" cssClass="span4" required="true" />
+					<@s.textfield key="label.user.occupation" name="user.occupation" cssClass="span4" />
 					
 					<#--
 					<@s.textfield key="label.user.address.country" name="user.address.countryId" cssClass="span4" />
-					-->
-					
-					<@s.select key="label.editprofile.role" list={'':'-- Select Role --','ADMINISTRATOR':'ADMINISTRATOR','USER':'USER'} listKey="key" listValue="value" name="user.user.role"  />
-					<#--
+					<@s.select key="label.editprofile.role" list={'':'-- Select Role --','ADMINISTRATOR':'ADMINISTRATOR','USER':'USER'} listKey="key" listValue="value" name="user.user.role"  />					
 					<div class="control-group ">
 						<label class="control-label" for="add_id">Package <span class="required">*</span></label>
 						<div class="controls">
@@ -55,8 +57,8 @@
 							<button class="btn openpopup" type="button" title="<@s.text name="label.master.packagemanager.name" />" object-name="packages|name" field-target="package-id|package-name" href="<@s.url value="/admin/user/packages" />">Choose</button>
 						</div>
 					</div>
-					-->
 					<@s.select key="label.editprofile.status" list={'':'-- Select Status --','ACTIVE':'ACTIVE', 'INACTIVE':'INACTIVE'} name="user.user.logInformation.statusFlag" listKey="key" listValue="value" />					
+					-->
 					<div class="form-actions">
 						<#if user.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />
