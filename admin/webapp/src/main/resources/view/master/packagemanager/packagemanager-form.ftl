@@ -14,8 +14,9 @@
 					<@s.textfield key="label.master.packagemanager.code" required="true" name="internetPackage.code" cssClass="span4" readonly="${internetPackage.id?exists?string}" />
 					<@s.textfield key="label.master.packagemanager.name" required="true" name="internetPackage.name" cssClass="span4" />
 					<@s.select key="label.master.group.paymentmethod" name="group.paymentMethod" list={'PREPAID' : 'Prepaid', 'POSTPAID' : 'Postpaid'} listKey="key" listValue="value" />
+					<#--
 					<div class="control-group " id="package">
-						<label class="control-label" for="packageManager_internetPackage_type">Package Type <span class="required">*</span></label>
+						<label class="control-label" for="packageManager_internetPackage_type"><span class="required">*</span> Package Type </label>
 						<div class="controls">
 							<select name="internetPackage.type" id="packageManager_internetPackage_type">
 								<option value="">-- Select Package --</option>
@@ -25,15 +26,67 @@
 						</div>
 					</div>
 					<div class="control-group" id="variables">
-						<label class="control-label" for="add_master_packagemanager_status">Variable <span class="required">*</span></label>
+						<label class="control-label" for="add_master_packagemanager_status"><span class="required">*</span> Variable</label>
 							<div class="controls">
-								<input type="text" name="" value="${internetPackage.variable?number_to_datetime?string("MM/dd/yyyy")}" id="variabledate" class="span4" class="date"/>
-								<input type="text" name="" value="${internetPackage.variable}" id="variablemin" class="span4" class="min"/>&nbsp;&nbsp;<span class="min">minutes</span>
+								<input type="text" name="" value="${internetPackage.variable?number_to_datetime?string("MM/dd/yyyy")}" id="variabledate" class="span4" class="date"/> 
+									<span id="var">
+										<input class="span1" id="variablemin" name="internetPackage.variable" value="${internetPackage.variable}" type="text">
+											<select class="span2" name="q">
+												<option value="${(60 * 24)?string('#')}">day</option>
+												<option value="${(60 * 24 * 7)?string('#')}">week</option>
+												<option value="${(60 * 24 * 30)?string('#')}">mon</option>
+											</select>
+									</span>
+									
+										<input type="text" name="" value="${internetPackage.variable}" id="variablemin" class="span4" class="min"/>&nbsp;&nbsp;<span class="min">minutes</span>
+									
 							</div>
 					</div>
+					-->
 	 				<#--<@s.textfield key="label.master.packagemanager.variable" required="true" name="internetPackage.variable" cssClass="span4" id="variable" /> -->
 					<@s.textfield key="label.master.packagemanager.price" required="true" name="internetPackage.price" cssClass="span4" />
-					<@s.select key="label.master.packagemanager.status" name="internetPackage.status" list={'ENABLE' : 'Enable', 'DISABLE' : 'Disable'} listKey="key" listValue="value" />
+					<div class="control-group " >
+						<label class="control-label" ><span class="required">*</span> Time</label>
+						<div class="controls">
+							<input class="span2" name="internetPackage.monthDay" value="" type="text">
+							<select name="q" style="width: 70px;">
+								<option value="${(60 * 24)?string('#')}">day</option>
+								<option value="${(60 * 24 * 7)?string('#')}">week</option>
+								<option value="${(60 * 24 * 30)?string('#')}">mon</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group " >
+						<label class="control-label" ><span class="required">*</span> Bandwidth Quota</label>
+						<div class="controls">
+							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
+							<select name="q" style="width: 70px;">
+								<option value="">MB</option>
+								<option value="">GB</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group " >
+						<label class="control-label" ><span class="required">*</span> Speed</label>
+						<div class="controls">
+							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
+							<select name="q" style="width: 70px;">
+								<option value="">kbps</option>
+								<option value="">mbps</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group " >
+						<label class="control-label" ><span class="required">*</span> Next Speed</label>
+						<div class="controls">
+							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
+							<select name="q" style="width: 70px;">
+								<option value="">kbps</option>
+								<option value="">mbps</option>
+							</select>
+						</div>
+					</div>
+					<@s.select key="label.master.packagemanager.status" name="internetPackage.status" list={'ENABLE' : 'Active', 'DISABLE' : 'Inactive'} listKey="key" listValue="value" />
 					<div class="form-actions">
 						<#if internetPackage.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />
@@ -75,15 +128,6 @@
 					$('#package').hide();
 					$("#packageManager_internetPackage_type").val("").attr('selected',true);
 					$("#variables").hide();
-					var cont = $('<span id="var"></span>');
-					var txtfld = $('<input class="span1" type="text" name="internetPackage.variable" value="${internetPackage.variable!}" />');
-					var cmb = $('<select class="span2" name="q"></select>');
-					cmb.append('<option value="1">Minutes</option>');
-					cmb.append('<option value="60">Hours</option>');
-					cmb.append('<option value="${(60 * 24)?string('#')}">Days</option>');
-					cmb.append('<option value="${(60 * 24 * 7)?string('#')}">Weeks</option>');
-					cmb.append('<option value="${(60 * 24 * 30)?string('#')}">Months</option>');
-					cont.append('&nbsp;').append(txtfld).append('&nbsp;').append(cmb).append('&nbsp;once');
 					$("#variablemin").attr('name', '');
 					$("#variabledate").attr('name', '');
 					$(this).after(cont);

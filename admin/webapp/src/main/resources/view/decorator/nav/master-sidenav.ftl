@@ -1,6 +1,7 @@
 <div class="span2">
 	<ul class="nav nav-list">
 		<li id="nav-header" class="nav-header"><@s.text name="menu.package" /></li>
+		<#--
 		<li>
 				<a href="/package/prepaid">
 					<@s.text name="menu.package.prepaid" />
@@ -21,18 +22,17 @@
 					<@s.text name="menu.package.subscribe" />
 				</a>
 			</li>
-		<#--
-		<li>
-			<a href="/master/packages">
-				<@s.text name="menu.master.packagemanager" />
-			</a>
-		</li>
-		
 		<li>
 			<a href="/master/group">
 				<@s.text name="menu.master.group" />
 			</a>
 		</li>
 		-->		
+		<li>
+			<a href="/master/packages">
+				<@s.text name="menu.master.packagemanager" />
+			</a>
+		</li>
+		
 	</ul>
 </div>
