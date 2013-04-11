@@ -1,5 +1,6 @@
 package net.bogor.itu.repository.radius;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -80,7 +81,20 @@ public class RadacctRepository extends
 		query.setParameter(1, username);
 		return query.getResultList().get(0);
 	}
-
+	
+	public boolean checkIsOnline(String username){
+		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		TypedQuery<Radacct> query = entityManager
+				.createQuery(ql, Radacct.class);
+		query.setParameter(1, username + "%");
+		try{
+			return query.getResultList().size() > 1 ? true : false;			
+		}catch (NoResultException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	
 	public EntityListWrapper<Radacct> findOnlineUser(String username,
 			int limit, int page) {
 		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();

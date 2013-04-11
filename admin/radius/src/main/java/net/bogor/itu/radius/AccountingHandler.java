@@ -81,8 +81,7 @@ public class AccountingHandler extends PacketHandlerBase {
 			long toend = firstlogin + variablemilis;
 			LOG.info("Package variable: "
 					+ user.getInternetPackage().getVariable() * 60000);
-			if (radacctService.findOnlineUser(username, 0, 0).getEntityList()
-					.size() == 0) {
+			if (!radacctService.checkIsOnline(username)) {
 				if (user.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
 					if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
 						radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)

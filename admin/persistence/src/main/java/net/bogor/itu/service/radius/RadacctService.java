@@ -16,7 +16,9 @@ public interface RadacctService {
 
 	EntityListWrapper<Radacct> findOnlineUser(String username, int limit,
 			int page);
-
+	
+	public boolean checkIsOnline(String username);
+	
 	Radacct findFirstSession(String username);
 
 	Object[] findStatistic(String username);
