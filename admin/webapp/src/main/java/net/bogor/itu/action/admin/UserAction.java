@@ -82,7 +82,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
-				@RequiredStringValidator(fieldName = "user.internetPackage.id", trim = true, key = "message.admin.user.package.notnull"),
+//				@RequiredStringValidator(fieldName = "user.internetPackage.id", trim = true, key = "message.admin.user.package.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.role", trim = true, key = "message.admin.user.role.notnull"),
 				@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
 				@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
@@ -94,15 +94,16 @@ public class UserAction extends DefaultAction implements
 			requiredFields = {@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key="message.admin.user.flag.notnull")}
 	)
 	public ActionResult userSubmit() {
-		System.err.println(model.getUser().getInternetPackage().getId());
-		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
+//		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
 			model.getUser().setInternetPackage(null);
-		}
+//		}
 
 		userService.save(model.getUser());
-
-		return new ActionResult("redirect", "/admin/user/edit/"
-				+ model.getUser().getUser().getUsername() + "?success");
+		
+//		return new ActionResult("redirect", "/admin/user/edit/"
+//				+ model.getUser().getUser().getUsername() + "?success");
+		return new ActionResult("/pos/transaction/addstarter?id="+model.getUser().getId())
+		.setType("redirect");
 	}
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)

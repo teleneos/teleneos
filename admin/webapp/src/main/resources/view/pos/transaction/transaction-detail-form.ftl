@@ -93,87 +93,137 @@
 					</div>
 					</#if>
 				</@s.form>
-				<#if transactionHeader.id??>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th><@s.text name="label.admin.tdetail.item" /></th>
-							<th style="text-align:center;"><@s.text name="label.admin.tdetail.quantity" /></th>
-							<th style="text-align: right;"><@s.text name="label.admin.tdetail.price" /></th>
-							<th style="text-align: right;"><@s.text name="label.admin.tdetail.subtotal" /></th>
-							<#if !transactionHeader.cash??>
-							<th style="text-align: right;"><@s.text name="label.admin.tdetail.action" /></th>
-							</#if>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<#assign totalPrice = 0 />
-						<#assign totalQnty = 0 />
-						<@s.url value="/pos/transaction/edit/" var="editUrl" />
-						<#list transactionDetails.entityList as s>
-						<#assign price = s.quantity * s.price /> 
-						<tr>
-							<td>${no}</td>
-							<td><#if s.item??>${s.item.name!}</#if><#if s.internetPackage??>${s.internetPackage.code!}</#if></td>
-							<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
-							<td style="text-align: right;">${s.price!}</td>
-							<td style="text-align: right;"><#if s.item??>${price}<#else>${s.internetPackage.price!0}</#if></td>
-							<#if !transactionHeader.cash??>
-							<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
-							</#if>
-						</tr>
-						<#assign no = no + 1 />
-						<#assign totalPrice = totalPrice + price!0 />
-						<#if s.internetPackage??>
-							<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
+				<ul id="myTab" class="nav nav-tabs">
+					<li class="active"><a href="#home" data-toggle="tab">Item</a></li>
+					<li><a href="#profile" data-toggle="tab">Internet</a></li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="home">
+					
+						<#if transactionHeader.id??>
+						<table class="table table-striped table-condensed">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th><@s.text name="label.admin.tdetail.item" /></th>
+									<th style="text-align:center;"><@s.text name="label.admin.tdetail.quantity" /></th>
+									<th style="text-align: right;"><@s.text name="label.admin.tdetail.price" /></th>
+									<th style="text-align: right;"><@s.text name="label.admin.tdetail.subtotal" /></th>
+									<#if !transactionHeader.cash??>
+									<th style="text-align: right;"><@s.text name="label.admin.tdetail.action" /></th>
+									</#if>
+								</tr>
+							</thead>
+							<tbody>
+								<#assign no = 1 + ((page - 1) * max) />
+								<#assign totalPrice = 0 />
+								<#assign totalQnty = 0 />
+								<@s.url value="/pos/transaction/edit/" var="editUrl" />
+								<#list transactionDetails.entityList as s>
+								<#if s.internetPackage??>
+								<#else>
+									<#assign price = s.quantity * s.price /> 
+									<tr>
+										<td>${no}</td>
+										<td><#if s.item??>${s.item.name!}</#if></td>
+										<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
+										<td style="text-align: right;">${s.price!}</td>
+										<td style="text-align: right;">${price}</td>
+										<#if !transactionHeader.cash??>
+										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
+										</#if>
+									</tr>
+									<#assign no = no + 1 />
+									<#assign totalPrice = totalPrice + price!0 />
+									<#assign totalQnty = totalQnty + s.quantity />
+								</#if>
+								</#list>
+								<#assign no = no - 1 />
+								
+								<tr>
+									<td></td>
+									<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>
+									<td style="text-align: center;"><strong>${totalQnty}</strong> </td>
+									<td style="text-align: right;" colspan="2"><strong>${totalPrice}</strong> </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="profile">
+						<table class="table table-striped table-condensed">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th><@s.text name="label.admin.tdetail.item" /></th>
+									<th style="text-align: right;"><@s.text name="label.admin.tdetail.price" /></th>
+									<#if !transactionHeader.cash??>
+									<th style="text-align: right;"><@s.text name="label.admin.tdetail.action" /></th>
+									</#if>
+								</tr>
+							</thead>
+							<tbody>
+								<#assign nox = 1 + ((page - 1) * max) />
+								<#assign totalPriceInternet = 0 />
+								<@s.url value="/pos/transaction/edit/" var="editUrl" />
+								<#list transactionDetails.entityList as s>
+								<#if s.internetPackage??>
+									<tr>
+										<td>${nox}</td>
+										<td>${s.internetPackage.name!}</td>
+										<td style="text-align: right;">${s.internetPackage.price!}</td>
+										<#if !transactionHeader.cash??>
+										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
+										</#if>
+									</tr>
+									<#assign no = no + 1 />
+									<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+								</#if>
+								</#list>
+								<#assign nox = nox - 1 />
+								
+								<tr>
+									<td></td>
+									<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>
+									<td style="text-align: right;"><strong>${totalPriceInternet}</strong> </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+					<#if transactionHeader.cash??>
+					<#assign cashBack = transactionHeader.cash -  (totalPriceInternet+totalPrice) />
+					<tr>
+						<td></td>
+						<td colspan="2"><strong><@s.text name="label.admin.tdetail.cash" /></strong></td>
+						<#if !transactionHeader.cash??>
+						<td style="text-align: right;" colspan="3"><strong>${transactionHeader.cash!}</strong></td>
+						<#else>
+						<td style="text-align: right;" colspan="2"><strong>${transactionHeader.cash!}</strong></td>
 						</#if>
-						<#assign totalQnty = totalQnty + s.quantity />
-						</#list>
-						<#assign no = no - 1 />
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2"><strong><@s.text name="label.admin.tdetail.change" /></strong></td>
+						<td style="text-align: right;" colspan="2"><strong>${cashBack!}</strong></td>
+					</tr>
+					</#if>
+					<#if !transactionHeader.cash??>
+						<@s.form theme="bootstrap" action="/pos/transaction/cash" cssClass="form-horizontal">
+						<@s.hidden name="transactionHeader.id" />
+						<p class="pull-right"><strong>Total Item + Internet ${totalPriceInternet+totalPrice!}</strong></p><br/>
+						<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
+						<div class="form-actions">
+							<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
+						</div>
+						</@s.form>
+						<#else>
+						<form theme="bootstrap" class="form-horizontal">
+						<div class="form-actions">
+							<input type="button" value="Print" onclick="javascript:printDiv('print')" class="btn btn-primary"/>
 						
-						<tr>
-							<td></td>
-							<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>
-							<td style="text-align: center;"><strong>${totalQnty}</strong> </td>
-							<td style="text-align: right;" colspan="2"><strong>${totalPrice}</strong> </td>
-						</tr>
-						<#if transactionHeader.cash??>
-						<#assign cashBack = transactionHeader.cash -  totalPrice />
-						<tr>
-							<td></td>
-							<td colspan="2"><strong><@s.text name="label.admin.tdetail.cash" /></strong></td>
-							<#if !transactionHeader.cash??>
-							<td style="text-align: right;" colspan="3"><strong>${transactionHeader.cash!}</strong></td>
-							<#else>
-							<td style="text-align: right;" colspan="2"><strong>${transactionHeader.cash!}</strong></td>
-							</#if>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="2"><strong><@s.text name="label.admin.tdetail.change" /></strong></td>
-							<td style="text-align: right;" colspan="2"><strong>${cashBack!}</strong></td>
-						</tr>
-						</#if>
-					</tbody>
-				</table>
-				<#if !transactionHeader.cash??>
-				<@s.form theme="bootstrap" action="/pos/transaction/cash" cssClass="form-horizontal">
-				<@s.hidden name="transactionHeader.id" />
-				<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
-				<div class="form-actions">
-					<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
-				</div>
-				</@s.form>
-				<#else>
-				<form theme="bootstrap" class="form-horizontal">
-				<div class="form-actions">
-					<input type="button" value="Print" onclick="javascript:printDiv('print')" class="btn btn-primary"/>
-				
-				</div>
-				</form>
-				</#if>
+						</div>
+						</form>
+					</#if>
 				</#if>
 			</div>
 		</div>

@@ -81,6 +81,20 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
+	
+	@Action(name = "/addstarter", method = HttpMethod.GET)
+	public ActionResult addTransactionHeaderStarter() {
+		User user = new User();
+		user.setId(model.getId());
+		System.err.println("asdasdasda"+model.getId());
+		TransactionHeader tHeader = model.getTransactionHeader();
+		tHeader.setUser(user);
+
+		tHeaderService.save(tHeader);
+
+		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
+				.setType("redirect");
+	}
 
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.GET)
 	public ActionResult formDetail() {

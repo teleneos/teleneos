@@ -46,6 +46,7 @@
 					-->
 					
 					<@s.select key="label.editprofile.role" list={'':'-- Select Role --','ADMINISTRATOR':'ADMINISTRATOR','USER':'USER'} listKey="key" listValue="value" name="user.user.role"  />
+					<#--
 					<div class="control-group ">
 						<label class="control-label" for="add_id">Package <span class="required">*</span></label>
 						<div class="controls">
@@ -54,6 +55,7 @@
 							<button class="btn openpopup" type="button" title="<@s.text name="label.master.packagemanager.name" />" object-name="packages|name" field-target="package-id|package-name" href="<@s.url value="/admin/user/packages" />">Choose</button>
 						</div>
 					</div>
+					-->
 					<@s.select key="label.editprofile.status" list={'':'-- Select Status --','ACTIVE':'ACTIVE', 'INACTIVE':'INACTIVE'} name="user.user.logInformation.statusFlag" listKey="key" listValue="value" />					
 					<div class="form-actions">
 						<#if user.id??>
