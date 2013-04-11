@@ -41,3 +41,7 @@ header h1 {
 .container#content {
 	min-height: 300px;
 }
+
+span.required {
+	color: #da4f49;
+}

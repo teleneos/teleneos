@@ -46,7 +46,7 @@
 	 				<#--<@s.textfield key="label.master.packagemanager.variable" required="true" name="internetPackage.variable" cssClass="span4" id="variable" /> -->
 					<@s.textfield key="label.master.packagemanager.price" required="true" name="internetPackage.price" cssClass="span4" />
 					<div class="control-group " >
-						<label class="control-label" ><span class="required">*</span> Time</label>
+						<label class="control-label" ><span class="required">*</span> Time :</label>
 						<div class="controls">
 							<input class="span2" name="internetPackage.monthDay" value="" type="text">
 							<select name="q" style="width: 70px;">
@@ -57,17 +57,18 @@
 						</div>
 					</div>
 					<div class="control-group " >
-						<label class="control-label" ><span class="required">*</span> Bandwidth Quota</label>
+						<label class="control-label" ><span class="required">*</span> Bandwidth Quota :</label>
 						<div class="controls">
 							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
 							<select name="q" style="width: 70px;">
 								<option value="">MB</option>
 								<option value="">GB</option>
 							</select>
+							<i class="icon-info-sign s2b_tooltip" title="Value zero means unlimited"></i>
 						</div>
 					</div>
 					<div class="control-group " >
-						<label class="control-label" ><span class="required">*</span> Speed</label>
+						<label class="control-label" ><span class="required">*</span> Speed :</label>
 						<div class="controls">
 							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
 							<select name="q" style="width: 70px;">
@@ -77,7 +78,7 @@
 						</div>
 					</div>
 					<div class="control-group " >
-						<label class="control-label" ><span class="required">*</span> Next Speed</label>
+						<label class="control-label"><span class="required">*</span> Next Speed :</label>
 						<div class="controls">
 							<input class="span2" name="internetPackage.bandwidth" value="" type="text">
 							<select name="q" style="width: 70px;">
