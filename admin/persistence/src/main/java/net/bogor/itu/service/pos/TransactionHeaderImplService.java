@@ -3,12 +3,12 @@ package net.bogor.itu.service.pos;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.admin.User;
+import net.bogor.itu.entity.admin.UserPackage;
 import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.repository.admin.UserRepository;
 import net.bogor.itu.repository.pos.TransactionHeaderRepository;
-import net.bogor.itu.service.admin.UserService;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -50,7 +50,10 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 				InternetPackage p = d.getInternetPackage();
 				if (p != null) {
 					user.setInternetPackage(p);
-					break;
+					UserPackage userPackage = new UserPackage();
+					userPackage.setInternetPackage(p);
+					userPackage.setUser(user);
+					user.getUserPackages().add(userPackage);
 				}
 			}
 

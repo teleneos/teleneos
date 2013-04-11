@@ -86,7 +86,6 @@ public class TransactionAction extends DefaultAction implements
 	public ActionResult addTransactionHeaderStarter() {
 		User user = new User();
 		user.setId(model.getId());
-		System.err.println("asdasdasda"+model.getId());
 		TransactionHeader tHeader = model.getTransactionHeader();
 		tHeader.setUser(user);
 

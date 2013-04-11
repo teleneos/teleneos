@@ -2,8 +2,11 @@ package net.bogor.itu.entity.admin;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -12,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import net.bogor.itu.entity.Address;
@@ -30,6 +34,9 @@ import org.meruvian.yama.security.user.BackendUser;
 @Entity
 @Table(name = "tc_user")
 public class User extends DefaultPersistence {
+	
+	private static final long serialVersionUID = -4402068984793789574L;
+	
 	private BackendUser user;
 	private Name name = new Name();
 	private Address address = new Address();
@@ -39,6 +46,7 @@ public class User extends DefaultPersistence {
 	private List<UserGroup> userGroups = new ArrayList<UserGroup>();
 	private GroupA group;
 	private InternetPackage internetPackage;
+	private Set<UserPackage> userPackages = new HashSet<UserPackage>(0);
 	
 	@OneToOne
 	@JoinColumn(name = "backend_user_id")
@@ -123,4 +131,17 @@ public class User extends DefaultPersistence {
 	public void setInternetPackage(InternetPackage internetPackage) {
 		this.internetPackage = internetPackage;
 	}
+
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OrderColumn(name = "usr_idx")
+	public Set<UserPackage> getUserPackages() {
+		return userPackages;
+	}
+
+	public void setUserPackages(Set<UserPackage> userPackages) {
+		this.userPackages = userPackages;
+	}
+	
+	
 }
