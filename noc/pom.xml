@@ -26,8 +26,9 @@
 	<modules>
 		<module>webapp</module>
 		<module>persistence</module>
-    <module>jaxrs</module>
-  </modules>
+    	<module>jaxrs</module>
+    	<module>esb</module>
+  	</modules>
 
 	<build>
 		<plugins>
