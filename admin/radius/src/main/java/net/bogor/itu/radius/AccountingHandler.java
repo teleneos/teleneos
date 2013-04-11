@@ -81,17 +81,24 @@ public class AccountingHandler extends PacketHandlerBase {
 			long toend = firstlogin + variablemilis;
 			LOG.info("Package variable: "
 					+ user.getInternetPackage().getVariable() * 60000);
-			if (user.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
-				if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
-					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
-							.getValue().getValueObject().toString());
+			if (radacctService.findOnlineUser(username, 0, 0).getEntityList()
+					.size() == 0) {
+				if (user.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
+					if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
+						radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+								.getValue().getValueObject().toString());
+					}
+				} else if (user.getInternetPackage().getType()
+						.equals(Type.FIXTIME)) {
+					if (format.parse(timestamp).compareTo(
+							new Date(user.getInternetPackage().getVariable())) > 0) {
+						radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+								.getValue().getValueObject().toString());
+					}
 				}
-			} else if (user.getInternetPackage().getType().equals(Type.FIXTIME)) {
-				if (format.parse(timestamp).compareTo(
-						new Date(user.getInternetPackage().getVariable())) > 0) {
-					radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
-							.getValue().getValueObject().toString());
-				}
+			} else {
+				radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+						.getValue().getValueObject().toString());
 			}
 		} catch (IndexOutOfBoundsException e) {
 			LOG.error(e.getMessage());
