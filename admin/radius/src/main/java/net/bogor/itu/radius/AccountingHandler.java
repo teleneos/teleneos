@@ -39,7 +39,7 @@ public class AccountingHandler extends PacketHandlerBase {
 	private RadacctService radacctService;
 
 	@Inject
-	private RadiusSerivce radiusSerivce;
+	private RadiusSerivce radiusService;
 
 	@Inject 
 	private ConnectionHistoryService historyService;
@@ -56,10 +56,12 @@ public class AccountingHandler extends PacketHandlerBase {
 		System.err.println("--start persisting history--");
 		if ("1".equalsIgnoreCase(req.getAttributeValue("Acct-Status-Type").toString())) {
 			ConnectionHistory connectionHistory = new ConnectionHistory();
-//			Radacct radacct = new Radacct();
-//			radacct.setRadacctid(1L);
-//			radacct.setAcctuniqueid(rp.get(Attr_AcctUniqueSessionId.TYPE)
-//				.getValue().getValueObject().toString());
+			/**			
+	 			Radacct radacct = new Radacct();
+				radacct.setRadacctid(1L);
+				radacct.setAcctuniqueid(rp.get(Attr_AcctUniqueSessionId.TYPE)
+					.getValue().getValueObject().toString()); 
+ 			*/
 			connectionHistory.setRadacct(rp.get(Attr_AcctUniqueSessionId.TYPE)
 					.getValue().getValueObject().toString());
 			connectionHistory.setUser(user);
@@ -77,17 +79,19 @@ public class AccountingHandler extends PacketHandlerBase {
 			LOG.info("Radacct Start Time: "
 					+ radacct.getAcctstarttime().getTime());
 			long firstlogin = radacct.getAcctstarttime().getTime();
-			long variablemilis = user.getInternetPackage().getVariable() * 60000;
+			long variablemilis = user.getInternetPackage().getTime() * 60000;
 			long toend = firstlogin + variablemilis;
 			LOG.info("Package variable: "
-					+ user.getInternetPackage().getVariable() * 60000);
+					+ user.getInternetPackage().getTime() * 60000);
 			if (!radacctService.checkIsOnline(username)) {
 				if (user.getInternetPackage().getType().equals(Type.COUNTDOWN)) {
 					if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
-						radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+						radiusService.logout(rp.get(Attr_CallingStationId.TYPE)
 								.getValue().getValueObject().toString());
 					}
-				} else if (user.getInternetPackage().getType()
+				} 
+				/**
+				 else if (user.getInternetPackage().getType()
 						.equals(Type.FIXTIME)) {
 					if (format.parse(timestamp).compareTo(
 							new Date(user.getInternetPackage().getVariable())) > 0) {
@@ -95,8 +99,9 @@ public class AccountingHandler extends PacketHandlerBase {
 								.getValue().getValueObject().toString());
 					}
 				}
+				*/
 			} else {
-				radiusSerivce.logout(rp.get(Attr_CallingStationId.TYPE)
+				radiusService.logout(rp.get(Attr_CallingStationId.TYPE)
 						.getValue().getValueObject().toString());
 			}
 		} catch (IndexOutOfBoundsException e) {

@@ -11,8 +11,8 @@ public class PackageManagerActionModel extends DefaultActionModel {
 	private EntityListWrapper<InternetPackage> internetPackages = new EntityListWrapper<InternetPackage>();
 	private int type;
 	private int status;
-	private String variable;
 	private PaymentMethod method;
+	private String qt, qb, qs, qns;
 
 	public InternetPackage getInternetPackage() {
 		return internetPackage;
@@ -47,20 +47,44 @@ public class PackageManagerActionModel extends DefaultActionModel {
 		this.status = status;
 	}
 
-	public String getVariable() {
-		return variable;
-	}
-
-	public void setVariable(String variable) {
-		this.variable = variable;
-	}
-
 	public PaymentMethod getMethod() {
 		return method;
 	}
 
 	public void setMethod(PaymentMethod method) {
 		this.method = method;
+	}
+
+	public String getQt() {
+		return qt;
+	}
+
+	public void setQt(String qt) {
+		this.qt = qt;
+	}
+
+	public String getQb() {
+		return qb;
+	}
+
+	public void setQb(String qb) {
+		this.qb = qb;
+	}
+
+	public String getQs() {
+		return qs;
+	}
+
+	public void setQs(String qs) {
+		this.qs = qs;
+	}
+
+	public String getQns() {
+		return qns;
+	}
+
+	public void setQns(String qns) {
+		this.qns = qns;
 	}
 
 }

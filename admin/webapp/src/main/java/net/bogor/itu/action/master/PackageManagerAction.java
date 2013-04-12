@@ -1,11 +1,9 @@
 package net.bogor.itu.action.master;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.master.InternetPackage.Type;
+import net.bogor.itu.entity.master.PaymentMethod;
 import net.bogor.itu.service.master.PackageManagerService;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +19,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 @Action(name = "/master/packages")
 @Results({
-		@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-form.ftl"),
+		@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-dias.ftl"),
 		@Result(name = DefaultAction.INDEX, type = "freemarker", location = "/view/master/packagemanager/packagemanager-list.ftl") })
 public class PackageManagerAction extends DefaultAction implements
 		ModelDriven<PackageManagerActionModel> {
@@ -61,35 +59,56 @@ public class PackageManagerAction extends DefaultAction implements
 	}
 
 	@Action(name = "/edit/{internetPackage.id}", method = HttpMethod.POST)
-	// @Validations(
-	// requiredStrings = {
-	// @RequiredStringValidator(fieldName = "internetPackage.name", trim = true,
-	// key = "message.master.package.name.notnull"),
-	// @RequiredStringValidator(fieldName = "internetPackage.type", trim = true,
-	// key = "message.master.package.type.notnull")},
-	// requiredFields = {
-	// @RequiredFieldValidator(fieldName = "internetPackage.variable", key =
-	// "message.master.package.variable.notnull"),
-	// @RequiredFieldValidator(fieldName = "internetPackage.price", key =
-	// "message.master.package.price.notnull")
-	// })
+	/**
+	@Validations(requiredStrings = {
+			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull"),
+			@RequiredStringValidator(fieldName = "internetPackage.type", trim = true, key = "message.master.package.type.notnull") }, requiredFields = {
+			@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
+			@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull") })
+	*/
 	public ActionResult updateService() {
 		return addService();
 	}
-
+	
 	@Action(name = "/add", method = HttpMethod.POST)
-	// @Validations(
-	// requiredStrings = {
-	// @RequiredStringValidator(fieldName = "internetPackage.name", trim = true,
-	// key = "message.master.package.name.notnull")},
-	// requiredFields = {
-	// @RequiredFieldValidator(fieldName = "internetPackage.variable", key =
-	// "message.master.package.variable.notnull"),
-	// @RequiredFieldValidator(fieldName = "internetPackage.price", key =
-	// "message.master.package.price.notnull"),
-	// @RequiredFieldValidator(fieldName = "internetPackage.type", key =
-	// "message.master.package.type.notnull")
-	// })
+	public ActionResult addService() {
+		if (model.getInternetPackage().getPaymentMethod()
+				.equals(PaymentMethod.POSTPAID)) {
+			model.getInternetPackage().setType(Type.NON_COUNTDOWN);
+		} else if (model.getInternetPackage().getPaymentMethod()
+				.equals(PaymentMethod.PREPAID)) {
+			model.getInternetPackage().setType(Type.COUNTDOWN);
+		}
+		model.setQt(StringUtils.defaultIfBlank(model.getQt(), "1"));
+		model.getInternetPackage().setTime(
+				model.getInternetPackage().getTime() * new Long(model.getQt()));
+		
+		model.setQb(StringUtils.defaultIfBlank(model.getQb(), "1"));
+		model.getInternetPackage().setQuota(
+				model.getInternetPackage().getQuota() * new Long(model.getQb()));
+		
+		model.setQs(StringUtils.defaultIfBlank(model.getQs(), "1"));
+		model.getInternetPackage().setSpeed(
+				model.getInternetPackage().getSpeed() * new Long(model.getQs()));
+		
+		model.setQns(StringUtils.defaultIfBlank(model.getQns(), "1"));
+		model.getInternetPackage().setNextSpeed(
+				model.getInternetPackage().getNextSpeed() * new Long(model.getQns()));
+		try {
+			service.save(model.getInternetPackage());
+		} catch (DataIntegrityViolationException e) {
+			System.err.println(e.getMessage());
+			addFieldError("internetPackage.code", "Code "
+					+ model.getInternetPackage().getCode() + " already exist");
+		}
+		return redirectToIndex;
+	}
+	/**
+	@Action(name = "/add", method = HttpMethod.POST)
+	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull") }, requiredFields = {
+			@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
+			@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull"),
+			@RequiredFieldValidator(fieldName = "internetPackage.type", key = "message.master.package.type.notnull") })
 	public ActionResult addService() {
 		if (model.getInternetPackage().getType() != null) {
 			if (model.getInternetPackage().getType().equals(Type.FIXTIME)) {
@@ -109,21 +128,24 @@ public class PackageManagerAction extends DefaultAction implements
 					model.getInternetPackage().setVariable(0);
 				}
 			}
-		}else{
+		} else {
 			model.getInternetPackage().setType(Type.NON_COUNTDOWN);
 			model.setQ(StringUtils.defaultIfBlank(model.getQ(), "1"));
-			model.getInternetPackage().setVariable(model.getInternetPackage().getVariable()
-					* new Long(model.getQ()));
+			model.getInternetPackage().setVariable(
+					model.getInternetPackage().getVariable()
+							* new Long(model.getQ()));
 		}
 		try {
 			service.save(model.getInternetPackage());
 		} catch (DataIntegrityViolationException e) {
 			System.err.println(e.getMessage());
-			addFieldError("internetPackage.code", "Code "+model.getInternetPackage().getCode()+" already exist");
+			addFieldError("internetPackage.code", "Code "
+					+ model.getInternetPackage().getCode() + " already exist");
 		}
 		return redirectToIndex;
 	}
-
+	
+	
 	@Action(name = "/list/{variable}/{method}/{q}")
 	public ActionResult serviceList() {
 		model.setInternetPackages(service.findByPaymentMethod(model
@@ -132,7 +154,7 @@ public class PackageManagerAction extends DefaultAction implements
 
 		return new ActionResult("/blank.html");
 	}
-
+	*/
 	@Override
 	public PackageManagerActionModel getModel() {
 		return model;

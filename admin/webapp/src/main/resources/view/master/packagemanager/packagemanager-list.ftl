@@ -29,7 +29,7 @@
 							<th><@s.text name="label.master.packagemanager.code" /></th>
 							<th><@s.text name="label.master.packagemanager.name" /></th>
 							<th>Package Type</th>
-							<th><@s.text name="label.master.packagemanager.variable" /></th>
+							<th><@s.text name="label.master.packagemanager.time" /></th>
 							<th><@s.text name="label.master.packagemanager.price" /></th>
 							<th>Package Status</th>
 						</tr>
@@ -38,22 +38,20 @@
 						<#assign no = 1 + ((page - 1) * max) />
 						<@s.url value="/master/packages/edit/" var="editUrl" />
 						<#list internetPackages.entityList as s>
-						<tr <#if s.status.ordinal() == 1>class="muted"</#if>>
+						<tr <#if s.logInformation.statusFlag.ordinal() == 1>class="muted"</#if>>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id!}">${s.code!}</a></td>
 							<td>${s.name!}</td>
 							<td>${s.type!}</td>
 							<td>
-							<#if s.type="FIXTIME">
-								${s.variable?number_to_date!}
-							<#elseif s.type="NON_COUNTDOWN">
-								@ ${s.variable!} minute
+							<#if s.type="NON_COUNTDOWN">
+								@ ${s.time?string('#')!} minute
 							<#else>
-								${s.variable!} minute
+								${s.time?string('#')!} minute
 							</#if>
 							</td>
 							<td>${s.price!}</td>
-							<td>${s.status!}</td>
+							<td>${s.logInformation.statusFlag!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

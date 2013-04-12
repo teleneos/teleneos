@@ -10,29 +10,29 @@ import javax.persistence.UniqueConstraint;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 @Entity
-@Table(name = "tc_internet_package", uniqueConstraints = { 
-		@UniqueConstraint(columnNames = "code") 
-		})
+@Table(name = "tc_internet_package", uniqueConstraints = { @UniqueConstraint(columnNames = "code") })
 public class InternetPackage extends DefaultPersistence {
 
 	private static final long serialVersionUID = 4319476619149651343L;
 
 	public enum Type {
-		COUNTDOWN, FIXTIME, NON_COUNTDOWN
+		COUNTDOWN, NON_COUNTDOWN
 	}
 
 	public enum Status {
 		ENABLE, DISABLE
 	}
-	
-	private PaymentMethod paymentMethod = PaymentMethod.POSTPAID;
-	private long paymentPeriod = 0;
+
 	private String code;
 	private String name;
+	private PaymentMethod paymentMethod = PaymentMethod.POSTPAID;
 	private Type type = Type.COUNTDOWN;
-	private long variable = 0;
-	private long price;
-	private Status status = Status.ENABLE;
+	private long price = 0;
+	private long time = 0;
+	private long quota = 0;
+	private long speed = 0;
+	private long nextSpeed = 0;
+	
 
 	public String getName() {
 		return name;
@@ -41,7 +41,7 @@ public class InternetPackage extends DefaultPersistence {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Column(name = "code", unique = true)
 	public String getCode() {
 		return code;
@@ -60,14 +60,6 @@ public class InternetPackage extends DefaultPersistence {
 		this.type = type;
 	}
 
-	public long getVariable() {
-		return variable;
-	}
-
-	public void setVariable(long variable) {
-		this.variable = variable;
-	}
-
 	public long getPrice() {
 		return price;
 	}
@@ -77,14 +69,6 @@ public class InternetPackage extends DefaultPersistence {
 	}
 
 	@Enumerated(EnumType.ORDINAL)
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "payment_method")
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
@@ -92,6 +76,38 @@ public class InternetPackage extends DefaultPersistence {
 
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	public long getQuota() {
+		return quota;
+	}
+
+	public void setQuota(long quota) {
+		this.quota = quota;
+	}
+
+	public long getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(long speed) {
+		this.speed = speed;
+	}
+
+	public long getNextSpeed() {
+		return nextSpeed;
+	}
+
+	public void setNextSpeed(long nextSpeed) {
+		this.nextSpeed = nextSpeed;
 	}
 
 }

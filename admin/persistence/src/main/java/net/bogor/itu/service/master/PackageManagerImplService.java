@@ -36,10 +36,15 @@ public class PackageManagerImplService implements PackageManagerService {
 		} else {
 			InternetPackage ic = packageManagerRepository.load(internetPackage
 					.getId());
+			ic.setCode(internetPackage.getCode());
 			ic.setName(internetPackage.getName());
+			ic.setPaymentMethod(internetPackage.getPaymentMethod());
 			ic.setPrice(internetPackage.getPrice());
-			ic.setStatus(internetPackage.getStatus());
-
+			ic.setTime(internetPackage.getTime());
+			ic.setQuota(internetPackage.getQuota());
+			ic.setSpeed(internetPackage.getSpeed());
+			ic.setNextSpeed(internetPackage.getNextSpeed());
+			ic.getLogInformation().setStatusFlag(internetPackage.getLogInformation().getStatusFlag());
 			internetPackage = ic;
 		}
 		return internetPackage;
