@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import net.bogor.itu.service.admin.InternetPackageService;
 import net.bogor.itu.service.admin.UserService;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -21,6 +20,7 @@ import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
@@ -38,9 +38,6 @@ public class UserAction extends DefaultAction implements
 
 	@Inject
 	private UserService userService;
-
-	// @Inject
-	// private GroupService groupService;
 
 	@Inject
 	private InternetPackageService packageService;
@@ -75,42 +72,35 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
-		// model.setGroups(groupService.findByKeyword("", 0, 0));
-
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
-//				@RequiredStringValidator(fieldName = "user.internetPackage.id", trim = true, key = "message.admin.user.package.notnull"),
-//				@RequiredStringValidator(fieldName = "user.user.role", trim = true, key = "message.admin.user.role.notnull"),
-				@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-				@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
-				@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
-				@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
-				@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
-				@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
-				@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") },
-			regexFields = {@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters")},
-			emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid")},
-			requiredFields = {@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key="message.admin.user.flag.notnull")}
-	)
+			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
+			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
+			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
+			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, regexFields = {
+			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
+			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
+			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
+			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
+			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
+			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userSubmit() {
-//		if (StringUtils.isBlank(model.getUser().getInternetPackage().getId())) {
-			model.getUser().setInternetPackage(null);
-//		}
+		model.getUser().setInternetPackage(null);
 		model.getUser().getUser().setRole("USER");
 		userService.save(model.getUser());
-		
-//		return new ActionResult("redirect", "/admin/user/edit/"
-//				+ model.getUser().getUser().getUsername() + "?success");
-		return new ActionResult("/pos/transaction/addstarter?id="+model.getUser().getId())
-		.setType("redirect");
+
+		return new ActionResult("/pos/transaction/addstarter?id="
+				+ model.getUser().getId()).setType("redirect");
 	}
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
 	public ActionResult userEditForm() {
-		// model.setGroups(groupService.findByKeyword("", 0, 0));
 		model.setUser(userService.findByUsername(model.getQ()));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
@@ -119,9 +109,18 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/edit/{q}", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
+			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") })
+			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
+			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, regexFields = {
+			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
+			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
+			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
+			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
+			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
+			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userEditSubmit() {
 		userSubmit();
 

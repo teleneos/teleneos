@@ -156,6 +156,44 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			Network
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/network/availability">
+					Availability
+				</a>
+			</li>
+			<li>
+				<a href="/network/monitoring">
+					Monitoring
+				</a>
+			</li>
+			<li>
+				<a href="/network/remote">
+					Remote Desktop
+				</a>
+			</li>
+			<li>
+				<a href="/network/performance">
+					Performance
+				</a>
+			</li>
+			<li>
+				<a href="/network/utilization">
+					Utilization
+				</a>
+			</li>
+			<li>
+				<a href="/network/report">
+					Report
+				</a>
+			</li>
+		</ul>
+	</li>
 </ul>
 
 <ul class="nav pull-right">

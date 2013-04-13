@@ -3,7 +3,7 @@
 		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
 		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
-		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-tab.js" />"></script>
+		<#--<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-tab.js" />"></script>-->
 		<script type="text/javascript">
 			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
 			function printDiv(divId) {
@@ -84,7 +84,7 @@
 						<div class="controls">
 							<@s.hidden name="transactionDetail.internetPackage.id" id="package-id" />
 							<input type="text" id="package-name" readonly="true" class="span4">
-							<button class="btn openpopup" type="button" title="Package" object-name="internetPackages|code" field-target="package-id|package-name" href="/master/packages">Choose</button>
+							<button class="btn openpopup" type="button" title="Package" object-name="internetPackages|code,name" field-target="package-id|package-name" href="/master/packages">Choose</button>
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />

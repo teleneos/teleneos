@@ -18,13 +18,20 @@ $('#popup-dialog').on('show', function() {
 				
 				function addRow(data1, data2) {
 					var tr = $('<tr></tr>').appendTo(table);
-					var td1 = $('<td style="width: 85%;"></td>').text(data1);
-					tr.append(td1);
-					var td2 = $('<td style="width: 15%;"></td>');
+					
+					for (d in data1) {
+						d = data1[d];
+						
+						var td1 = $('<td></td>').text(d);
+						tr.append(td1);
+					}
+					
+					var td2 = $('<td></td>');
 					tr.append(td2);
 					var btn = $('<a title="Set" href="#" data-dismiss="modal"></a>').addClass('btn');
 					btn.addClass('btn-primary');
 					btn.addClass('popup-btn');
+					btn.addClass('pull-right');
 					btn.attr('data-id', data2);
 					btn.attr('data-name', data1);
 					btn.append('&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;');
@@ -35,22 +42,31 @@ $('#popup-dialog').on('show', function() {
 				
 				for(d in data[obj[0]].entityList) {
 					d = data[obj[0]].entityList[d];
-					var dt = d;
-					var dts=null;
 					
-					var objs = obj[1].split('.');
-					for (o in objs) {
-						o = objs[o];
+					var dts = new Array();
+					
+					var datas = obj[1].split(',');
+					for (dd in datas) {
+						dd = datas[dd];
 						
-						dt = dt[o];
+						var dt = d;
+						
+						var objs = dd.split('.');
+						for (o in objs) {
+							o = objs[o];
+							
+							dt = dt[o];
+						}
+						
+						dts.push(dt);
 					}
 					
-					addRow(dt, d.id);
+					addRow(dts, d.id);
 				}
 				
 				$('.popup-btn').click(function() {
 					$('#' + target[0]).val($(this).attr('data-id'));
-					$('#' + target[1]).val($(this).attr('data-name'));
+					$('#' + target[1]).val($(this).attr('data-name').split(',')[0]);
 				});
 			},
 			error : function() {

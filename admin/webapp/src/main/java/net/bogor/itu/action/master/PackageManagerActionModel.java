@@ -12,7 +12,7 @@ public class PackageManagerActionModel extends DefaultActionModel {
 	private int type;
 	private int status;
 	private PaymentMethod method;
-	private String qt, qb, qs, qns;
+	private long qt = 0, qb = 0, qs = 0, qns = 0;
 
 	public InternetPackage getInternetPackage() {
 		return internetPackage;
@@ -55,36 +55,35 @@ public class PackageManagerActionModel extends DefaultActionModel {
 		this.method = method;
 	}
 
-	public String getQt() {
+	public long getQt() {
 		return qt;
 	}
 
-	public void setQt(String qt) {
+	public void setQt(long qt) {
 		this.qt = qt;
 	}
 
-	public String getQb() {
+	public long getQb() {
 		return qb;
 	}
 
-	public void setQb(String qb) {
+	public void setQb(long qb) {
 		this.qb = qb;
 	}
 
-	public String getQs() {
+	public long getQs() {
 		return qs;
 	}
 
-	public void setQs(String qs) {
+	public void setQs(long qs) {
 		this.qs = qs;
 	}
 
-	public String getQns() {
+	public long getQns() {
 		return qns;
 	}
 
-	public void setQns(String qns) {
+	public void setQns(long qns) {
 		this.qns = qns;
 	}
-
 }

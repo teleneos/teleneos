@@ -45,3 +45,7 @@ header h1 {
 span.required {
 	color: #da4f49;
 }
+
+label.control-label:after {
+	content : " :";
+}

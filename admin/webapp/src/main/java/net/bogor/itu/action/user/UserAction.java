@@ -32,12 +32,6 @@ public class UserAction extends DefaultAction implements
 	@Inject
 	private UserService userService;
 
-//	@Action
-//	public ActionResult index() {
-//		return new ActionResult("freemarker", "/view/admin/backend-index.ftl");
-//	}
-
-//	@Action(name = "/statistic")
 	@Action
 	public ActionResult statistic() {
 		BackendUser user = SessionCredentials.currentUser();
@@ -49,7 +43,7 @@ public class UserAction extends DefaultAction implements
 		return new ActionResult("freemarker",
 				"/view/admin/user/user-usage-list.ftl");
 	}
-	
+
 	@Override
 	public OnlineUserActionModel getModel() {
 		return model;

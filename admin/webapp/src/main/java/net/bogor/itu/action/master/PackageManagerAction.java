@@ -6,7 +6,6 @@ import net.bogor.itu.entity.master.InternetPackage.Type;
 import net.bogor.itu.entity.master.PaymentMethod;
 import net.bogor.itu.service.master.PackageManagerService;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -16,10 +15,13 @@ import org.meruvian.yama.actions.DefaultAction;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.validator.annotations.ConversionErrorFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 @Action(name = "/master/packages")
 @Results({
-		@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-dias.ftl"),
+		@Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/master/packagemanager/packagemanager-form.ftl"),
 		@Result(name = DefaultAction.INDEX, type = "freemarker", location = "/view/master/packagemanager/packagemanager-list.ftl") })
 public class PackageManagerAction extends DefaultAction implements
 		ModelDriven<PackageManagerActionModel> {
@@ -59,18 +61,27 @@ public class PackageManagerAction extends DefaultAction implements
 	}
 
 	@Action(name = "/edit/{internetPackage.id}", method = HttpMethod.POST)
-	/**
 	@Validations(requiredStrings = {
-			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull"),
-			@RequiredStringValidator(fieldName = "internetPackage.type", trim = true, key = "message.master.package.type.notnull") }, requiredFields = {
-			@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
-			@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull") })
-	*/
+			@RequiredStringValidator(fieldName = "internetPackage.code", trim = true, key = "message.master.package.code.notnull"),
+			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull") }, conversionErrorFields = {
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.time", key = "message.master.package.time.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.quota", key = "message.master.package.quota.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.speed", key = "message.master.package.speed.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.nextSpeed", key = "message.master.package.nextspeed.notvalid") })
 	public ActionResult updateService() {
 		return addService();
 	}
-	
+
 	@Action(name = "/add", method = HttpMethod.POST)
+	@Validations(requiredStrings = {
+			@RequiredStringValidator(fieldName = "internetPackage.code", trim = true, key = "message.master.package.code.notnull"),
+			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull"), }, conversionErrorFields = {
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.time", key = "message.master.package.time.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.quota", key = "message.master.package.quota.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.speed", key = "message.master.package.speed.notvalid"),
+			@ConversionErrorFieldValidator(fieldName = "internetPackage.nextSpeed", key = "message.master.package.nextspeed.notvalid") })
 	public ActionResult addService() {
 		if (model.getInternetPackage().getPaymentMethod()
 				.equals(PaymentMethod.POSTPAID)) {
@@ -79,82 +90,28 @@ public class PackageManagerAction extends DefaultAction implements
 				.equals(PaymentMethod.PREPAID)) {
 			model.getInternetPackage().setType(Type.COUNTDOWN);
 		}
-		model.setQt(StringUtils.defaultIfBlank(model.getQt(), "1"));
 		model.getInternetPackage().setTime(
-				model.getInternetPackage().getTime() * new Long(model.getQt()));
-		
-		model.setQb(StringUtils.defaultIfBlank(model.getQb(), "1"));
-		model.getInternetPackage().setQuota(
-				model.getInternetPackage().getQuota() * new Long(model.getQb()));
-		
-		model.setQs(StringUtils.defaultIfBlank(model.getQs(), "1"));
-		model.getInternetPackage().setSpeed(
-				model.getInternetPackage().getSpeed() * new Long(model.getQs()));
-		
-		model.setQns(StringUtils.defaultIfBlank(model.getQns(), "1"));
-		model.getInternetPackage().setNextSpeed(
-				model.getInternetPackage().getNextSpeed() * new Long(model.getQns()));
-		try {
-			service.save(model.getInternetPackage());
-		} catch (DataIntegrityViolationException e) {
-			System.err.println(e.getMessage());
-			addFieldError("internetPackage.code", "Code "
-					+ model.getInternetPackage().getCode() + " already exist");
-		}
-		return redirectToIndex;
-	}
-	/**
-	@Action(name = "/add", method = HttpMethod.POST)
-	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull") }, requiredFields = {
-			@RequiredFieldValidator(fieldName = "internetPackage.variable", key = "message.master.package.variable.notnull"),
-			@RequiredFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notnull"),
-			@RequiredFieldValidator(fieldName = "internetPackage.type", key = "message.master.package.type.notnull") })
-	public ActionResult addService() {
-		if (model.getInternetPackage().getType() != null) {
-			if (model.getInternetPackage().getType().equals(Type.FIXTIME)) {
-				SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-				try {
-					model.getInternetPackage().setVariable(
-							format.parse(model.getVariable()).getTime());
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			} else if (model.getInternetPackage().getType()
-					.equals(Type.COUNTDOWN)) {
-				try {
-					model.getInternetPackage().setVariable(
-							Long.parseLong(model.getVariable()));
-				} catch (NumberFormatException e) {
-					model.getInternetPackage().setVariable(0);
-				}
-			}
-		} else {
-			model.getInternetPackage().setType(Type.NON_COUNTDOWN);
-			model.setQ(StringUtils.defaultIfBlank(model.getQ(), "1"));
-			model.getInternetPackage().setVariable(
-					model.getInternetPackage().getVariable()
-							* new Long(model.getQ()));
-		}
-		try {
-			service.save(model.getInternetPackage());
-		} catch (DataIntegrityViolationException e) {
-			System.err.println(e.getMessage());
-			addFieldError("internetPackage.code", "Code "
-					+ model.getInternetPackage().getCode() + " already exist");
-		}
-		return redirectToIndex;
-	}
-	
-	
-	@Action(name = "/list/{variable}/{method}/{q}")
-	public ActionResult serviceList() {
-		model.setInternetPackages(service.findByPaymentMethod(model
-				.getVariable().equalsIgnoreCase("free"), model.getMethod(),
-				model.getQ(), 0, 0));
+				model.getInternetPackage().getTime() * model.getQt());
 
-		return new ActionResult("/blank.html");
+		model.getInternetPackage().setQuota(
+				model.getInternetPackage().getQuota() * model.getQb());
+
+		model.getInternetPackage().setSpeed(
+				model.getInternetPackage().getSpeed() * model.getQs());
+
+		model.getInternetPackage().setNextSpeed(
+				model.getInternetPackage().getNextSpeed() * model.getQns());
+
+		try {
+			service.save(model.getInternetPackage());
+		} catch (DataIntegrityViolationException e) {
+			addFieldError("internetPackage.code", "Code "
+					+ model.getInternetPackage().getCode() + " already exist");
+		}
+
+		return redirectToIndex;
 	}
-	*/
+
 	@Override
 	public PackageManagerActionModel getModel() {
 		return model;

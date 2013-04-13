@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
 			u.setPhone(user.getPhone());
 			u.setGroup(user.getGroup());
 			u.setInternetPackage(user.getInternetPackage());
+			u.setIdcard(user.getIdcard());
+			
 			user = u;
 		}
 

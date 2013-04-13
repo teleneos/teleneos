@@ -46,7 +46,7 @@
  <span class="required">*</span><#rt/>
 </#if>
 
-${parameters.label?html} :<#t/>
+${parameters.label?html}<#t/>
 
 ${parameters.labelseparator?default("")?html}<#rt/>
 <#include "/${parameters.templateDir}/bootstrap/tooltip.ftl" />

@@ -4,6 +4,17 @@
 		<meta name="header" content="<@s.text name="page.packagemanager.header" />">
 	</head>
 	<body>
+		<#function timeFormat time>
+			<#if (time = (60 * 24 * 7))>
+				<#return (time / (60 * 24 * 7))?string('#') + ' Weeks' />
+			<#elseif (time >= (60 * 24))>
+				<#return (time / (60 * 24))?string('#') + ' Days' />
+			<#elseif (time >= 60)>
+				<#return (time / (60))?string('#') + ' Hours' />
+			<#elseif (time >= 1)>
+				<#return (time)?string('#') + ' Min' />
+			</#if>
+		</#function>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/master-sidenav.ftl" />
 			<div class="span10">
@@ -28,10 +39,10 @@
 							<th>#</th>
 							<th><@s.text name="label.master.packagemanager.code" /></th>
 							<th><@s.text name="label.master.packagemanager.name" /></th>
-							<th>Package Type</th>
+							<th><@s.text name="label.master.packagemanager.subscriptiontype" /></th>
 							<th><@s.text name="label.master.packagemanager.time" /></th>
 							<th><@s.text name="label.master.packagemanager.price" /></th>
-							<th>Package Status</th>
+							<th><@s.text name="label.master.packagemanager.active" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,16 +53,18 @@
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id!}">${s.code!}</a></td>
 							<td>${s.name!}</td>
-							<td>${s.type!}</td>
+							<td>${s.paymentMethod!}</td>
 							<td>
-							<#if s.type="NON_COUNTDOWN">
-								@ ${s.time?string('#')!} minute
-							<#else>
-								${s.time?string('#')!} minute
-							</#if>
+								${timeFormat(s.time!0)}
 							</td>
-							<td>${s.price!}</td>
-							<td>${s.logInformation.statusFlag!}</td>
+							<td>${s.price!0?string}</td>
+							<td>
+								<#if s.logInformation.statusFlag == 'ACTIVE'>
+								<i class="icon-ok"></i>
+								<#else>
+								<i class="icon-remove"></i>
+								</#if>
+							</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

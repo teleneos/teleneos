@@ -16,7 +16,7 @@ public class InternetPackage extends DefaultPersistence {
 	private static final long serialVersionUID = 4319476619149651343L;
 
 	public enum Type {
-		COUNTDOWN, NON_COUNTDOWN
+		COUNTDOWN, FIXTIME, NON_COUNTDOWN
 	}
 
 	public enum Status {
@@ -32,7 +32,6 @@ public class InternetPackage extends DefaultPersistence {
 	private long quota = 0;
 	private long speed = 0;
 	private long nextSpeed = 0;
-	
 
 	public String getName() {
 		return name;

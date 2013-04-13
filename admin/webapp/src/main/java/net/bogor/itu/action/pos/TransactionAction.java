@@ -46,9 +46,6 @@ public class TransactionAction extends DefaultAction implements
 	private RadacctService radacctService;
 
 	@Inject
-	private GroupService groupService;
-
-	@Inject
 	private PackageManagerService packageManagerService;
 
 	@Action
@@ -81,7 +78,7 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-	
+
 	@Action(name = "/addstarter", method = HttpMethod.GET)
 	public ActionResult addTransactionHeaderStarter() {
 		User user = new User();
@@ -137,14 +134,14 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-	
+
 	@Action(name = "/remove/{transactionHeader.id}", method = HttpMethod.GET)
 	public ActionResult removeTransaction() {
 		tDetailService.remove(model.getTransactionDetail());
-		return new ActionResult("/pos/transaction/detail/" + model.getTransactionHeader().getId())
-				.setType("redirect");
+		return new ActionResult("/pos/transaction/detail/"
+				+ model.getTransactionHeader().getId()).setType("redirect");
 	}
-	
+
 	@Action(name = "/cash", method = HttpMethod.POST)
 	public ActionResult addCashTransaction() {
 		TransactionHeader tHeader = model.getTransactionHeader();
@@ -154,14 +151,14 @@ public class TransactionAction extends DefaultAction implements
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}
-	
+
 	@Action(name = "/userpackage/{username}", method = HttpMethod.GET)
 	public ActionResult userPackage() {
-		model.setListacc(radacctService.findDetailByUsername(model.getUsername(),
-				model.getMax(), model.getPage() - 1));
+		model.setListacc(radacctService.findDetailByUsername(
+				model.getUsername(), model.getMax(), model.getPage() - 1));
 		return new ActionResult("/pos/transaction").setType("redirect");
 	}
-	
+
 	@Override
 	public TransactionActionModel getModel() {
 		return model;
