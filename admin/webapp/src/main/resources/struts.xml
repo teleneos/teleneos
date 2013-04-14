@@ -55,5 +55,5 @@
 		<!-- </action> -->
 	</package>
 
-	<include file="struts-yama.xml" />
+	<include file="struts-itu-webapp.xml" />
 </struts>

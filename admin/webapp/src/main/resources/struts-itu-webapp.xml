@@ -8,5 +8,8 @@
 		<action name="welcome">
 			<result type="freemarker">/admin/backend-index.ftl</result>
 		</action>
+		<action name="ticket">
+		    <result type="freemarker">/view/admin/ticket.ftl</result>
+		</action>
 	</package>
 </struts>
