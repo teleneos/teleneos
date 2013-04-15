@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><@s.text name="page.editprofile.title" /></title>
+		<title><@s.text name="Ticket" /></title>
 		<link rel="stylesheet" type="text/css" href="<@s.url value="/styles/datepicker.css" />" />
         <script type="text/javascript" src="<@s.url value="/scripts/bootstrap-datepicker.js" />"></script>
         <script type="text/javascript">
@@ -10,11 +10,11 @@
             $('#teknisiSelesai').datepicker();
         });
         </script>
-		<meta name="header" content="<@s.text name="Ticket" />">
+		<meta name="header" content="<@s.text name="New Ticket" />">
 	</head>
 	<body>
 		<div class="row-fluid">
-			<#include "/view/decorator/nav/admin-sidenav.ftl" />
+			<#include "/view/decorator/nav/ticket-sidenav.ftl" />
 			<div class="span10">
 				<#if user??>
 					<#assign pass = user.password! />

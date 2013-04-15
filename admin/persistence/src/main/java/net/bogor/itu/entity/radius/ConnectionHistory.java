@@ -1,8 +1,9 @@
 package net.bogor.itu.entity.radius;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,22 +14,12 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Entity
 @Table(name = "tc_connection_history")
 public class ConnectionHistory extends DefaultPersistence {
-
 	private static final long serialVersionUID = -2124655892933568537L;
 
-//	private Radacct radacct;
 	private User user;
 	private String radacct;
-	
-//	@OneToOne(cascade = CascadeType.DETACH)
-//	@JoinColumn(referencedColumnName = "acctuniqueid", name = "raddact_uniqueid")
-//	public Radacct getRadacct() {
-//		return radacct;
-//	}
-//
-//	public void setRadacct(Radacct radacct) {
-//		this.radacct = radacct;
-//	}
+	private UserPackage userPackage;
+	private long quotaBalance;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -48,4 +39,22 @@ public class ConnectionHistory extends DefaultPersistence {
 		this.radacct = radacct;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "user_package_id")
+	public UserPackage getUserPackage() {
+		return userPackage;
+	}
+
+	public void setUserPackage(UserPackage userPackage) {
+		this.userPackage = userPackage;
+	}
+
+	@Column(name = "quota_balance")
+	public long getQuotaBalance() {
+		return quotaBalance;
+	}
+
+	public void setQuotaBalance(long quotaBalance) {
+		this.quotaBalance = quotaBalance;
+	}
 }

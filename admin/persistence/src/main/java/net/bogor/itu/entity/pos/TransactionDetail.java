@@ -19,8 +19,8 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 public class TransactionDetail extends DefaultPersistence {
 
 	private Item item;
-	private int quantity;
-	private Long price;
+	private int quantity = 1;
+	private Long price = 0L;
 	private TransactionHeader transactionHeader;
 	private InternetPackage internetPackage;
 

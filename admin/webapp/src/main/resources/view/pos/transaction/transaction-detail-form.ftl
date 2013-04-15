@@ -130,7 +130,7 @@
 										<td style="text-align: right;">${s.price!}</td>
 										<td style="text-align: right;">${price}</td>
 										<#if !transactionHeader.cash??>
-										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
+										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"></i></a></td>
 										</#if>
 									</tr>
 									<#assign no = no + 1 />
@@ -172,7 +172,7 @@
 										<td>${s.internetPackage.name!}</td>
 										<td style="text-align: right;">${s.internetPackage.price!}</td>
 										<#if !transactionHeader.cash??>
-										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"/></a></td>
+										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"></i></a></td>
 										</#if>
 									</tr>
 									<#assign no = no + 1 />
@@ -192,8 +192,8 @@
 				</div>
 					<#if transactionHeader.cash??>
 					<#assign cashBack = transactionHeader.cash -  (totalPriceInternet+totalPrice) />
+					<table class="table">
 					<tr>
-						<td></td>
 						<td colspan="2"><strong><@s.text name="label.admin.tdetail.cash" /></strong></td>
 						<#if !transactionHeader.cash??>
 						<td style="text-align: right;" colspan="3"><strong>${transactionHeader.cash!}</strong></td>
@@ -202,15 +202,16 @@
 						</#if>
 					</tr>
 					<tr>
-						<td></td>
 						<td colspan="2"><strong><@s.text name="label.admin.tdetail.change" /></strong></td>
 						<td style="text-align: right;" colspan="2"><strong>${cashBack!}</strong></td>
 					</tr>
+					</table>
 					</#if>
 					<#if !transactionHeader.cash??>
 						<@s.form theme="bootstrap" action="/pos/transaction/cash" cssClass="form-horizontal">
 						<@s.hidden name="transactionHeader.id" />
-						<p class="pull-right"><strong>Total Item + Internet ${totalPriceInternet+totalPrice!}</strong></p><br/>
+						<h3 class="pull-right">Grand total ${(totalPriceInternet+totalPrice!0)?string('0.###')}</h3>
+						<br/>
 						<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
 						<div class="form-actions">
 							<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
@@ -220,7 +221,6 @@
 						<form theme="bootstrap" class="form-horizontal">
 						<div class="form-actions">
 							<input type="button" value="Print" onclick="javascript:printDiv('print')" class="btn btn-primary"/>
-						
 						</div>
 						</form>
 					</#if>
@@ -230,8 +230,5 @@
 		<div id="print" style="visibility: hidden;">
 		<#include "/view/pos/invoice/invoice-print.ftl" />
 		</div>
-</body>
-	<script type="text/javascript">
-	
-	</script>
+	</body>
 </html>

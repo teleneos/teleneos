@@ -20,11 +20,11 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Entity
 @Table(name = "tc_transaction_header")
 public class TransactionHeader extends DefaultPersistence {
-
 	private long counter;
 	private User user;
 	private Long cash;
 	private List<TransactionDetail> details = new ArrayList<TransactionDetail>();
+	private boolean complete = false;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -59,5 +59,13 @@ public class TransactionHeader extends DefaultPersistence {
 
 	public void setDetails(List<TransactionDetail> details) {
 		this.details = details;
+	}
+
+	public boolean isComplete() {
+		return complete;
+	}
+
+	public void setComplete(boolean complete) {
+		this.complete = complete;
 	}
 }

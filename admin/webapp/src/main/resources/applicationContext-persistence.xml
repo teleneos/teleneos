@@ -29,7 +29,7 @@
 		p:mappingResources="orm.xml">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-				p:generateDdl="true" p:showSql="false" p:databasePlatform="org.hibernate.dialect.MySQLDialect" />
+				p:generateDdl="true" p:showSql="false" p:databasePlatform="org.hibernate.dialect.MySQL5InnoDBDialect" />
 		</property>
 		<property name="packagesToScan">
 			<array>

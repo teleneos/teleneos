@@ -10,9 +10,9 @@ import net.bogor.itu.entity.master.InternetPackage;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 
-@Entity
-@Table(name = "tc_user_package", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"user_id", "internet_package_id" }))
+//@Entity
+//@Table(name = "tc_user_package", uniqueConstraints = @UniqueConstraint(columnNames = {
+//		"user_id", "internet_package_id" }))
 public class UserPackage extends DefaultPersistence {
 
 	private static final long serialVersionUID = 7803500449298773427L;

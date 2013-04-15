@@ -194,6 +194,29 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			Ticketing
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+		<li>
+			<a href="/ticket/add">
+				<@s.text name="Submit" />
+			</a>
+		</li>
+		<li>
+			<a href="/ticket/faq">
+				<@s.text name="FAQ" />
+			</a>
+		</li>
+		<li>
+			<a href="/ticket/status">
+				<@s.text name="Status" />
+			</a>
+		</li>
+		</ul>
+	</li>
 </ul>
 
 <ul class="nav pull-right">

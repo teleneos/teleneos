@@ -2,6 +2,7 @@ package net.bogor.itu.repository.pos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.persistence.Query;
 
@@ -50,5 +51,13 @@ public class TransactionDetailRepository extends
 				.setParameter(2, format.parse(periodto));
 		list.setEntityList(query.getResultList());
 		return list;
+	}
+
+	public List<TransactionDetail> findByHeader(String headerId, boolean item) {
+		String criteria = " WHERE d.transactionHeader.id = ?1 AND "
+				+ (item ? "d.item" : "d.internetPackage") + " IS NOT NULL";
+
+		return createQuery(entityClass, "d", "d", criteria, headerId)
+				.getResultList();
 	}
 }

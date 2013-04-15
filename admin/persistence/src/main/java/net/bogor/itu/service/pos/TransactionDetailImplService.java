@@ -41,6 +41,7 @@ public class TransactionDetailImplService implements TransactionDetailService {
 			td.setItem(transactionDetail.getItem());
 			td.setQuantity(transactionDetail.getQuantity());
 			td.setTransactionHeader(transactionDetail.getTransactionHeader());
+			td.setInternetPackage(transactionDetail.getInternetPackage());
 
 			transactionDetail = td;
 		}

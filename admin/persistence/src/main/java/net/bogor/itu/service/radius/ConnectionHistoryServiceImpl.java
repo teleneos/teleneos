@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class ConnectionHistoryServiceImpl implements ConnectionHistoryService {
-	
+
 	@Inject
 	private ConnectionHistoryRepository historyRepository;
-	
+
 	@Override
 	@Transactional
 	public ConnectionHistory save(ConnectionHistory connectionHistory) {
@@ -23,12 +23,18 @@ public class ConnectionHistoryServiceImpl implements ConnectionHistoryService {
 			connectionHistory.setId(null);
 			historyRepository.persist(connectionHistory);
 		} else {
-			ConnectionHistory it = historyRepository.load(connectionHistory.getId());
+			ConnectionHistory it = historyRepository.load(connectionHistory
+					.getId());
 			it.setRadacct(connectionHistory.getRadacct());
 			it.setUser(connectionHistory.getUser());
 			connectionHistory = it;
 		}
 		return connectionHistory;
+	}
+
+	@Override
+	public ConnectionHistory findByAcct(String acctUniqueId) {
+		return historyRepository.findByAcct(acctUniqueId);
 	}
 
 }
