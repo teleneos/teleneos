@@ -5,8 +5,6 @@ package net.bogor.itu.repository.radius;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.radius.UserPackage;
@@ -37,17 +35,16 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 	}
 
 	public UserPackage findActive(String userId) {
-		UserPackage userPackage = null;
+		String criteria = "p.user.id = ?1 AND (p.status = ?2 OR p.status = ?3) "
+				+ "ORDER BY p.logInformation.updateDate ASC";
+		List<UserPackage> userPackages = createQuery(entityClass, "p", "p",
+				criteria, userId, Status.NOT_ACTIVATED_YET, Status.ACTIVE)
+				.getResultList();
 
-		try {
-			String criteria = "p.user.id = ?1 AND (p.status = ?2 OR p.status = ?3) "
-					+ "ORDER BY p.logInformation.updateDate ASC";
-			userPackage = createQuery(entityClass, "p", "p", criteria, userId,
-					Status.NOT_ACTIVATED_YET, Status.ACTIVE, Status.ACTIVE)
-					.setMaxResults(1).getSingleResult();
-		} catch (NoResultException e) {
+		if (userPackages.size() > 0) {
+			return userPackages.get(0);
 		}
 
-		return userPackage;
+		return null;
 	}
 }
