@@ -71,12 +71,7 @@
 					<@s.text name="menu.pos.item" />
 				</a>
 			</li>
-			<li>
-				<a href="/pos/inventoryonhand">
-					<@s.text name="menu.pos.inventoryonhand" />
-				</a>
-			</li>
-			<li>
+			<#--<li>
 				<a href="/pos/requisition">
 					<@s.text name="menu.pos.requisition" />
 				</a>
@@ -90,6 +85,11 @@
 				<a href="/pos/invoice">
 					<@s.text name="menu.pos.invoice" />
 				</a>	
+			</li>-->
+			<li>
+				<a href="/pos/inventoryonhand">
+					<@s.text name="menu.pos.inventoryonhand" />
+				</a>
 			</li>
 			<li>
 				<a href="/pos/goodreceiving">

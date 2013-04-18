@@ -27,6 +27,7 @@
 						<tr>
 							<th>#</th>
 							<th><@s.text name="label.admin.itemtype.name" /></th>
+							<th><@s.text name="label.admin.itemtype.unit" /></th>
 							<th><@s.text name="label.admin.itemtype.description" /></th>
 						</tr>
 					</thead>
@@ -37,6 +38,7 @@
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.name!}</a></td>
+							<td>${s.unit!} <#if s.uom??>${s.uom.name!}</#if></td>
 							<td>${s.description!}</td>
 						</tr>
 						<#assign no = no + 1 />

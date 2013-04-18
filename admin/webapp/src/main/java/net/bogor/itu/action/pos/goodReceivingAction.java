@@ -8,6 +8,8 @@ import net.bogor.itu.service.pos.GoodReceivingDetailService;
 import net.bogor.itu.service.pos.GoodReceivingService;
 import net.bogor.itu.service.pos.InvoiceDetailService;
 import net.bogor.itu.service.pos.ItemService;
+import net.bogor.itu.service.pos.ItemTypeService;
+import net.bogor.itu.service.pos.UnitOfMeasureService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -42,6 +44,9 @@ public class goodReceivingAction extends DefaultAction implements
 	@Inject
 	private ItemService itemService;
 
+	@Inject
+	private ItemTypeService itemTypeService;
+	
 	@Action
 	public ActionResult goodReceivingList() {
 		model.setGoodReceivings(goodReceivingService.findByKeyword(
@@ -53,12 +58,16 @@ public class goodReceivingAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult addForm() {
+		model.setItemTypes(itemTypeService.findByKeyword("", "ASC", "id", 0, 0));
+		
 		return new ActionResult("freemarker",
 				"/view/pos/goodreceiving/goodreceiving-form.ftl");
 	}
 
 	@Action(name = "/edit/{goodReceiving.id}", method = HttpMethod.GET)
 	public ActionResult editForm() {
+		model.setItemTypes(itemTypeService.findByKeyword("", "ASC", "id", 0, 0));
+		
 		String id = model.getInvoice().getId();
 		if (id == null)
 			return redirectToIndex;

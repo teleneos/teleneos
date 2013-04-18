@@ -1,9 +1,11 @@
 package net.bogor.itu.action.pos;
 
+import net.bogor.itu.entity.pos.BusinessPartner;
 import net.bogor.itu.entity.pos.GoodReceiving;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.entity.pos.Invoice;
 import net.bogor.itu.entity.pos.InvoiceDetail;
+import net.bogor.itu.entity.pos.ItemType;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -22,8 +24,28 @@ public class goodReceivingActionModel extends DefaultActionModel {
 	private EntityListWrapper<Invoice> invoices = new EntityListWrapper<Invoice>();
 	private InvoiceDetail invoiceDetail = new InvoiceDetail();
 	private EntityListWrapper<InvoiceDetail> invoiceDetails = new EntityListWrapper<InvoiceDetail>();
+	private EntityListWrapper<ItemType> itemTypes = new EntityListWrapper<ItemType>();
+	private BusinessPartner businessPartner = new BusinessPartner();
+	private EntityListWrapper<BusinessPartner> businessPartners = new EntityListWrapper<BusinessPartner>();
 	private String quantity;
 	private String item;
+
+	public BusinessPartner getBusinessPartner() {
+		return businessPartner;
+	}
+
+	public void setBusinessPartner(BusinessPartner businessPartner) {
+		this.businessPartner = businessPartner;
+	}
+
+	public EntityListWrapper<BusinessPartner> getBusinessPartners() {
+		return businessPartners;
+	}
+
+	public void setBusinessPartners(
+			EntityListWrapper<BusinessPartner> businessPartners) {
+		this.businessPartners = businessPartners;
+	}
 
 	public GoodReceiving getGoodReceiving() {
 		return goodReceiving;
@@ -106,6 +128,14 @@ public class goodReceivingActionModel extends DefaultActionModel {
 
 	public void setItem(String item) {
 		this.item = item;
+	}
+
+	public EntityListWrapper<ItemType> getItemTypes() {
+		return itemTypes;
+	}
+
+	public void setItemTypes(EntityListWrapper<ItemType> itemTypes) {
+		this.itemTypes = itemTypes;
 	}
 
 }

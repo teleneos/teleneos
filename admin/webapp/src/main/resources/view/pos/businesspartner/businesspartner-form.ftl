@@ -9,7 +9,8 @@
 			<div class="span10">
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
 					<@s.hidden name="businessPartner.id" />
-					<@s.textfield key="label.admin.businesspartner.category" required="true" name="businessPartner.category" cssClass="span4" />
+					<#-- <@s.label key="label.admin.businesspartner.category" required="true" /> -->
+					<@s.checkboxlist key="label.admin.businesspartner.category" name="businessPartner.category" list={'VENDOR' : 'Vendor', 'CUSTOMER' : 'Customer'} listValue="value" listKey="key" />
 					<@s.textfield key="label.admin.businesspartner.name" required="true" name="businessPartner.name" cssClass="span4" />
 					<@s.textfield key="label.admin.businesspartner.officePhone"  name="businessPartner.officePhone" cssClass="span6" />
 					<@s.textfield key="label.admin.businesspartner.fax" required="true" name="businessPartner.fax" cssClass="span4" />

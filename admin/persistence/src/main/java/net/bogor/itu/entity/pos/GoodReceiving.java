@@ -2,6 +2,7 @@ package net.bogor.itu.entity.pos;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,44 +18,24 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_good_receiving")
 public class GoodReceiving extends DefaultPersistence {
 
-	private String title;
+	private String invoiceNo;
+	private Date date;
+	private BusinessPartner businessPartner;
+	private Item item;
+	private String quantity;
+	private ItemType itemType;
 	private String description;
-	private Date dueDate;
-	private Invoice invoice;
 	private int status;
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
+	
 	@ManyToOne
-	@JoinColumn(name="invoice_id")
-	public Invoice getInvoice() {
-		return invoice;
+	@JoinColumn(name = "item_type_id")
+	public ItemType getItemType() {
+		return itemType;
 	}
 
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
+	public void setItemType(ItemType itemType) {
+		this.itemType = itemType;
 	}
 
 	public int getStatus() {
@@ -65,4 +46,56 @@ public class GoodReceiving extends DefaultPersistence {
 		this.status = status;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Column(name = "invoice_no")
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "businesspartner_id")
+	public BusinessPartner getBusinessPartner() {
+		return businessPartner;
+	}
+
+	public void setBusinessPartner(BusinessPartner businessPartner) {
+		this.businessPartner = businessPartner;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "item_id")
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 }

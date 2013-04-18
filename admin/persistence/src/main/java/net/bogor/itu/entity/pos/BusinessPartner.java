@@ -1,6 +1,9 @@
 package net.bogor.itu.entity.pos;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
@@ -12,7 +15,11 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_business_partner")
 public class BusinessPartner extends DefaultPersistence {
 
-	private String category;
+	public enum Category {
+		VENDOR, CUSTOMER
+	}
+
+	private Category category;
 	private String name;
 	private String officePhone;
 	private String fax;
@@ -23,11 +30,12 @@ public class BusinessPartner extends DefaultPersistence {
 	private String country;
 	private String description;
 
-	public String getCategory() {
+	@Enumerated(EnumType.ORDINAL)
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
@@ -39,6 +47,7 @@ public class BusinessPartner extends DefaultPersistence {
 		this.name = name;
 	}
 
+	@Column(name = "office_phone")
 	public String getOfficePhone() {
 		return officePhone;
 	}
@@ -79,6 +88,7 @@ public class BusinessPartner extends DefaultPersistence {
 		this.city = city;
 	}
 
+	@Column(name = "zip_code")
 	public String getZipCode() {
 		return zipCode;
 	}

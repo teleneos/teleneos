@@ -26,10 +26,12 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.goodreceiving.title" /></th>
-							<th><@s.text name="label.admin.goodreceiving.description" /></th>
-							<!-- <th><@s.text name="label.admin.goodreceiving.date" /></th> -->
 							<th><@s.text name="label.admin.goodreceiving.invoice" /></th>
+							<th><@s.text name="label.admin.goodreceiving.date" /></th>
+							<th><@s.text name="label.admin.goodreceiving.businesspartner" /></th>
+							<th><@s.text name="label.admin.goodreceiving.item" /></th>
+							<th><@s.text name="label.admin.goodreceiving.quantity" /></th>
+							<th><@s.text name="label.admin.goodreceiving.description" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,10 +40,12 @@
 						<#list goodReceivings.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${editUrl + s.id}">${s.title!}</a></td>
+							<td><a href="${editUrl + s.id}">${s.invoiceNo!}</a></td>
+							<td>${s.date!}</td>
+							<td>${s.businessPartner.name!}</td>
+							<td>${s.item.code!}</td>
+							<td>${s.quantity!}</td>
 							<td>${s.description!}</td>
-							<!-- <td>${s.duedate!}</td> -->
-							<td>${s.invoice.title!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

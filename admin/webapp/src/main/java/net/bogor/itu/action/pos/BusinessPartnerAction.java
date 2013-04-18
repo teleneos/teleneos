@@ -1,5 +1,8 @@
 package net.bogor.itu.action.pos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import net.bogor.itu.service.pos.BusinessPartnerService;
@@ -19,6 +22,9 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/businesspartner/businesspartner-form.ftl") })
 public class BusinessPartnerAction extends DefaultAction implements ModelDriven<BusinessPartnerActionModel>{
 	private BusinessPartnerActionModel model = new BusinessPartnerActionModel();
+	
+	private List<String> category = new ArrayList<String>();
+	
 	private ActionResult redirectToIndex = new ActionResult("redirect",
 			"/pos/businesspartner");
 	
@@ -73,4 +79,10 @@ public class BusinessPartnerAction extends DefaultAction implements ModelDriven<
 		return model;
 	}
 
+	public List<String> getCategory() {
+		category.add("Vendor");
+		category.add("Customer");
+		return category;
+	}
+	
 }
