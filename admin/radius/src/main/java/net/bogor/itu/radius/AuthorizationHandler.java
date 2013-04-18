@@ -53,6 +53,8 @@ public class AuthorizationHandler extends PacketHandlerBase {
 		Attr_UserPassword password = (Attr_UserPassword) rp
 				.get(Attr_UserPassword.TYPE);
 
+		LOG.info("Authorize user: " + username);
+		
 		try {
 			UserDetails user = userService.loadUserByUsername((String) username
 					.getValue().getValueObject());

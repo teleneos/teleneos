@@ -72,7 +72,9 @@ public class AccountingHandler extends PacketHandlerBase {
 		UserPackage userPackage = packageService
 				.findActivePackage(user.getId());
 
+		// User doesn't subscribe any active package
 		if (userPackage == null) {
+			LOG.info("No active package for user:" + username);
 			radiusService.logout(macAddress);
 
 			request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
@@ -85,8 +87,6 @@ public class AccountingHandler extends PacketHandlerBase {
 
 		// Acct-Status-Type = Start
 		if ("1".equalsIgnoreCase(acctStatusType)) {
-			// User doesn't subscribe any active package
-
 			// Set status active, add end date
 			if (userPackage.getStatus().equals(Status.NOT_ACTIVATED_YET)) {
 				long min = userPackage.getInternetPackage().getTime();
@@ -122,9 +122,14 @@ public class AccountingHandler extends PacketHandlerBase {
 		}
 
 		Date now = new Date(System.currentTimeMillis());
+		LOG.info("Current time: " + now);
+		LOG.info("Package expired at: " + userPackage.getEndDate());
 
 		// Package expired
 		if (now.compareTo(userPackage.getEndDate()) > 0) {
+			LOG.info("Expired package: " + internetPackage.getName()
+					+ " for user: " + username);
+
 			userPackage.setStatus(Status.END);
 			packageService.save(userPackage);
 
@@ -134,24 +139,27 @@ public class AccountingHandler extends PacketHandlerBase {
 			return false;
 		}
 
-		long download = new Long(rp.get(Attr_AcctInputOctets.TYPE).getValue()
-				.getValueObject().toString());
-		long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE).getValue()
-				.getValueObject().toString());
+		if ("2".equalsIgnoreCase(acctStatusType)
+				|| "3".equalsIgnoreCase(acctStatusType)) {
+			long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
+					.getValue().getValueObject().toString());
+			long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
+					.getValue().getValueObject().toString());
 
-		userPackage.setQuotaBalance(userPackage.getQuotaBalance()
-				- (download + upload));
+			userPackage.setQuotaBalance(userPackage.getQuotaBalance()
+					- (download + upload));
 
-		if (!userPackage.isUnlimited()
-				&& userPackage.getQuotaBalance() < 1
-				&& internetPackage.getPaymentMethod().equals(
-						PaymentMethod.PREPAID)) {
-			userPackage.setStatus(Status.END);
+			if (!userPackage.isUnlimited()
+					&& userPackage.getQuotaBalance() < 1
+					&& internetPackage.getPaymentMethod().equals(
+							PaymentMethod.PREPAID)) {
+				userPackage.setStatus(Status.END);
 
-			radiusService.logout(macAddress);
+				radiusService.logout(macAddress);
+			}
+
+			packageService.save(userPackage);
 		}
-
-		packageService.save(userPackage);
 
 		// LOG.info("Attribute List: " + rp.getAttributeList());
 
