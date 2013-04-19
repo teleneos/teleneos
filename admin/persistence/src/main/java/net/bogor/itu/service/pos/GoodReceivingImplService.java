@@ -44,12 +44,18 @@ public class GoodReceivingImplService implements GoodReceivingService{
 			
 			int qtyConvert = Integer.parseInt(goodReceiving.getQuantity() != null ? goodReceiving.getQuantity() : "0") * Integer.parseInt(type.getUnit() != null ? type.getUnit(): "0");
 			goodReceiving.setQuantity("" + qtyConvert);
-
+			InventoryOnhand onhand = inventoryOnhandRepository.findByItem(goodReceiving.getItem()
+					.getId()); 
 			goodReceivingRepository.persist(goodReceiving);
-			
-			inventoryOnhand.setItem(goodReceiving.getItem());
-			inventoryOnhand.setStock(qtyConvert);
-			inventoryOnhandRepository.persist(inventoryOnhand);
+			if (onhand != null) {
+				onhand.setStock(onhand.getStock()
+						+ Integer.parseInt(goodReceiving.getQuantity()));
+			} else {
+				onhand = new InventoryOnhand();
+				onhand.setItem(goodReceiving.getItem());
+				onhand.setStock(qtyConvert);
+			}
+			inventoryOnhandRepository.persist(onhand);
 		} else {
 			GoodReceiving gr = goodReceivingRepository.load(goodReceiving.getId());
 			gr.setStatus(goodReceiving.getStatus());

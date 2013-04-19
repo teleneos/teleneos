@@ -1,6 +1,7 @@
 package net.bogor.itu.repository.pos;
 
-import net.bogor.itu.entity.pos.InventoryOnhand;
+import javax.persistence.Query;
+
 import net.bogor.itu.entity.pos.InventoryOnhand;
 import net.bogor.itu.persistence.PersistenceRepository;
 
@@ -15,6 +16,18 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class InventoryOnhandRepository extends PersistenceRepository<InventoryOnhand> {
+	
+	public InventoryOnhand findByItem(String id){
+		String ql = "SELECT i FROM InventoryOnhand i WHERE i.item.id = ?";
+		Query query = entityManager.createQuery(ql)
+				.setParameter(1, id);
+		try {
+			return (InventoryOnhand) query.getSingleResult();			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public EntityListWrapper<InventoryOnhand> findByKeyword(String keyword,
 			String order, String orderBy, int limit, int page, String condition) {
