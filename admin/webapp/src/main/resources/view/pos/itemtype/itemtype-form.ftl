@@ -12,7 +12,7 @@
 					<@s.textfield key="label.admin.itemtype.name" required="true" name="itemType.name" cssClass="span4" />
 					<@s.textfield key="label.admin.itemtype.unit" required="true" name="itemType.unit" cssClass="span4" />
 					<@s.select name="itemType.uom.id" list="uoms.entityList" listValue="name" listKey="id"/>
-					<@s.textfield key="label.admin.itemtype.description"  name="itemType.description" cssClass="span6" />
+					<@s.textarea key="label.admin.itemtype.description"  name="itemType.description" cssClass="span4" />
 					<div class="form-actions">
 						<#if itemType.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

@@ -71,7 +71,6 @@ public class goodReceivingAction extends DefaultAction implements
 		String id = model.getInvoice().getId();
 		if (id == null)
 			return redirectToIndex;
-
 		model.setGoodReceiving(goodReceivingService.findById(id));
 		if (model.getInvoice() == null)
 			return redirectToIndex;
@@ -89,10 +88,9 @@ public class goodReceivingAction extends DefaultAction implements
 	public ActionResult addRequisition() {
 		goodReceivingService.save(model.getGoodReceiving());
 
-		GoodReceiving goodReceiving = model.getGoodReceiving();
-
-		return new ActionResult("/pos/goodreceiving/detail/"
-				+ goodReceiving.getId()).setType("redirect");
+		/*GoodReceiving goodReceiving = model.getGoodReceiving();
+		return new ActionResult("/pos/goodreceiving/detail/"+ goodReceiving.getId()).setType("redirect");*/
+		return redirectToIndex;
 	}
 
 	@Action(name = "/detail/{goodReceiving.id}", method = HttpMethod.GET)

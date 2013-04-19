@@ -26,7 +26,7 @@ public class goodReceivingActionModel extends DefaultActionModel {
 	private EntityListWrapper<InvoiceDetail> invoiceDetails = new EntityListWrapper<InvoiceDetail>();
 	private EntityListWrapper<ItemType> itemTypes = new EntityListWrapper<ItemType>();
 	private BusinessPartner businessPartner = new BusinessPartner();
-	private EntityListWrapper<BusinessPartner> businessPartners = new EntityListWrapper<BusinessPartner>();
+	private EntityListWrapper<BusinessPartner> businessPartnerVendors = new EntityListWrapper<BusinessPartner>();
 	private String quantity;
 	private String item;
 
@@ -38,13 +38,13 @@ public class goodReceivingActionModel extends DefaultActionModel {
 		this.businessPartner = businessPartner;
 	}
 
-	public EntityListWrapper<BusinessPartner> getBusinessPartners() {
-		return businessPartners;
+	public EntityListWrapper<BusinessPartner> getBusinessPartnerVendors() {
+		return businessPartnerVendors;
 	}
 
-	public void setBusinessPartners(
-			EntityListWrapper<BusinessPartner> businessPartners) {
-		this.businessPartners = businessPartners;
+	public void setBusinessPartnerVendors(
+			EntityListWrapper<BusinessPartner> businessPartnerVendors) {
+		this.businessPartnerVendors = businessPartnerVendors;
 	}
 
 	public GoodReceiving getGoodReceiving() {

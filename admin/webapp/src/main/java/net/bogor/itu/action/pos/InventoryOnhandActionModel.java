@@ -1,8 +1,6 @@
 package net.bogor.itu.action.pos;
 
 import net.bogor.itu.entity.pos.InventoryOnhand;
-import net.bogor.itu.entity.pos.Item;
-
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
 

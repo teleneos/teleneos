@@ -13,7 +13,7 @@
 						<label class="control-label" for="add_transactionDetail_item_id"><@s.text name="label.admin.inventoryonhand.item" /><span class="required">*</span></label>
 						<div class="controls">
 							<@s.hidden name="inventoryOnhand.item.id" id="item-id" />
-							<input type="text" id="item-name" value="<#if inventoryOnhand.item??> ${inventoryOnhand.item.name!} </#if>" readonly="true" class="span4">
+							<input type="text" id="item-name" value="<#if inventoryOnhand.item??>${inventoryOnhand.item.name!} </#if>" readonly="true" class="span4">
 							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|category.name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
 						</div>
 					</div>

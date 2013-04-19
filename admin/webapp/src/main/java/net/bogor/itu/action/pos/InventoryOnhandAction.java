@@ -3,8 +3,6 @@ package net.bogor.itu.action.pos;
 import javax.inject.Inject;
 
 import net.bogor.itu.service.pos.InventoryOnhandService;
-import net.bogor.itu.service.pos.ItemService;
-
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;

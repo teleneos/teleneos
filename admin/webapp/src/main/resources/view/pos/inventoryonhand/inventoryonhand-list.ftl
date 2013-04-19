@@ -8,10 +8,10 @@
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/inventoryonhand/add" />">
+				<#--<a class="btn btn-primary span2" href="<@s.url value="/pos/inventoryonhand/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
-				</a>
+				</a>-->
 				<form class="form-inline span10" method="get">
 					<div class="input-append pull-right">
 						<input type="text" name="q" value="${q}" />
@@ -36,7 +36,7 @@
 						<#list inventoryOnhands.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${editUrl + s.id}">${s.item.name!}</a></td>
+							<td><a href="${editUrl + s.id}">${s.item.code!} - ${s.item.name!}</a></td>
 							<td>${s.stock!}</td>
 						</tr>
 						<#assign no = no + 1 />
