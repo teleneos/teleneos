@@ -48,7 +48,7 @@ public class UserAction extends DefaultAction implements
 	}
 
 	@Action(name = "/list")
-	public ActionResult userList() {
+	public ActionResult userList() throws Exception {
 		model.setDetails(userService.findDetailByUsername(model.getQ(),
 				model.getMax(), model.getPage() - 1));
 
@@ -56,7 +56,7 @@ public class UserAction extends DefaultAction implements
 	}
 
 	@Action(name = "/list/nodetail")
-	public ActionResult users() {
+	public ActionResult users() throws Exception {
 		model.setUsers(userService.findByUsername(model.getQ(), model.getMax(),
 				model.getPage() - 1));
 
@@ -100,7 +100,7 @@ public class UserAction extends DefaultAction implements
 	}
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
-	public ActionResult userEditForm() {
+	public ActionResult userEditForm() throws Exception {
 		model.setUser(userService.findByUsername(model.getQ()));
 
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");

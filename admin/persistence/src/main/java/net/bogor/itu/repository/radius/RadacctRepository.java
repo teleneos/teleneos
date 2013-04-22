@@ -25,7 +25,7 @@ public class RadacctRepository extends
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r, c, u FROM Radacct r, ConnectionHistory c, User u WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 AND c.radacct = r.acctuniqueid AND c.user.id = u.id ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r, c, u FROM Radacct r, ConnectionHistory c, User u WHERE r.acctstoptime IS NOT NULL AND r.username = ?1 AND c.radacct = r.acctuniqueid AND c.user.id = u.id ORDER BY r.radacctid DESC";
 		Query query = entityManager.createQuery(ql);
 		query.setParameter(1, username);
 
@@ -90,7 +90,6 @@ public class RadacctRepository extends
 		try{
 			return query.getResultList().size() > 1 ? true : false;			
 		}catch (NoResultException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 	}
@@ -101,7 +100,7 @@ public class RadacctRepository extends
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.acctstoptime DESC";
+		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.radacctid ASC";
 		TypedQuery<Radacct> query = entityManager
 				.createQuery(ql, Radacct.class);
 		query.setParameter(1, username + "%");
@@ -109,7 +108,7 @@ public class RadacctRepository extends
 		if (limit > 0) {
 			query.setMaxResults(limit);
 		}
-		query.setFirstResult(page);
+		query.setFirstResult(page * limit);
 
 		list.setEntityList(query.getResultList());
 

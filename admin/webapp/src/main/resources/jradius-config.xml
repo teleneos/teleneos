@@ -4,7 +4,7 @@
 
 	<!-- General Configurations debug: set to true to get extra debuggin messages 
 		timeout: how long to wait for packets, 0 indicated indefinately -->
-	<!-- <debug>true</debug> -->
+	<debug>false</debug>
 	<timeout>0</timeout>
 
 	<!-- Loading a JRadius Dictionary -->

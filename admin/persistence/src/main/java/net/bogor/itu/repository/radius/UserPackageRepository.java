@@ -36,7 +36,7 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 
 	public UserPackage findActive(String userId) {
 		String criteria = "p.user.id = ?1 AND (p.status = ?2 OR p.status = ?3) "
-				+ "ORDER BY p.logInformation.updateDate ASC";
+				+ "ORDER BY p.logInformation.createDate ASC";
 		List<UserPackage> userPackages = createQuery(entityClass, "p", "p",
 				criteria, userId, Status.NOT_ACTIVATED_YET, Status.ACTIVE)
 				.getResultList();

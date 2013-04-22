@@ -46,8 +46,20 @@
 			invalidate-session="true" />
 	</sc:http>
 
+	<sc:ldap-server url="${ldap.auth.url}" manager-dn="${ldap.manager.dn}"
+		manager-password="${ldap.manager.password}" />
+
 	<!-- Database authentication -->
 	<sc:authentication-manager id="authManager">
+		<!-- <sc:ldap-authentication-provider -->
+		<!-- user-details-class="inetOrgPerson" user-search-base="${ldap.user.search_base}" -->
+		<!-- user-search-filter="(uid={0})" group-search-base="${ldap.group.search_base}" -->
+		<!-- role-prefix="${ldap.role.prefix}"> -->
+		<!-- <sc:password-compare> -->
+		<!-- <sc:password-encoder ref="passwordEncoder" /> -->
+		<!-- </sc:password-compare> -->
+		<!-- </sc:ldap-authentication-provider> -->
+
 		<sc:authentication-provider
 			user-service-ref="userService">
 			<sc:password-encoder ref="passwordEncoder" />

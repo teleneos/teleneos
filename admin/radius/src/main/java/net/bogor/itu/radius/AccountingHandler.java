@@ -53,146 +53,132 @@ public class AccountingHandler extends PacketHandlerBase {
 
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
-		RadiusPacket req = request.getRequestPacket();
-		AttributeList rp = req.getAttributes();
+		try {
+			RadiusPacket req = request.getRequestPacket();
+			AttributeList rp = req.getAttributes();
 
-		String username = rp.get(Attr_UserName.TYPE).getValue()
-				.getValueObject().toString();
-		// String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue()
-		// .getValueObject().toString();
-		String macAddress = rp.get(Attr_CallingStationId.TYPE).getValue()
-				.getValueObject().toString();
-		String uniqueSessionId = rp.get(Attr_AcctUniqueSessionId.TYPE)
-				.getValue().getValueObject().toString();
+			String username = rp.get(Attr_UserName.TYPE).getValue()
+					.getValueObject().toString();
+			// String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue()
+			// .getValueObject().toString();
+			String macAddress = rp.get(Attr_CallingStationId.TYPE).getValue()
+					.getValueObject().toString();
+			String uniqueSessionId = rp.get(Attr_AcctUniqueSessionId.TYPE)
+					.getValue().getValueObject().toString();
 
-		String acctStatusType = req.getAttributeValue("Acct-Status-Type")
-				.toString();
+			String acctStatusType = req.getAttributeValue("Acct-Status-Type")
+					.toString();
 
-		User user = userService.findByUsername(username);
-		UserPackage userPackage = packageService
-				.findActivePackage(user.getId());
+			User user = userService.findByUsername(username);
+			UserPackage userPackage = packageService.findActivePackage(user
+					.getId());
 
-		// User doesn't subscribe any active package
-		if (userPackage == null) {
-			LOG.info("No active package for user:" + username);
-			radiusService.logout(macAddress);
+			// User doesn't subscribe any active package
+			if (userPackage == null) {
+				LOG.info("No active package for user:" + username);
+				radiusService.logout(macAddress);
 
-			request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
-			return false;
-		}
+				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
+				return false;
+			}
 
-		InternetPackage internetPackage = userPackage.getInternetPackage();
+			InternetPackage internetPackage = userPackage.getInternetPackage();
 
-		LOG.info("Persisting history for user: " + username);
+			LOG.info("Persisting history for user: " + username);
+			LOG.info("Accounting status type: " + acctStatusType);
+			LOG.info("User package status: " + userPackage.getStatus() + " "
+					+ userPackage.getId());
 
-		// Acct-Status-Type = Start
-		if ("1".equalsIgnoreCase(acctStatusType)) {
-			// Set status active, add end date
-			if (userPackage.getStatus().equals(Status.NOT_ACTIVATED_YET)) {
-				long min = userPackage.getInternetPackage().getTime();
-				int p = (int) (min / Integer.MAX_VALUE);
+			// Acct-Status-Type = Start
+			if ("1".equalsIgnoreCase(acctStatusType)) {
+				// Set status active, add end date
+				if (userPackage.getStatus().equals(Status.NOT_ACTIVATED_YET)) {
+					long min = userPackage.getInternetPackage().getTime();
+					int p = (int) (min / Integer.MAX_VALUE);
 
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(userPackage.getLogInformation()
-						.getCreateDate());
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(userPackage.getLogInformation()
+							.getCreateDate());
 
-				for (int i = 0; i < p; i++) {
-					calendar.add(Calendar.MINUTE, Integer.MAX_VALUE);
+					for (int i = 0; i < p; i++) {
+						calendar.add(Calendar.MINUTE, Integer.MAX_VALUE);
+					}
+
+					calendar.add(Calendar.MINUTE,
+							(int) (min % Integer.MAX_VALUE));
+					long quota = internetPackage.getQuota();
+					LOG.info("Activating package: " + internetPackage.getCode()
+							+ "(" + internetPackage.getName() + ")");
+					LOG.info("Quota: " + quota);
+
+					userPackage.setStatus(Status.ACTIVE);
+					userPackage.setEndDate(calendar.getTime());
+					userPackage.setQuotaBalance(quota);
+					userPackage.setUnlimited(quota < 1);
+
+					packageService.save(userPackage);
 				}
 
-				calendar.add(Calendar.MINUTE, (int) (min % Integer.MAX_VALUE));
-				long quota = internetPackage.getQuota();
+				ConnectionHistory connectionHistory = new ConnectionHistory();
+				connectionHistory.setRadacct(uniqueSessionId);
+				connectionHistory.setUser(user);
+				connectionHistory.setUserPackage(userPackage);
 
-				userPackage.setStatus(Status.ACTIVE);
-				userPackage.setEndDate(calendar.getTime());
-				userPackage.setQuotaBalance(quota);
-				userPackage.setUnlimited(quota < 1);
+				historyService.save(connectionHistory);
+
+				LOG.info("Done persisting history for user: " + username);
+			}
+
+			Date now = new Date(System.currentTimeMillis());
+			LOG.info("Current time: " + now);
+			LOG.info("Package expired at: " + userPackage.getEndDate());
+
+			// Package expired
+			if (!"2".equalsIgnoreCase(acctStatusType)) {
+				if (now.compareTo(userPackage.getEndDate()) > 0) {
+					LOG.info("Expired package: " + internetPackage.getName()
+							+ " for user: " + username);
+
+					userPackage.setStatus(Status.END);
+					packageService.save(userPackage);
+
+					radiusService.logout(macAddress);
+
+					request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
+					return false;
+				}
+			}
+
+			if ("2".equalsIgnoreCase(acctStatusType)
+					|| "3".equalsIgnoreCase(acctStatusType)) {
+				long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
+						.getValue().getValueObject().toString());
+				long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
+						.getValue().getValueObject().toString());
+
+				LOG.info("Quota Balance: " + userPackage.getQuotaBalance());
+				LOG.info("Bandwidth usage: " + ((download + upload) / 1024));
+				LOG.info("Unlimited : " + userPackage.isUnlimited()
+						+ " sub. method: " + internetPackage.getPaymentMethod());
+				userPackage.setQuotaBalance(userPackage.getQuotaBalance()
+						- ((download + upload) / 1024));
+
+				if ((!userPackage.isUnlimited())
+						&& userPackage.getQuotaBalance() < 1
+						&& internetPackage.getPaymentMethod().equals(
+								PaymentMethod.PREPAID)) {
+					LOG.info("End of quota balance: " + username);
+					userPackage.setStatus(Status.END);
+
+					radiusService.logout(macAddress);
+				}
 
 				packageService.save(userPackage);
 			}
 
-			ConnectionHistory connectionHistory = new ConnectionHistory();
-			connectionHistory.setRadacct(uniqueSessionId);
-			connectionHistory.setUser(user);
-			connectionHistory.setUserPackage(userPackage);
-
-			historyService.save(connectionHistory);
-
-			LOG.info("Done persisting history for user: " + username);
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
 		}
-
-		Date now = new Date(System.currentTimeMillis());
-		LOG.info("Current time: " + now);
-		LOG.info("Package expired at: " + userPackage.getEndDate());
-
-		// Package expired
-		if (now.compareTo(userPackage.getEndDate()) > 0) {
-			LOG.info("Expired package: " + internetPackage.getName()
-					+ " for user: " + username);
-
-			userPackage.setStatus(Status.END);
-			packageService.save(userPackage);
-
-			radiusService.logout(macAddress);
-
-			request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
-			return false;
-		}
-
-		if ("2".equalsIgnoreCase(acctStatusType)
-				|| "3".equalsIgnoreCase(acctStatusType)) {
-			long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
-					.getValue().getValueObject().toString());
-			long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
-					.getValue().getValueObject().toString());
-
-			userPackage.setQuotaBalance(userPackage.getQuotaBalance()
-					- (download + upload));
-
-			if (!userPackage.isUnlimited()
-					&& userPackage.getQuotaBalance() < 1
-					&& internetPackage.getPaymentMethod().equals(
-							PaymentMethod.PREPAID)) {
-				userPackage.setStatus(Status.END);
-
-				radiusService.logout(macAddress);
-			}
-
-			packageService.save(userPackage);
-		}
-
-		// LOG.info("Attribute List: " + rp.getAttributeList());
-
-		// Radacct radacct = radacctService.findByUniq(uniqueSessionId);
-
-		// try {
-		// radacct = radacctService.findFirstSession(username);
-		//
-		// LOG.info("Timestamp: "
-		// + radiusDateFormat.parse(timestamp).getTime());
-		// LOG.info("Radacct Start Time: "
-		// + radacct.getAcctstarttime().getTime());
-		// long firstlogin = radacct.getAcctstarttime().getTime();
-		// long variablemilis = user.getInternetPackage().getTime() * 60000;
-		// long toend = firstlogin + variablemilis;
-		// LOG.info("Package variable: "
-		// + user.getInternetPackage().getTime() * 60000);
-		// if (!radacctService.checkIsOnline(username)) {
-		// if
-		// (user.getInternetPackage().getType().equals(Type.COUNTDOWN))
-		// {
-		// if (format.parse(timestamp).compareTo(new Date(toend)) > 0) {
-		// radiusService.logout(rp.get(Attr_CallingStationId.TYPE)
-		// .getValue().getValueObject().toString());
-		// }
-		// }
-		// } else {
-		// radiusService.logout(rp.get(Attr_CallingStationId.TYPE)
-		// .getValue().getValueObject().toString());
-		// }
-		// } catch (IndexOutOfBoundsException e) {
-		// LOG.error(e.getMessage());
-		// }
 
 		request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 		return false;

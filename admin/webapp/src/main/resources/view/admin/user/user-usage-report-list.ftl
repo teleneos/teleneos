@@ -72,6 +72,7 @@
 						<#list listacc.entityList as x>
 						<#assign a = x[0] />
 						<#assign b = x[2] />
+						<#assign c = x[1] />
 						<tr>
 							<td>${no}</td>
 							<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
@@ -83,8 +84,7 @@
 							</td>
 							<td>${byteString(a.acctinputoctets)}</td>
 							<td>${byteString(a.acctoutputoctets)}</td>
-							<td>${b.internetPackage.name}</td>
-							<td></td>
+							<td>${c.userPackage.internetPackage.name!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

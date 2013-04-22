@@ -33,7 +33,7 @@ public class UserAction extends DefaultAction implements
 	private UserService userService;
 
 	@Action
-	public ActionResult statistic() {
+	public ActionResult statistic() throws Exception {
 		BackendUser user = SessionCredentials.currentUser();
 		model.setAccts(radacctService.findByUsername(user.getUsername(),
 				model.getMax(), model.getPage() - 1));

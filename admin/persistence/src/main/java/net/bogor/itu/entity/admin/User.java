@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import net.bogor.itu.entity.Address;
 import net.bogor.itu.entity.Name;
+import net.bogor.itu.entity.master.InternetPackage;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.meruvian.yama.security.user.BackendUser;
@@ -33,7 +35,7 @@ public class User extends DefaultPersistence {
 	private String phone;
 	// private List<UserGroup> userGroups = new ArrayList<UserGroup>();
 	// private GroupA group;
-	// private InternetPackage internetPackage;
+	private InternetPackage internetPackage;
 	// private Set<UserPackage> userPackages = new HashSet<UserPackage>(0);
 	private String occupation;
 	private String idcard;
@@ -119,15 +121,15 @@ public class User extends DefaultPersistence {
 	// this.group = group;
 	// }
 
-	// @ManyToOne
-	// @JoinColumn(name = "package_id")
-	// public InternetPackage getInternetPackage() {
-	// return internetPackage;
-	// }
-	//
-	// public void setInternetPackage(InternetPackage internetPackage) {
-	// this.internetPackage = internetPackage;
-	// }
+	@ManyToOne
+	@JoinColumn(name = "package_id")
+	public InternetPackage getInternetPackage() {
+		return internetPackage;
+	}
+
+	public void setInternetPackage(InternetPackage internetPackage) {
+		this.internetPackage = internetPackage;
+	}
 
 	// @JsonIgnore
 	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

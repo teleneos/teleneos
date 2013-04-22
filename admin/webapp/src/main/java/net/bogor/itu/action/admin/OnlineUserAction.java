@@ -51,7 +51,7 @@ public class OnlineUserAction extends DefaultAction implements
 	}
 
 	@Action(name = "report/{uid}")
-	public ActionResult userReport() {
+	public ActionResult userReport() throws Exception {
 		model.setListacc(radacctService.findDetailByUsername(model.getUid(),
 				model.getMax(), model.getPage() - 1));
 		model.setUser(userService.findByUsername(model.getUid()));

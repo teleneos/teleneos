@@ -41,7 +41,7 @@ public class BackendUserDAO extends PersistenceRepository<BackendUser> {
 		try {
 			return query.getSingleResult();
 		} catch (Exception e) {
-			LOG.error("No entity found within key " + username, e);
+			LOG.error("No entity found within key: " + username);
 
 			return null;
 		}

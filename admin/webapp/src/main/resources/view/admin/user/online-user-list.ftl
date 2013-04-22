@@ -43,12 +43,13 @@
 						</tr>
 					</thead>
 					<tbody>
+						<@s.url value="/admin/user/report/" var="reportUrl" />
 						<#assign no = 1 + ((page - 1) * max) />
 						<#list accts.entityList as a>
 						<tr>
 							<td>${no}</td>
 							<td>${a.radacctid?string('#')}</td>
-							<td>${a.username!}</td>
+							<td><a href="${reportUrl}${a.username!}">${a.username!}</a></td>
 							<td>${a.framedipaddress!}</td>
 							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
 							<td>${byteString(a.acctinputoctets)}</td>

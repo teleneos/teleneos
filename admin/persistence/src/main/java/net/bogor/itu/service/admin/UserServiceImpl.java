@@ -1,9 +1,10 @@
 package net.bogor.itu.service.admin;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.bogor.itu.entity.admin.User;
-import net.bogor.itu.repository.admin.UserRepository;
+import net.bogor.itu.repository.admin.user.UserRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -20,7 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
+	// @Inject
+	// private UserRepository userRepo;
+
 	@Inject
+	@Named("dbUserRepository")
 	private UserRepository userRepo;
 
 	@Inject
@@ -40,11 +45,17 @@ public class UserServiceImpl implements UserService {
 			backendUser.setPassword(encoder.encodePassword(
 					backendUser.getPassword(), null));
 			backendUserRepo.persist(backendUser);
-			userRepo.persist(user);
+			// userRepo.persist(user);
 		} else {
 			BackendUser bu = user.getUser();
 
-			User u = userRepo.findById(user.getId());
+			User u = null;
+			try {
+				u = userRepo.findByUsername(bu.getUsername());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// userRepo.findById(user.getId());
 			BackendUser b = u.getUser();
 
 			b.setUsername(bu.getUsername());
@@ -71,18 +82,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findById(String id) {
-		return userRepo.findById(id);
-	}
-
-	@Override
-	public User findByUsername(String username) {
+	public User findByUsername(String username) throws Exception {
 		return userRepo.findByUsername(username);
 	}
 
 	@Override
 	public EntityListWrapper<User> findByUsername(String username, int limit,
-			int page) {
+			int page) throws Exception {
 		return userRepo.findByUsername(username, limit, page);
 	}
 
@@ -93,7 +99,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public EntityListWrapper<Object[]> findDetailByUsername(String username,
-			int limit, int page) {
+			int limit, int page) throws Exception {
 		return userRepo.findDetailByUsername(username, limit, page);
 	}
+
+	// @Inject
+	// public void setApplicationContext(ApplicationContext context,
+	// @Value("${auth.provider}") String authProvider)
+	// throws BeansException {
+	// Class<UserRepository> repoClass = UserRepository.class;
+	//
+	// userRepo = context.getBean(authProvider + repoClass.getSimpleName(),
+	// repoClass);
+	// }
+
 }
