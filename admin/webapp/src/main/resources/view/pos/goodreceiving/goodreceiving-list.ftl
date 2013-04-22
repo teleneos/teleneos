@@ -41,7 +41,7 @@
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.invoiceNo!}</a></td>
-							<td>${s.date!}</td>
+							<td>${s.logInformation.createDate!}</td>
 							<td>${s.businessPartner.name!}</td>
 							<td>${s.item.code!} - ${s.item.name!}</td>
 							<td>${s.quantity!}</td>
