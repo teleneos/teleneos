@@ -7,20 +7,20 @@
 	</head>
 	<body>
 		<#function byteString byte>
-			<#if byte &gt; (1024 * 1024 * 1024)>
+			<#if byte % (1024 * 1024 * 1024) == 0>
 				<#return (byte / (1024 * 1024 * 1024))?string('0.#') />
-			<#elseif byte &gt; (1024 * 1024)>
+			<#elseif (byte >= (1024 * 1024)) && (byte % (1024 * 1024) == 0)>
 				<#return (byte / (1024 * 1024))?string('0.#') />
-			<#elseif byte &gt; 1024>
+			<#elseif byte >= 1024>
 				<#return (byte / 1024)?string('0.#') />
 			<#else>
 				<#return byte?string('0.#') />
 			</#if>
 		</#function>
 		<#function byteVal byte>
-			<#if (byte >= (1024 * 1024 * 1024))>
+			<#if (byte % (1024 * 1024 * 1024) == 0)>
 				<#return ((1024 * 1024 * 1024))?string('0.#') />
-			<#elseif (byte >= (1024 * 1024))>
+			<#elseif (byte >= (1024 * 1024)) && (byte % (1024 * 1024) == 0)>
 				<#return ((1024 * 1024))?string('0.#') />
 			<#elseif (byte >= 1024)>
 				<#return (1024)?string('0.#') />
@@ -73,7 +73,7 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" ><span class="required">*</span> Bandwidth Quota</label>
+						<label class="control-label" ><span class="required">*</span> Bandwidth Quota </label>
 						<div class="controls">
 							<input class="span2" name="internetPackage.quota" value="${byteString(internetPackage.quota!0)}" type="text">
 							<@s.select name="qb" theme="simple" style="width: 70px;" value="${byteVal(internetPackage.quota!0)}" listKey="key" listValue="value" list={"${(1024 * 1024)?string('#')}" : 'MB', "${(1024 * 1024 * 1024)?string('#')}" : 'GB'} />
