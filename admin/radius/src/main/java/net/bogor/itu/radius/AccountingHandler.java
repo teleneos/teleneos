@@ -47,10 +47,6 @@ public class AccountingHandler extends PacketHandlerBase {
 	@Inject
 	private UserPackageService packageService;
 
-	// private static final SimpleDateFormat radiusDateFormat = new
-	// SimpleDateFormat(
-	// "EEE MMM dd hh:mm:ss z yyyy");
-
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
 		try {
@@ -59,8 +55,6 @@ public class AccountingHandler extends PacketHandlerBase {
 
 			String username = rp.get(Attr_UserName.TYPE).getValue()
 					.getValueObject().toString();
-			// String timestamp = rp.get(Attr_EventTimestamp.TYPE).getValue()
-			// .getValueObject().toString();
 			String macAddress = rp.get(Attr_CallingStationId.TYPE).getValue()
 					.getValueObject().toString();
 			String uniqueSessionId = rp.get(Attr_AcctUniqueSessionId.TYPE)
@@ -86,8 +80,7 @@ public class AccountingHandler extends PacketHandlerBase {
 
 			LOG.info("Persisting history for user: " + username);
 			LOG.info("Accounting status type: " + acctStatusType);
-			LOG.info("User package status: " + userPackage.getStatus() + " "
-					+ userPackage.getId());
+			LOG.info("User package status: " + userPackage.getStatus());
 
 			// Acct-Status-Type = Start
 			if ("1".equalsIgnoreCase(acctStatusType)) {
@@ -156,12 +149,15 @@ public class AccountingHandler extends PacketHandlerBase {
 				long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
 						.getValue().getValueObject().toString());
 
-				LOG.info("Quota Balance: " + userPackage.getQuotaBalance());
-				LOG.info("Bandwidth usage: " + ((download + upload) / 1024));
+				LOG.info("Quota Balance: "
+						+ (userPackage.getQuotaBalance() / 1024) + "KB");
+				LOG.info("Bandwidth usage: " + ((download + upload) / 1024)
+						+ "KB");
 				LOG.info("Unlimited : " + userPackage.isUnlimited()
-						+ " sub. method: " + internetPackage.getPaymentMethod());
+						+ ", subscription method: "
+						+ internetPackage.getPaymentMethod());
 				userPackage.setQuotaBalance(userPackage.getQuotaBalance()
-						- ((download + upload) / 1024));
+						- (download + upload));
 
 				if ((!userPackage.isUnlimited())
 						&& userPackage.getQuotaBalance() < 1
