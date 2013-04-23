@@ -12,6 +12,7 @@ import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 
@@ -58,18 +59,30 @@ public class ItemAction extends DefaultAction implements ModelDriven<ItemActionM
 				"/view/pos/item/item-form.ftl");
 	}
 
-	@Action(name = "/edit/{item.id}", method = HttpMethod.POST)
+	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = { 
-	@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
-	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull")})
+			@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
+			@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull"),
+		}, 
+		requiredFields = { 
+			@RequiredFieldValidator(fieldName = "item.price", key = "message.pos.item.price.notnull"),
+			@RequiredFieldValidator(fieldName = "item.uom.name", key = "message.pos.item.uom.notnull"),
+			@RequiredFieldValidator(fieldName = "item.category.name", key = "message.pos.item.category.notnull"),
+	})
 	public ActionResult updateService() {
 		return addService();
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = { 
-	@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
-	@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull")})
+			@RequiredStringValidator(fieldName = "item.code", trim = true, key = "message.pos.item.code.notnull"),
+			@RequiredStringValidator(fieldName = "item.name", trim = true, key = "message.pos.item.name.notnull"),
+		}, 
+		requiredFields = { 
+			@RequiredFieldValidator(fieldName = "item.price", key = "message.pos.item.price.notnull"),
+			@RequiredFieldValidator(fieldName = "item.uom.name", key = "message.pos.item.uom.notnull"),
+			@RequiredFieldValidator(fieldName = "item.category.name", key = "message.pos.item.category.notnull"),
+	})
 	public ActionResult addService() {
 		itemService.save(model.getItem());
 

@@ -18,7 +18,7 @@
 						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.uom" /><span class="required">*</span></label>
 							<div class="controls">
 							<@s.hidden id="uom-id" name="item.uom.id" />
-							<input type="text" readonly="true" value="<#if item.uom??> ${item.uom.name!} </#if>" id="uom-name" class="span4">
+							<input type="text" readonly="true" value="<#if item.uom??> ${item.uom.name!} </#if>" id="uom-name" class="span4" name="item.uom.name">
 							<button class="btn openpopup" type="button" title="<@s.text name="page.uom.title" />" object-name="uoms|name" field-target="uom-id|uom-name" href="<@s.url value="/pos/uom" />">Choose</button>
 							</div>
 					</div>
@@ -26,7 +26,7 @@
 						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.category" /><span class="required">*</span></label>
 							<div class="controls">
 							<@s.hidden id="category-id" name="item.category.id" />
-							<input type="text" readonly="true" value="<#if item.category??> ${item.category.name!} </#if>" id="category-name" class="span4">
+							<input type="text" readonly="true" value="<#if item.category??> ${item.category.name!} </#if>" id="category-name" class="span4" name="item.category.name">
 							<button class="btn openpopup" type="button" title="<@s.text name="page.itemcategory.title" />" object-name="itemCategories|name" field-target="category-id|category-name" href="<@s.url value="/pos/itemcategory" />">Choose</button>
 							</div>
 					</div>
