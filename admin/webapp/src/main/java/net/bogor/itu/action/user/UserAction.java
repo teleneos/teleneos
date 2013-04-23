@@ -35,7 +35,7 @@ public class UserAction extends DefaultAction implements
 	@Action
 	public ActionResult statistic() throws Exception {
 		BackendUser user = SessionCredentials.currentUser();
-		model.setAccts(radacctService.findByUsername(user.getUsername(),
+		model.setListacc(radacctService.findDetailByUsername(user.getUsername(),
 				model.getMax(), model.getPage() - 1));
 		model.setUser(userService.findByUsername(user.getUsername()));
 		model.setStatistic(radacctService.findStatistic(model.getQ()));

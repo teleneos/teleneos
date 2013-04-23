@@ -69,7 +69,7 @@
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list accts.entityList as x>
+						<#list listacc.entityList as x>
 						<#assign a = x[0] />
 						<#assign b = x[2] />
 						<#assign c = x[1] />
@@ -97,9 +97,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${accts.rowCount?string('#')},
+				items: ${listacc.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(accts.currentPage + 1)?string('#')},
+				currentPage: ${(listacc.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?page='
 			});
 		});
