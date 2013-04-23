@@ -126,7 +126,7 @@
 									<tr>
 										<td>${no}</td>
 										<td><#if s.item??>${s.item.name!}</#if></td>
-										<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
+										<td style="text-align: center;"><#if s.item??>${s.quantity!} ${s.item.uom.name!}<#else>-</#if></td>
 										<td style="text-align: right;">${s.price!}</td>
 										<td style="text-align: right;">${price}</td>
 										<#if !transactionHeader.cash??>
@@ -143,7 +143,7 @@
 								<tr>
 									<td></td>
 									<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>
-									<td style="text-align: center;"><strong>${totalQnty}</strong> </td>
+									<td style="text-align: center;"><#--<strong>${totalQnty}</strong>--></td>
 									<td style="text-align: right;" colspan="2"><strong>${totalPrice}</strong> </td>
 								</tr>
 							</tbody>
@@ -210,7 +210,7 @@
 					<#if !transactionHeader.cash??>
 						<@s.form theme="bootstrap" action="/pos/transaction/cash" cssClass="form-horizontal">
 						<@s.hidden name="transactionHeader.id" />
-						<h3 class="pull-right">Grand total ${(totalPriceInternet+totalPrice!0)?string('0.###')}</h3>
+						<h3 class="pull-right">Grand Total ${(totalPriceInternet+totalPrice!0)?string('0.###')}</h3>
 						<br/>
 						<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
 						<div class="form-actions">
