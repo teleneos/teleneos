@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
 			u.setName(user.getName());
 			u.setPhone(user.getPhone());
 			u.setIdcard(user.getIdcard());
+			u.setOccupation(user.getOccupation());
 
 			user = u;
 		}

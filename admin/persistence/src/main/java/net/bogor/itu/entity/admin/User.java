@@ -24,19 +24,13 @@ import org.meruvian.yama.security.user.BackendUser;
 @Entity
 @Table(name = "tc_user")
 public class User extends DefaultPersistence {
-
-	private static final long serialVersionUID = -4402068984793789574L;
-
 	private BackendUser user;
 	private Name name = new Name();
 	private Address address = new Address();
 	private Date birthDate;
 	private boolean male = true;
 	private String phone;
-	// private List<UserGroup> userGroups = new ArrayList<UserGroup>();
-	// private GroupA group;
 	private InternetPackage internetPackage;
-	// private Set<UserPackage> userPackages = new HashSet<UserPackage>(0);
 	private String occupation;
 	private String idcard;
 
@@ -101,26 +95,6 @@ public class User extends DefaultPersistence {
 		this.phone = phone;
 	}
 
-	// @JsonIgnore
-	// @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	// public List<UserGroup> getUserGroups() {
-	// return userGroups;
-	// }
-	//
-	// public void setUserGroups(List<UserGroup> userGroups) {
-	// this.userGroups = userGroups;
-	// }
-	//
-	// @ManyToOne
-	// @JoinColumn(name = "group_id")
-	// public GroupA getGroup() {
-	// return group;
-	// }
-	//
-	// public void setGroup(GroupA group) {
-	// this.group = group;
-	// }
-
 	@ManyToOne
 	@JoinColumn(name = "package_id")
 	public InternetPackage getInternetPackage() {
@@ -130,17 +104,6 @@ public class User extends DefaultPersistence {
 	public void setInternetPackage(InternetPackage internetPackage) {
 		this.internetPackage = internetPackage;
 	}
-
-	// @JsonIgnore
-	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	// @OrderColumn(name = "usr_idx")
-	// public Set<UserPackage> getUserPackages() {
-	// return userPackages;
-	// }
-	//
-	// public void setUserPackages(Set<UserPackage> userPackages) {
-	// this.userPackages = userPackages;
-	// }
 
 	public String getOccupation() {
 		return occupation;

@@ -8,12 +8,14 @@ import javax.inject.Inject;
 import net.bogor.itu.service.admin.InternetPackageService;
 import net.bogor.itu.service.admin.UserService;
 
+import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
@@ -85,15 +87,37 @@ public class UserAction extends DefaultAction implements
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, regexFields = {
 			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
-			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
+			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length"),
+			@RegexFieldValidator(fieldName = "user.phone", expression = "^([0-9]*)$", key = "message.admin.user.phone.notvalid") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
 			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userSubmit() throws Exception {
+		boolean isCreate = StringUtils.isBlank(model.getUser().getId());
+
 		model.getUser().setInternetPackage(null);
 		model.getUser().getUser().setRole("USER");
-		userService.save(model.getUser());
+
+		try {
+			userService.save(model.getUser());
+		} catch (DataIntegrityViolationException e) {
+			if (isCreate) {
+				model.getUser().setId(null);
+				model.getUser().getUser().setPassword(null);
+			}
+
+			if (e.getMessage().contains("username"))
+				addFieldError("user.user.username",
+						getText("message.admin.user.username.inuse"));
+
+			if (e.getMessage().contains("email"))
+				addFieldError("user.user.email",
+						getText("message.admin.user.email.inuse"));
+
+			return new ActionResult("freemarker",
+					"/view/admin/user/user-form.ftl");
+		}
 
 		return new ActionResult("/pos/transaction/addstarter?id="
 				+ model.getUser().getId()).setType("redirect");
@@ -116,13 +140,16 @@ public class UserAction extends DefaultAction implements
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.email", trim = true, key = "message.admin.user.email.notnull") }, regexFields = {
 			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
-			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
+			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length"),
+			@RegexFieldValidator(fieldName = "user.phone", expression = "^([0-9]*)$", key = "message.admin.user.phone.notvalid") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
 			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userEditSubmit() throws Exception {
-		userSubmit();
+		ActionResult result = userSubmit();
+		if (result.getType().equals("freemarker"))
+			return result;
 
 		return new ActionResult("redirect", "/admin/user/edit/" + model.getQ()
 				+ "?success");
