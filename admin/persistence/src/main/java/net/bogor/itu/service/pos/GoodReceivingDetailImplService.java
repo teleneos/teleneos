@@ -50,14 +50,19 @@ public class GoodReceivingDetailImplService implements
 			Conversion conversion = conversionService.findConversion(item
 					.getUom().getId(), goodReceivingDetail.getUom().getId());
 			int qtyConvert = 0;
-			if (conversion.getUomFrom().getId()
+			if (item.getUom().getId()
 					.equals(goodReceivingDetail.getUom().getId())) {
-				qtyConvert = (goodReceivingDetail.getQuantity() / conversion
-						.getQty()) * conversion.getMultiplyRate();
-			} else if (conversion.getUomTo().getId()
-					.equals(goodReceivingDetail.getUom().getId())) {
-				qtyConvert = (goodReceivingDetail.getQuantity() / conversion
-						.getMultiplyRate()) * conversion.getQty();
+				qtyConvert = goodReceivingDetail.getQuantity();
+			} else {
+				if (conversion.getUomFrom().getId()
+						.equals(goodReceivingDetail.getUom().getId())) {
+					qtyConvert = (goodReceivingDetail.getQuantity() / conversion
+							.getQty()) * conversion.getMultiplyRate();
+				} else if (conversion.getUomTo().getId()
+						.equals(goodReceivingDetail.getUom().getId())) {
+					qtyConvert = (goodReceivingDetail.getQuantity() / conversion
+							.getMultiplyRate()) * conversion.getQty();
+				}
 			}
 			goodReceivingDetail.setQuantity(qtyConvert);
 			InventoryOnhand onhand = inventoryOnhandRepository
