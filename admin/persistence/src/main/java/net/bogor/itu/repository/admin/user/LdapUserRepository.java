@@ -18,8 +18,6 @@ import net.bogor.itu.entity.Name;
 import net.bogor.itu.entity.admin.User;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.security.user.BackendUser;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +36,7 @@ import org.springframework.stereotype.Repository;
  * @author Dian Aditya
  * 
  */
-@Repository("ldapUserRepository")
+// @Repository("ldapUserRepository")
 public class LdapUserRepository implements UserRepository {
 
 	@Inject

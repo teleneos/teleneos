@@ -20,13 +20,12 @@ import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Dian Aditya
  * 
  */
-@Repository("ldapBackendUserRepository")
+// @Repository("ldapBackendUserRepository")
 public class LdapBackendUserRepository implements BackendUserRepository {
 
 	private static final Log LOG = LogFactory

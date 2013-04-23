@@ -12,7 +12,7 @@ import org.meruvian.yama.persistence.EntityListWrapper;
  * 
  */
 public interface UserService {
-	User save(User user);
+	User save(User user) throws Exception;
 
 	User findByUsername(String username) throws Exception;
 

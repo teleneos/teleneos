@@ -21,9 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-	// @Inject
-	// private UserRepository userRepo;
-
 	@Inject
 	@Named("dbUserRepository")
 	private UserRepository userRepo;
@@ -36,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public User save(User user) {
+	public User save(User user) throws Exception {
 		if (StringUtils.isBlank(user.getId())) {
 			user.setId(null);
 
@@ -45,7 +42,7 @@ public class UserServiceImpl implements UserService {
 			backendUser.setPassword(encoder.encodePassword(
 					backendUser.getPassword(), null));
 			backendUserRepo.persist(backendUser);
-			// userRepo.persist(user);
+			userRepo.persist(user);
 		} else {
 			BackendUser bu = user.getUser();
 
@@ -55,7 +52,7 @@ public class UserServiceImpl implements UserService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// userRepo.findById(user.getId());
+
 			BackendUser b = u.getUser();
 
 			b.setUsername(bu.getUsername());

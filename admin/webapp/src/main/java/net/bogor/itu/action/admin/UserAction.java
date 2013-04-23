@@ -90,7 +90,7 @@ public class UserAction extends DefaultAction implements
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
-	public ActionResult userSubmit() {
+	public ActionResult userSubmit() throws Exception {
 		model.getUser().setInternetPackage(null);
 		model.getUser().getUser().setRole("USER");
 		userService.save(model.getUser());
@@ -121,7 +121,7 @@ public class UserAction extends DefaultAction implements
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
-	public ActionResult userEditSubmit() {
+	public ActionResult userEditSubmit() throws Exception {
 		userSubmit();
 
 		return new ActionResult("redirect", "/admin/user/edit/" + model.getQ()
