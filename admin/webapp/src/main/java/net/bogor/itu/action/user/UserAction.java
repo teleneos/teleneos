@@ -37,8 +37,9 @@ public class UserAction extends DefaultAction implements
 		BackendUser user = SessionCredentials.currentUser();
 		model.setListacc(radacctService.findDetailByUsername(user.getUsername(),
 				model.getMax(), model.getPage() - 1));
+		
 		model.setUser(userService.findByUsername(user.getUsername()));
-		model.setStatistic(radacctService.findStatistic(model.getQ()));
+		model.setStatistic(radacctService.findStatistic(user.getUsername()));
 
 		return new ActionResult("freemarker",
 				"/view/admin/user/user-usage-list.ftl");
