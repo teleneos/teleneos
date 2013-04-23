@@ -148,7 +148,13 @@ public class goodReceivingAction extends DefaultAction implements
 		return new ActionResult("/pos/goodreceiving/detail/"
 				+ model.getGoodReceiving().getId()).setType("redirect");
 	}
-
+	
+	@Action(name = "/inventory", method = HttpMethod.POST)
+	public ActionResult inventory() {
+		goodReceivingDetailService.toInventory(model.getGoodReceiving().getId());
+		return new ActionResult("/pos/goodreceiving/detail/"+model.getGoodReceiving().getId()).setType("redirect");
+	}
+	
 	@Action(name = "/invoice", method = HttpMethod.POST)
 	public ActionResult addInvoice() {
 

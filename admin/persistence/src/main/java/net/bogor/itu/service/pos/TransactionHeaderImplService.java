@@ -2,7 +2,10 @@ package net.bogor.itu.service.pos;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.pos.InventoryOnhand;
+import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
+import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 import net.bogor.itu.repository.pos.TransactionHeaderRepository;
 import net.bogor.itu.repository.radius.UserPackageRepository;
 
@@ -25,6 +28,9 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 	@Inject
 	private UserPackageRepository packageRepository;
 
+	@Inject
+	private InventoryOnhandRepository onhandRepository; 
+	
 	@Override
 	public TransactionHeader findById(String id) {
 		return tHeaderRepository.findById(id);
@@ -42,8 +48,23 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 					.getId());
 			th.setCash(transactionHeader.getCash());
 			th.setComplete(true);
+			for (TransactionDetail td : th.getDetails()) {
+				InventoryOnhand stock = onhandRepository.findByItem(td.getItem().getId()); 
+				
+				if (td.getConversion() != null) {
+					stock.setStock(stock.getStock()-(td.getQuantity()
+							* td.getConversion().getMultiplyRate()));
+					System.err.println("Kurangi " + td.getItem().getName()
+							+ " " + td.getQuantity()
+							* td.getConversion().getMultiplyRate());
+				} else {
+					stock.setStock(stock.getStock()-(td.getQuantity()));
+					System.err.println("Kurangi " + td.getItem().getName()
+							+ " " + td.getQuantity());
+				}
+			}
 			packageRepository.save(th.getId(), th.getUser());
-
+			
 			transactionHeader = th;
 		}
 

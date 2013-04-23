@@ -5,12 +5,12 @@ import javax.inject.Inject;
 import net.bogor.itu.entity.pos.Conversion;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.entity.pos.InventoryOnhand;
-import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.repository.pos.GoodReceivingDetailRepository;
 import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
+import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +28,12 @@ public class GoodReceivingDetailImplService implements
 
 	@Inject
 	private InventoryOnhandRepository inventoryOnhandRepository;
-
+	
+	@Inject
+	private GoodReceivingService goodReceivingService;
+	
 	@Inject
 	private ConversionService conversionService;
-
-	@Inject
-	private ItemService itemService;
 
 	@Override
 	public GoodReceivingDetail findById(String id) {
@@ -42,43 +42,51 @@ public class GoodReceivingDetailImplService implements
 
 	@Override
 	@Transactional
-	public GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail) {
-		if (StringUtils.isBlank(goodReceivingDetail.getId())) {
-			goodReceivingDetail.setId(null);
-			Item item = itemService.findById(goodReceivingDetail.getItem()
-					.getId());
-			Conversion conversion = conversionService.findConversion(item
+	public void toInventory(String goodReceivingId) {
+		for (GoodReceivingDetail goodReceivingDetail : goodReceivingDetailRepository
+				.findByParent(goodReceivingId, 0, 0).getEntityList()) {
+			Conversion conversion = conversionService.findConversion(goodReceivingDetail.getItem()
 					.getUom().getId(), goodReceivingDetail.getUom().getId());
 			int qtyConvert = 0;
-			if (item.getUom().getId()
+			if (goodReceivingDetail.getItem().getUom().getId()
 					.equals(goodReceivingDetail.getUom().getId())) {
 				qtyConvert = goodReceivingDetail.getQuantity();
 			} else {
 				if (conversion.getUomFrom().getId()
 						.equals(goodReceivingDetail.getUom().getId())) {
-//					qtyConvert = (goodReceivingDetail.getQuantity() / conversion.getQty()) * conversion.getMultiplyRate();
-					qtyConvert = goodReceivingDetail.getQuantity() * conversion.getMultiplyRate();
+					// qtyConvert = (goodReceivingDetail.getQuantity() /
+					// conversion.getQty()) * conversion.getMultiplyRate();
+					qtyConvert = goodReceivingDetail.getQuantity()
+							* conversion.getMultiplyRate();
 				} else if (conversion.getUomTo().getId()
 						.equals(goodReceivingDetail.getUom().getId())) {
-//					qtyConvert = (goodReceivingDetail.getQuantity() / conversion.getMultiplyRate()) * conversion.getQty();
-					qtyConvert = goodReceivingDetail.getQuantity() / conversion
-							.getMultiplyRate();
+					// qtyConvert = (goodReceivingDetail.getQuantity() /
+					// conversion.getMultiplyRate()) * conversion.getQty();
+					qtyConvert = goodReceivingDetail.getQuantity()
+							/ conversion.getMultiplyRate();
 				}
 			}
-			goodReceivingDetail.setQuantity(qtyConvert);
+			goodReceivingService.findById(goodReceivingId).getLogInformation().setStatusFlag(StatusFlag.INACTIVE);
 			InventoryOnhand onhand = inventoryOnhandRepository
 					.findByItem(goodReceivingDetail.getItem().getId());
-			goodReceivingDetailRepository.persist(goodReceivingDetail);
 			if (onhand != null) {
 				onhand.setStock(onhand.getStock()
-						+ goodReceivingDetail.getQuantity());
+						+ qtyConvert);
 			} else {
 				onhand = new InventoryOnhand();
 				onhand.setItem(goodReceivingDetail.getItem());
 				onhand.setStock(qtyConvert);
 			}
 			inventoryOnhandRepository.persist(onhand);
+		}
+	}
 
+	@Override
+	@Transactional
+	public GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail) {
+		if (StringUtils.isBlank(goodReceivingDetail.getId())) {
+			goodReceivingDetail.setId(null);
+			goodReceivingDetailRepository.persist(goodReceivingDetail);
 		} else {
 			GoodReceivingDetail grd = goodReceivingDetailRepository
 					.load(goodReceivingDetail.getId());

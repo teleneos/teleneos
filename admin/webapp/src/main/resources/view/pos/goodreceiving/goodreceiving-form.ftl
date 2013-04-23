@@ -19,6 +19,7 @@
 					<@s.textfield key="label.admin.goodreceiving.invoice" required="true" name="goodReceiving.invoiceNo" cssClass="span4" disabled="true" />
 					<@s.textfield key="label.admin.goodreceiving.date" name="goodReceiving.date" cssClass="span4" disabled="true" required="true"/>
 					<@s.textfield key="label.admin.goodreceiving.businesspartner" name="goodReceiving.businessPartner.name" cssClass="span4" disabled="true"/>
+					<#if goodReceiving.logInformation.statusFlag=="ACTIVE">
 					<div class="control-group ">
 						<label class="control-label" for="add_id"><span class="required">*</span> <@s.text name="label.admin.goodreceiving.item" /></label>
 						<div class="controls">
@@ -44,6 +45,7 @@
 					<div class="form-actions">
 						<@s.submit key="button.add" cssClass="btn btn-primary" />
 					</div>
+					</#if>
 				</@s.form>
 				<table class="table table-striped table-condensed">
 					<thead>
@@ -60,13 +62,21 @@
 							<tr>
 								<td>${no}</td>
 								<td>${s.item.name!}</td>
-								<td style="text-align: center;">${s.quantity!} ${s.item.uom.name!}</td>
+								<td style="text-align: center;">${s.quantity!} ${s.uom.name!}</td>
 								<td>${s.description!}</td>
 							</tr>
 							<#assign no = no + 1 />
 						</#list>
 					</tbody>
 				</table>
+				<div class="form-actions">
+				<#if goodReceiving.logInformation.statusFlag=="ACTIVE">
+				<form action='<@s.url value="/pos/goodreceiving/inventory" />' class="form-horizontal" method="post">
+					<@s.hidden name="goodReceiving.id" />
+					<@s.submit key="button.save" cssClass="btn btn-primary" />
+				</form>
+				</#if>
+				</div>
 			</div>
 		</div>		
 	</body>

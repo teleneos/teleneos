@@ -19,12 +19,14 @@
 			$('input[name="change"]').change(function() {
 				if ($(this).val() == 'true') {
 					$('#package').hide();
+					$('#uom').fadeIn();
 					$('#item').fadeIn();
 					$('input[name="transactionDetail.quantity"]').parents('.control-group').fadeIn();
 				} else {
 					$('#item').hide();
 					$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
 					$('#package').fadeIn();
+					$('#uom').hide();
 				}
 			});
 			
@@ -88,6 +90,14 @@
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
+					<div class="control-group " id="uom">
+						<label class="control-label" for="add_item_category_id"><span class="required">*</span><@s.text name="label.admin.item.uom" /></label>
+							<div class="controls">
+							<@s.hidden id="uom-id" name="transactionDetail.uom.id" />
+							<input type="text" readonly="true" value="<#if transactionDetail.uom??> ${transactionDetail.uom.name!} </#if>" id="uom-name" class="span4" >
+							<button class="btn openpopup" type="button" title="<@s.text name="page.uom.title" />" object-name="uoms|name" field-target="uom-id|uom-name" href="<@s.url value="/pos/uom" />">Choose</button>
+							</div>
+					</div>
 					<div class="form-actions">
 						<@s.submit key="button.add" cssClass="btn btn-primary" />
 					</div>
@@ -122,11 +132,15 @@
 								<#list transactionDetails.entityList as s>
 								<#if s.internetPackage??>
 								<#else>
-									<#assign price = s.quantity * s.price /> 
+									<#if s.conversion?? >
+									<#assign price = (s.quantity * s.conversion.multiplyRate!0) * s.price />
+									<#else>
+									<#assign price = s.quantity * s.price />
+									</#if> 
 									<tr>
 										<td>${no}</td>
 										<td><#if s.item??>${s.item.name!}</#if></td>
-										<td style="text-align: center;"><#if s.item??>${s.quantity!} ${s.item.uom.name!}<#else>-</#if></td>
+										<td style="text-align: center;"><#if s.item??>${s.quantity!} ${s.uom.name!}<#else>-</#if></td>
 										<td style="text-align: right;">${s.price!}</td>
 										<td style="text-align: right;">${price}</td>
 										<#if !transactionHeader.cash??>

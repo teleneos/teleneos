@@ -4,6 +4,8 @@ import java.text.ParseException;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.pos.Conversion;
+import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.repository.pos.TransactionDetailRepository;
 
@@ -22,6 +24,12 @@ public class TransactionDetailImplService implements TransactionDetailService {
 
 	@Inject
 	private TransactionDetailRepository tDetailRepository;
+	
+	@Inject
+	private ConversionService conversionService;
+	
+	@Inject
+	private ItemService itemService;
 
 	@Override
 	public TransactionDetail findById(String id) {
@@ -33,7 +41,11 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	public TransactionDetail save(TransactionDetail transactionDetail) {
 		if (StringUtils.isBlank(transactionDetail.getId())) {
 			transactionDetail.setId(null);
-
+			Item item = itemService.findById(transactionDetail
+					.getItem().getId());
+			Conversion conversion = conversionService.findConversion(
+					transactionDetail.getUom().getId(), item.getUom().getId());
+			transactionDetail.setConversion(conversion);
 			tDetailRepository.persist(transactionDetail);
 		} else {
 			TransactionDetail td = tDetailRepository.load(transactionDetail

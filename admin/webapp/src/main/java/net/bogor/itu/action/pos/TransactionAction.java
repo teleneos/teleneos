@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.pos.TransactionHeader;
-import net.bogor.itu.service.admin.GroupService;
 import net.bogor.itu.service.master.PackageManagerService;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailService;
@@ -30,6 +29,8 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/transaction/transaction-detail-form.ftl") })
 public class TransactionAction extends DefaultAction implements
 		ModelDriven<TransactionActionModel> {
+
+	private static final long serialVersionUID = 1L;
 
 	private TransactionActionModel model = new TransactionActionModel();
 

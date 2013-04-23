@@ -23,7 +23,9 @@ public class TransactionDetail extends DefaultPersistence {
 	private Long price = 0L;
 	private TransactionHeader transactionHeader;
 	private InternetPackage internetPackage;
-
+	private UnitOfMeasure uom;
+	private Conversion conversion;
+	
 	@ManyToOne
 	@JoinColumn(name = "item_id")
 	public Item getItem() {
@@ -69,6 +71,26 @@ public class TransactionDetail extends DefaultPersistence {
 
 	public void setInternetPackage(InternetPackage internetPackage) {
 		this.internetPackage = internetPackage;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "uom_id")
+	public UnitOfMeasure getUom() {
+		return uom;
+	}
+
+	public void setUom(UnitOfMeasure uom) {
+		this.uom = uom;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "conversion_id")
+	public Conversion getConversion() {
+		return conversion;
+	}
+
+	public void setConversion(Conversion conversion) {
+		this.conversion = conversion;
 	}
 
 }

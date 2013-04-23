@@ -18,4 +18,5 @@ public interface GoodReceivingDetailService {
 	
 	EntityListWrapper<GoodReceivingDetail> findByParent(String id,
 			int limit, int page);
+	void toInventory(String goodReceivingId);
 }
