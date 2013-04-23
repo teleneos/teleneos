@@ -13,18 +13,9 @@ public class Conversion extends DefaultPersistence {
 
 	private static final long serialVersionUID = -6841917448736916762L;
 
-	private int qty;
 	private UnitOfMeasure uomFrom;
 	private UnitOfMeasure uomTo;
 	private int multiplyRate;
-
-	public int getQty() {
-		return qty;
-	}
-
-	public void setQty(int qty) {
-		this.qty = qty;
-	}
 
 	@ManyToOne()
 	@JoinColumn(name = "uom_from_id")

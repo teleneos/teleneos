@@ -56,12 +56,13 @@ public class GoodReceivingDetailImplService implements
 			} else {
 				if (conversion.getUomFrom().getId()
 						.equals(goodReceivingDetail.getUom().getId())) {
-					qtyConvert = (goodReceivingDetail.getQuantity() / conversion
-							.getQty()) * conversion.getMultiplyRate();
+//					qtyConvert = (goodReceivingDetail.getQuantity() / conversion.getQty()) * conversion.getMultiplyRate();
+					qtyConvert = goodReceivingDetail.getQuantity() * conversion.getMultiplyRate();
 				} else if (conversion.getUomTo().getId()
 						.equals(goodReceivingDetail.getUom().getId())) {
-					qtyConvert = (goodReceivingDetail.getQuantity() / conversion
-							.getMultiplyRate()) * conversion.getQty();
+//					qtyConvert = (goodReceivingDetail.getQuantity() / conversion.getMultiplyRate()) * conversion.getQty();
+					qtyConvert = goodReceivingDetail.getQuantity() / conversion
+							.getMultiplyRate();
 				}
 			}
 			goodReceivingDetail.setQuantity(qtyConvert);

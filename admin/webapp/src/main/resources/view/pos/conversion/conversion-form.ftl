@@ -15,20 +15,13 @@
 							Conversion from
 						</label>
 						<div class="controls">
-							<input name="conversion.qty" value="${conversion.qty!}" class="span2" type="text">
+							1
 							<select class="span2" name="conversion.uomFrom.id">
 							<#list uoms.entityList as s>
 								<option value="${s.id!}">${s.name!}</option>
 							</#list>
 							</select>
-						</div>
-					</div>
-					<div class="control-group ">
-						<label class="control-label"> 
-							<span class="required">*</span>
-							to
-						</label>
-						<div class="controls">
+							=
 							<input name="conversion.multiplyRate" value="${conversion.multiplyRate!}" class="span2" type="text">
 							<select class="span2" name="conversion.uomTo.id">
 							<#list uoms.entityList as s>

@@ -34,7 +34,7 @@
 						<#list conversions.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td>${s.qty!} ${s.uomFrom.name!} = ${s.multiplyRate!} ${s.uomTo.name!}</a></td>
+							<td>1 ${s.uomFrom.name!} = ${s.multiplyRate!} ${s.uomTo.name!}</a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

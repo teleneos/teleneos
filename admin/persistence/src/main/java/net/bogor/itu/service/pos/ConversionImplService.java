@@ -35,7 +35,6 @@ public class ConversionImplService implements ConversionService {
 		} else {
 			Conversion gr = conversionRepository.load(conversion.getId());
 			gr.setMultiplyRate(conversion.getMultiplyRate());
-			gr.setQty(conversion.getQty());
 			gr.setUomFrom(conversion.getUomFrom());
 			gr.setUomTo(conversion.getUomTo());
 			conversion = gr;
