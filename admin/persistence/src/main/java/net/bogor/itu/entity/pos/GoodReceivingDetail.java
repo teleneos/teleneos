@@ -15,12 +15,16 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_good_receiving_detail")
 public class GoodReceivingDetail extends DefaultPersistence {
 
+	private static final long serialVersionUID = 3631371487891960869L;
+	
 	private GoodReceiving goodReceiving;
 	private Item item;
 	private int quantity;
+	private String description;
+	private UnitOfMeasure uom;
 
 	@ManyToOne
-	@JoinColumn(name="good_receiving_id")
+	@JoinColumn(name = "good_receiving_id")
 	public GoodReceiving getGoodReceiving() {
 		return goodReceiving;
 	}
@@ -30,7 +34,7 @@ public class GoodReceivingDetail extends DefaultPersistence {
 	}
 
 	@ManyToOne
-	@JoinColumn(name="item_id")
+	@JoinColumn(name = "item_id")
 	public Item getItem() {
 		return item;
 	}
@@ -47,4 +51,23 @@ public class GoodReceivingDetail extends DefaultPersistence {
 		this.quantity = quantity;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "uom_id")
+	public UnitOfMeasure getUom() {
+		return uom;
+	}
+
+	public void setUom(UnitOfMeasure uom) {
+		this.uom = uom;
+	}
+
+	
 }

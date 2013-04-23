@@ -4,9 +4,7 @@ import javax.inject.Inject;
 
 import net.bogor.itu.entity.pos.GoodReceiving;
 import net.bogor.itu.entity.pos.InventoryOnhand;
-import net.bogor.itu.entity.pos.ItemType;
 import net.bogor.itu.repository.pos.GoodReceivingRepository;
-import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -25,11 +23,6 @@ public class GoodReceivingImplService implements GoodReceivingService{
 	@Inject
 	private GoodReceivingRepository goodReceivingRepository;
 	
-	@Inject
-	private InventoryOnhandRepository inventoryOnhandRepository;
-
-	@Inject
-	private ItemTypeService itemTypeService;
 	@Override
 	public GoodReceiving findById(String id) {
 		return goodReceivingRepository.findById(id);
@@ -40,29 +33,14 @@ public class GoodReceivingImplService implements GoodReceivingService{
 	public GoodReceiving save(GoodReceiving goodReceiving) {
 		if (StringUtils.isBlank(goodReceiving.getId())) {
 			goodReceiving.setId(null);
-			ItemType type = itemTypeService.findById(goodReceiving.getItemType().getId());
-			
-			int qtyConvert = Integer.parseInt(goodReceiving.getQuantity() != null ? goodReceiving.getQuantity() : "0") * Integer.parseInt(type.getUnit() != null ? type.getUnit(): "0");
-			goodReceiving.setQuantity("" + qtyConvert);
-			InventoryOnhand onhand = inventoryOnhandRepository.findByItem(goodReceiving.getItem()
-					.getId()); 
 			goodReceivingRepository.persist(goodReceiving);
-			if (onhand != null) {
-				onhand.setStock(onhand.getStock()
-						+ Integer.parseInt(goodReceiving.getQuantity()));
-			} else {
-				onhand = new InventoryOnhand();
-				onhand.setItem(goodReceiving.getItem());
-				onhand.setStock(qtyConvert);
-			}
-			inventoryOnhandRepository.persist(onhand);
 		} else {
 			GoodReceiving gr = goodReceivingRepository.load(goodReceiving.getId());
-			gr.setStatus(goodReceiving.getStatus());
-
-			goodReceiving = gr;	
+			gr.setBusinessPartner(goodReceiving.getBusinessPartner());
+			gr.setDate(goodReceiving.getDate());
+			gr.setInvoiceNo(goodReceiving.getInvoiceNo());
+			goodReceiving = gr;
 		}
-		
 		return goodReceiving;
 	}
 

@@ -16,15 +16,15 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 public class ItemType extends DefaultPersistence {
 
 	private String name;
-	private String unit;
+	private int unit;
 	private UnitOfMeasure uom;
 	private String description;
 
-	public String getUnit() {
+	public int getUnit() {
 		return unit;
 	}
 
-	public void setUnit(String unit) {
+	public void setUnit(int unit) {
 		this.unit = unit;
 	}
 

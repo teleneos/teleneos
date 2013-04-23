@@ -15,12 +15,14 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_item")
 public class Item extends DefaultPersistence {
 
+	private static final long serialVersionUID = -7648394772987316767L;
+	
 	private String code;
 	private String name;
 	private String description;
 	private Long price;
 	private UnitOfMeasure uom;
-	private ItemType itemType;
+	
 	private ItemCategory category;
 
 	public String getCode() {
@@ -63,16 +65,6 @@ public class Item extends DefaultPersistence {
 
 	public void setUom(UnitOfMeasure uom) {
 		this.uom = uom;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "item_type_id")
-	public ItemType getItemType() {
-		return itemType;
-	}
-
-	public void setItemType(ItemType itemType) {
-		this.itemType = itemType;
 	}
 
 	@ManyToOne

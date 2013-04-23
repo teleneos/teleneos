@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.item.title" /></title>
-		<meta name="header" content="<@s.text name="page.item.header" />">
+		<title><@s.text name="page.itemtype.title" /></title>
+		<meta name="header" content="<@s.text name="page.itemtype.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/item/add" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/pos/conversion/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,27 +26,15 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.admin.item.code" /></th>
-							<th><@s.text name="label.admin.item.name" /></th>
-							<th><@s.text name="label.admin.item.description" /></th>
-							<th><@s.text name="label.admin.item.uom" /></th>
-							<th><@s.text name="label.admin.item.category" /></th>
-							<th><@s.text name="label.admin.item.price" /></th>
-							
+							<th><@s.text name="label.pos.conversion" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
-						<@s.url value="/pos/item/edit/" var="editUrl" />
-						<#list items.entityList as s>
+						<#list conversions.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${editUrl + s.id}">${s.code!}</a></td>
-							<td>${s.name!}</td>
-							<td>${s.description!}</td>
-							<td>${s.uom.name!}</td>
-							<td>${s.category.name!}</td>
-							<td style="text-align:right;">${s.price!}</td>
+							<td>${s.qty!} ${s.uomFrom.name!} = ${s.multiplyRate!} ${s.uomTo.name!}</a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -59,9 +47,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${items.rowCount?string('#')},
+				items: ${conversions.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(items.currentPage + 1)?string('#')},
+				currentPage: ${(conversions.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

@@ -5,7 +5,7 @@ import net.bogor.itu.entity.pos.GoodReceiving;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.entity.pos.Invoice;
 import net.bogor.itu.entity.pos.InvoiceDetail;
-import net.bogor.itu.entity.pos.ItemType;
+import net.bogor.itu.entity.pos.UnitOfMeasure;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -24,12 +24,13 @@ public class goodReceivingActionModel extends DefaultActionModel {
 	private EntityListWrapper<Invoice> invoices = new EntityListWrapper<Invoice>();
 	private InvoiceDetail invoiceDetail = new InvoiceDetail();
 	private EntityListWrapper<InvoiceDetail> invoiceDetails = new EntityListWrapper<InvoiceDetail>();
-	private EntityListWrapper<ItemType> itemTypes = new EntityListWrapper<ItemType>();
+	private EntityListWrapper<UnitOfMeasure> uoms = new EntityListWrapper<UnitOfMeasure>();
 	private BusinessPartner businessPartner = new BusinessPartner();
 	private EntityListWrapper<BusinessPartner> businessPartnerVendors = new EntityListWrapper<BusinessPartner>();
 	private String quantity;
 	private String item;
-
+	private String date;
+	
 	public BusinessPartner getBusinessPartner() {
 		return businessPartner;
 	}
@@ -130,12 +131,20 @@ public class goodReceivingActionModel extends DefaultActionModel {
 		this.item = item;
 	}
 
-	public EntityListWrapper<ItemType> getItemTypes() {
-		return itemTypes;
+	public EntityListWrapper<UnitOfMeasure> getUoms() {
+		return uoms;
 	}
 
-	public void setItemTypes(EntityListWrapper<ItemType> itemTypes) {
-		this.itemTypes = itemTypes;
+	public void setUoms(EntityListWrapper<UnitOfMeasure> uoms) {
+		this.uoms = uoms;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

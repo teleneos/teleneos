@@ -29,9 +29,6 @@
 							<th><@s.text name="label.admin.goodreceiving.invoice" /></th>
 							<th><@s.text name="label.admin.goodreceiving.date" /></th>
 							<th><@s.text name="label.admin.goodreceiving.businesspartner" /></th>
-							<th><@s.text name="label.admin.goodreceiving.item" /></th>
-							<th><@s.text name="label.admin.goodreceiving.quantity" /></th>
-							<th><@s.text name="label.admin.goodreceiving.description" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,11 +38,8 @@
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.invoiceNo!}</a></td>
-							<td>${s.logInformation.createDate!}</td>
+							<td>${s.date!}</td>
 							<td>${s.businessPartner.name!}</td>
-							<td>${s.item.code!} - ${s.item.name!}</td>
-							<td>${s.quantity!}</td>
-							<td>${s.description!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

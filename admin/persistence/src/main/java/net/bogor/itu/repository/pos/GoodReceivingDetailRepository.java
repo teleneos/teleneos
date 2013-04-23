@@ -11,16 +11,23 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public class GoodReceivingDetailRepository extends PersistenceRepository<GoodReceivingDetail>{
+public class GoodReceivingDetailRepository extends
+		PersistenceRepository<GoodReceivingDetail> {
 
 	public EntityListWrapper<GoodReceivingDetail> findByKeyword(String keyword,
-			int limit, int page) { 
+			int limit, int page) {
 
 		String criteria = "(gr.goodReceiving.id = ?)";
-		Object[] params = {keyword};
-		
+		Object[] params = { keyword };
+
 		return findAll(limit, page, "gr", criteria, params);
 	}
 
-	
+	public EntityListWrapper<GoodReceivingDetail> findByParent(String id,
+			int limit, int page) {
+		String criteria = "i.goodReceiving.id = ?";
+		Object[] params = { id };
+		return findAll(limit, page, "i", criteria, params);
+	}
+
 }

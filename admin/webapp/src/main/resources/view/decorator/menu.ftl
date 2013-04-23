@@ -57,7 +57,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="/pos/itemtype">
+				<a href="/pos/conversion">
 					<@s.text name="menu.pos.itemtype" />
 				</a>
 			</li>

@@ -18,41 +18,11 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_good_receiving")
 public class GoodReceiving extends DefaultPersistence {
 
+	private static final long serialVersionUID = 8608161031742706348L;
+	
 	private String invoiceNo;
 	private Date date;
 	private BusinessPartner businessPartner;
-	private Item item;
-	private String quantity;
-	private ItemType itemType;
-	private String description;
-	private int status;
-
-	
-	@ManyToOne
-	@JoinColumn(name = "item_type_id")
-	public ItemType getItemType() {
-		return itemType;
-	}
-
-	public void setItemType(ItemType itemType) {
-		this.itemType = itemType;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	@Column(name = "invoice_no")
 	public String getInvoiceNo() {
@@ -79,23 +49,5 @@ public class GoodReceiving extends DefaultPersistence {
 
 	public void setBusinessPartner(BusinessPartner businessPartner) {
 		this.businessPartner = businessPartner;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "item_id")
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
-	}
-
-	public String getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
 	}
 }

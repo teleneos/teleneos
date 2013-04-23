@@ -12,7 +12,7 @@
 					<@s.hidden name="item.id" />
 					<@s.textfield key="label.admin.item.code" required="true" name="item.code" cssClass="span4" />
 					<@s.textfield key="label.admin.item.name" required="true" name="item.name" cssClass="span4" />
-					<@s.textfield key="label.admin.item.description"  name="item.description" cssClass="span6" />
+					<@s.textarea key="label.admin.item.description"  name="item.description" cssClass="span4" />
 					<@s.textfield key="label.admin.item.price" required="true" name="item.price" cssClass="span4" />
 					<div class="control-group ">
 						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.uom" /><span class="required">*</span></label>
@@ -20,14 +20,6 @@
 							<@s.hidden id="uom-id" name="item.uom.id" />
 							<input type="text" readonly="true" value="<#if item.uom??> ${item.uom.name!} </#if>" id="uom-name" class="span4">
 							<button class="btn openpopup" type="button" title="<@s.text name="page.uom.title" />" object-name="uoms|name" field-target="uom-id|uom-name" href="<@s.url value="/pos/uom" />">Choose</button>
-							</div>
-					</div>
-					<div class="control-group ">
-						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.itemtype" /><span class="required">*</span></label>
-							<div class="controls">
-							<@s.hidden id="itemtype-id" name="item.itemType.id" />
-							<input type="text" readonly="true" value="<#if item.itemType??> ${item.itemType.name!} </#if>" id="itemtype-name" class="span4">
-							<button class="btn openpopup" type="button" title="<@s.text name="page.itemtype.title" />" object-name="itemTypes|name" field-target="itemtype-id|itemtype-name" href="<@s.url value="/pos/itemtype" />">Choose</button>
 							</div>
 					</div>
 					<div class="control-group ">

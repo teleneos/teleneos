@@ -15,4 +15,7 @@ public interface GoodReceivingDetailService {
 
 	EntityListWrapper<GoodReceivingDetail> findByKeyword(String keyword,
 			int limit, int page);
+	
+	EntityListWrapper<GoodReceivingDetail> findByParent(String id,
+			int limit, int page);
 }
