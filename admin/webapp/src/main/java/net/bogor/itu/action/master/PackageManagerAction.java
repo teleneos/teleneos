@@ -93,6 +93,8 @@ public class PackageManagerAction extends DefaultAction implements
 		model.getInternetPackage().setTime(
 				model.getInternetPackage().getTime() * model.getQt());
 
+		System.out.println("Quooota :" + model.getInternetPackage().getQuota());
+		System.out.println("Quooota :" + model.getQb());
 		model.getInternetPackage().setQuota(
 				model.getInternetPackage().getQuota() * model.getQb());
 

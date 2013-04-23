@@ -149,6 +149,9 @@ public class AccountingHandler extends PacketHandlerBase {
 				long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
 						.getValue().getValueObject().toString());
 
+				userPackage.setQuotaBalance(userPackage.getQuotaBalance()
+						- (download + upload));
+
 				LOG.info("Quota Balance: "
 						+ (userPackage.getQuotaBalance() / 1024) + "KB");
 				LOG.info("Bandwidth usage: " + ((download + upload) / 1024)
@@ -156,13 +159,12 @@ public class AccountingHandler extends PacketHandlerBase {
 				LOG.info("Unlimited : " + userPackage.isUnlimited()
 						+ ", subscription method: "
 						+ internetPackage.getPaymentMethod());
-				userPackage.setQuotaBalance(userPackage.getQuotaBalance()
-						- (download + upload));
 
 				if ((!userPackage.isUnlimited())
 						&& userPackage.getQuotaBalance() < 1
 						&& internetPackage.getPaymentMethod().equals(
-								PaymentMethod.PREPAID)) {
+								PaymentMethod.PREPAID)
+						&& (!"2".equalsIgnoreCase(acctStatusType))) {
 					LOG.info("End of quota balance: " + username);
 					userPackage.setStatus(Status.END);
 
