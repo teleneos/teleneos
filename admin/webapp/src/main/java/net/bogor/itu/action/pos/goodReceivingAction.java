@@ -9,10 +9,10 @@ import net.bogor.itu.entity.pos.GoodReceiving;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.service.pos.GoodReceivingDetailService;
 import net.bogor.itu.service.pos.GoodReceivingService;
-import net.bogor.itu.service.pos.InvoiceDetailService;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.UnitOfMeasureService;
 
+import org.apache.commons.lang.StringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -29,7 +29,7 @@ import com.opensymphony.xwork2.ModelDriven;
 @Action(name = "/pos/goodreceiving")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/goodreceiving/goodreceiving-form.ftl") })
 public class goodReceivingAction extends DefaultAction implements
-		ModelDriven<goodReceivingActionModel> {
+		ModelDriven<goodReceivingActionModel>{
 
 	private static final long serialVersionUID = 1363531721180014337L;
 
@@ -85,6 +85,19 @@ public class goodReceivingAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	public ActionResult addRequisition() {
+		if(StringUtils.isEmpty(model.getGoodReceiving().getInvoiceNo())){
+			addFieldError("goodReceiving.invoiceNo", "Invoice Number cannot be empty");
+		}
+		if(StringUtils.isEmpty(model.getDate())){
+			addFieldError("date", "Date cannot be empty");
+		}
+		if(StringUtils.isEmpty(model.getGoodReceiving().getBusinessPartner().getId())){
+			addFieldError("goodReceiving.businessPartner.id", "Business Partner cannot be empty");
+		}
+		if(hasFieldErrors()){
+			return new ActionResult("freemarker",
+					"/view/pos/goodreceiving/goodreceiving-form-first.ftl");
+		}
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			model.getGoodReceiving().setDate(dateFormat.parse(model.getDate()));
@@ -95,7 +108,7 @@ public class goodReceivingAction extends DefaultAction implements
 		return new ActionResult("/pos/goodreceiving/detail/"
 				+ model.getGoodReceiving().getId()).setType("redirect");
 	}
-
+	
 	@Action(name = "/detail/{goodReceiving.id}", method = HttpMethod.GET)
 	public ActionResult formDetail() {
 		model.setGoodReceiving(goodReceivingService.findById(model
@@ -107,8 +120,27 @@ public class goodReceivingAction extends DefaultAction implements
 				"/view/pos/goodreceiving/goodreceiving-form.ftl");
 	}
 
+	
 	@Action(name = "/detail/{goodReceiving.id}", method = HttpMethod.POST)
 	public ActionResult formAddDetail() {
+		if(StringUtils.isEmpty(model.getGoodReceivingDetail().getItem().getId())){
+			addFieldError("goodReceivingDetail.item.id", "Item cannot be empty");
+		}
+		if(StringUtils.isEmpty(model.getGoodReceivingDetail().getItem().getId())){
+			addFieldError("goodReceivingDetail.quantity", "Quantity cannot be empty");
+		}
+		if(StringUtils.isEmpty(model.getGoodReceivingDetail().getItem().getId())){
+			addFieldError("goodReceivingDetail.uom.id", "Unit of Measurement cannot be empty");
+		}
+		if(hasFieldErrors()){
+			model.setGoodReceiving(goodReceivingService.findById(model
+					.getGoodReceiving().getId()));
+			model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
+			model.setGoodReceivingDetails(goodReceivingDetailService.findByParent(
+					model.getGoodReceiving().getId(), 0, 0));
+			return new ActionResult("freemarker",
+					"/view/pos/goodreceiving/goodreceiving-form.ftl");
+		}
 		model.getGoodReceivingDetail().setGoodReceiving(
 				model.getGoodReceiving());
 		goodReceivingDetailService.save(model.getGoodReceivingDetail());
@@ -157,5 +189,4 @@ public class goodReceivingAction extends DefaultAction implements
 	public goodReceivingActionModel getModel() {
 		return model;
 	}
-
 }

@@ -17,7 +17,7 @@
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
 					<@s.hidden name="goodReceiving.id" />
 					<@s.textfield key="label.admin.goodreceiving.invoice" required="true" name="goodReceiving.invoiceNo" cssClass="span4" disabled="true" />
-					<@s.textfield key="label.admin.goodreceiving.date" name="goodReceiving.date" cssClass="span4" disabled="true"/>
+					<@s.textfield key="label.admin.goodreceiving.date" name="goodReceiving.date" cssClass="span4" disabled="true" required="true"/>
 					<@s.textfield key="label.admin.goodreceiving.businesspartner" name="goodReceiving.businessPartner.name" cssClass="span4" disabled="true"/>
 					<div class="control-group ">
 						<label class="control-label" for="add_id"><span class="required">*</span> <@s.text name="label.admin.goodreceiving.item" /></label>
