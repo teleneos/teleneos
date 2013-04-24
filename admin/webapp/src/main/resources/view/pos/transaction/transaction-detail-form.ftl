@@ -3,7 +3,6 @@
 		<title><@s.text name="page.tdetail.title" /></title>
 		<meta name="header" content="<@s.text name="page.tdetail.header" />">
 		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
-		<#--<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-tab.js" />"></script>-->
 		<script type="text/javascript">
 			printDivCSS = new String ('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
 			function printDiv(divId) {
@@ -232,6 +231,7 @@
 						<br/>
 						<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
 						<div class="form-actions">
+							<@s.hidden name="grandtotal" value=totalPriceInternet+totalPrice!0/>
 							<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
 						</div>
 						</@s.form>

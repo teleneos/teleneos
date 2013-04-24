@@ -162,11 +162,24 @@ public class TransactionAction extends DefaultAction implements
 	}
 
 	@Action(name = "/cash", method = HttpMethod.POST)
+//	@Validations(fieldExpressions = {
+//			@FieldExpressionValidator(expression = "model.transactionHeader.cash > model.grandtotal", key="message.admin.pos.cash.minus", fieldName="transactionHeader.cash")
+//	})
 	public ActionResult addCashTransaction() {
+		if(model.getTransactionHeader().getCash() < model.getGrandtotal()){
+			addFieldError("transactionHeader.cash", "Insufficient cash");
+			if(hasFieldErrors()){
+				model.setTransactionDetails(tDetailService.findByKeyword(model
+						.getTransactionHeader().getId(), 0, model.getPage() - 1));
+				model.setTransactionHeader(tHeaderService.findById(model
+						.getTransactionHeader().getId()));
+				return new ActionResult("freemarker",
+						"/view/pos/transaction/transaction-detail-form.ftl");
+			}
+		}
 		TransactionHeader tHeader = model.getTransactionHeader();
 		model.getTransactionHeader().setId(tHeader.getId());
 		tHeaderService.save(model.getTransactionHeader());
-
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
 	}

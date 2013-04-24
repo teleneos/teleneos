@@ -27,6 +27,7 @@ public class TransactionActionModel extends DefaultActionModel {
 	private EntityListWrapper<Object[]> listacc = new EntityListWrapper<Object[]>();
 	private String username;
 	private boolean erroruom = false;
+	private long grandtotal;
 	
 	public String getUsername() {
 		return username;
@@ -126,5 +127,12 @@ public class TransactionActionModel extends DefaultActionModel {
 		this.erroruom = erroruom;
 	}
 
+	public long getGrandtotal() {
+		return grandtotal;
+	}
+
+	public void setGrandtotal(long grandtotal) {
+		this.grandtotal = grandtotal;
+	}
 
 }
