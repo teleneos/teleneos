@@ -2,7 +2,6 @@ package net.bogor.itu.action.pos;
 
 import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.pos.Item;
-import net.bogor.itu.entity.pos.ItemCategory;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.entity.radius.Radacct;
@@ -27,6 +26,7 @@ public class TransactionActionModel extends DefaultActionModel {
 	private String change;
 	private EntityListWrapper<Object[]> listacc = new EntityListWrapper<Object[]>();
 	private String username;
+	private boolean erroruom = false;
 	
 	public String getUsername() {
 		return username;
@@ -116,6 +116,14 @@ public class TransactionActionModel extends DefaultActionModel {
 
 	public void setChange(String change) {
 		this.change = change;
+	}
+
+	public boolean isErroruom() {
+		return erroruom;
+	}
+
+	public void setErroruom(boolean erroruom) {
+		this.erroruom = erroruom;
 	}
 
 

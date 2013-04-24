@@ -80,7 +80,7 @@
 						<label class="control-label" for="add_transactionDetail_item_id"> <span class="required">*</span> <@s.text name="page.item.title" /></label>
 						<div class="controls">
 							<@s.hidden name="transactionDetail.item.id" id="item-id" />
-							<input type="text" id="item-name" readonly="true" class="span4">
+							<input type="text" id="item-name" readonly="true" class="span4" value="<#if transactionDetail.item??> ${transactionDetail.item.name!} </#if>" name="transactionDetail.item.name">
 							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
 						</div>
 					</div>
@@ -93,12 +93,13 @@
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
-					<div class="control-group " id="uom">
+					<div class="control-group <#if erroruom?string=='true'>error</#if>" id="uom">
 						<label class="control-label" for="add_item_category_id"><span class="required">*</span><@s.text name="label.admin.item.uom" /></label>
 							<div class="controls">
 							<@s.hidden id="uom-id" name="transactionDetail.uom.id" />
-							<input type="text" readonly="true" value="<#if transactionDetail.uom??> ${transactionDetail.uom.name!} </#if>" id="uom-name" class="span4" >
+							<input type="text" readonly="true" value="<#if transactionDetail.uom??> ${transactionDetail.uom.name!} </#if>" id="uom-name" class="span4" name="transactionDetail.uom.name">
 							<button class="btn openpopup" type="button" title="<@s.text name="page.uom.title" />" object-name="uoms|name" field-target="uom-id|uom-name" href="<@s.url value="/pos/uom" />">Choose</button>
+							<#if erroruom?string=='true'><span class="help-inline">Conversion for this uom is not available</span></#if>
 							</div>
 					</div>
 					<div class="form-actions">

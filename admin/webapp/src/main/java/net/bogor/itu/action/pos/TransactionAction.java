@@ -6,6 +6,8 @@ import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.service.master.PackageManagerService;
 import net.bogor.itu.service.pos.ItemService;
+import net.bogor.itu.service.pos.TransactionDetailImplService.InvaidUnitOfMeasurementException;
+import net.bogor.itu.service.pos.TransactionDetailImplService.StockNotFoundException;
 import net.bogor.itu.service.pos.TransactionDetailService;
 import net.bogor.itu.service.pos.TransactionHeaderService;
 import net.bogor.itu.service.radius.RadacctService;
@@ -28,7 +30,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Action(name = "/pos/transaction")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/transaction/transaction-detail-form.ftl") })
 public class TransactionAction extends DefaultAction implements
-		ModelDriven<TransactionActionModel> {
+		ModelDriven<TransactionActionModel>{
 
 	private static final long serialVersionUID = 1L;
 
@@ -111,10 +113,9 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.POST)
 	public ActionResult addFormDetail() {
-		TransactionHeader tHeader = model.getTransactionHeader();
-		model.getTransactionDetail().setTransactionHeader(
-				tHeaderService.findById(tHeader.getId()));
-
+		TransactionHeader tHeader = tHeaderService.findById(model.getTransactionHeader().getId());
+		model.setTransactionHeader(tHeader);
+		model.getTransactionDetail().setTransactionHeader(tHeader);
 		if (model.getChange().equalsIgnoreCase("true")) {
 			// model.setInternetPackage(null);
 			model.setItem(itemService.findById(model.getTransactionDetail()
@@ -130,7 +131,23 @@ public class TransactionAction extends DefaultAction implements
 					model.getInternetPackage().getPrice());
 		}
 
-		tDetailService.save(model.getTransactionDetail());
+		try {
+			tDetailService.save(model.getTransactionDetail());
+		} catch (StockNotFoundException e) {			
+			addFieldError("transactionDetail.quantity", "Stock for this item is not available");
+			if(hasFieldErrors()){
+				model.setTransactionDetails(tDetailService.findByKeyword(model
+						.getTransactionHeader().getId(), 0, model.getPage() - 1));
+				model.setTransactionHeader(tHeaderService.findById(model
+						.getTransactionHeader().getId()));
+				return new ActionResult("freemarker",
+						"/view/pos/transaction/transaction-detail-form.ftl");
+			}
+		} catch (InvaidUnitOfMeasurementException e) {
+				model.setErroruom(true);
+				return new ActionResult("freemarker",
+						"/view/pos/transaction/transaction-detail-form.ftl");
+		}
 
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");

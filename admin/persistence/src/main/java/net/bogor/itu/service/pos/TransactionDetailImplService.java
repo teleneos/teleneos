@@ -5,8 +5,10 @@ import java.text.ParseException;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.pos.Conversion;
+import net.bogor.itu.entity.pos.InventoryOnhand;
 import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionDetail;
+import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 import net.bogor.itu.repository.pos.TransactionDetailRepository;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +32,9 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	
 	@Inject
 	private ItemService itemService;
-
+	
+	@Inject
+	private InventoryOnhandRepository onhandRepository;
 	@Override
 	public TransactionDetail findById(String id) {
 		return tDetailRepository.findById(id);
@@ -38,7 +42,7 @@ public class TransactionDetailImplService implements TransactionDetailService {
 
 	@Override
 	@Transactional
-	public TransactionDetail save(TransactionDetail transactionDetail) {
+	public TransactionDetail save(TransactionDetail transactionDetail) throws StockNotFoundException, InvaidUnitOfMeasurementException {
 		if (StringUtils.isBlank(transactionDetail.getId())) {
 			transactionDetail.setId(null);
 			if (transactionDetail.getItem() != null) {
@@ -48,6 +52,30 @@ public class TransactionDetailImplService implements TransactionDetailService {
 						transactionDetail.getUom().getId(), item.getUom()
 								.getId());
 				transactionDetail.setConversion(conversion);
+				InventoryOnhand stock = onhandRepository.findByItem(transactionDetail
+						.getItem().getId());
+				if (transactionDetail.getConversion() != null) {
+					if (stock == null) {
+						throw new StockNotFoundException();
+					} else if (stock.getStock() < (transactionDetail
+							.getQuantity() * transactionDetail.getConversion()
+							.getMultiplyRate())) {
+						throw new StockNotFoundException();
+					} else {
+
+					}
+				} else if(transactionDetail.getUom().getId().equals(item.getUom().getId())){
+					if (stock == null) {
+						throw new StockNotFoundException();
+					} else if (stock.getStock() < transactionDetail
+							.getQuantity()) {
+						throw new StockNotFoundException();
+					} else {
+
+					}
+				}else{
+					throw new InvaidUnitOfMeasurementException();
+				}
 			}
 			tDetailRepository.persist(transactionDetail);
 		} else {
@@ -62,7 +90,24 @@ public class TransactionDetailImplService implements TransactionDetailService {
 		}
 		return transactionDetail;
 	}
+	
+	public class StockNotFoundException extends Exception{
 
+		private static final long serialVersionUID = 4029360388588030554L;
+		
+		public StockNotFoundException() {
+			super("Stock Not Found");
+		}
+	}
+	public class InvaidUnitOfMeasurementException extends Exception{
+		
+		private static final long serialVersionUID = -3713025651526065262L;
+
+		public InvaidUnitOfMeasurementException() {
+			super("Invalid Unit of Measurement");
+		}
+		
+	}
 	@Override
 	public EntityListWrapper<TransactionDetail> findByKeyword(String keyword,
 			int limit, int page) {

@@ -1,6 +1,8 @@
 package net.bogor.itu.service.pos;
 
 import net.bogor.itu.entity.pos.TransactionDetail;
+import net.bogor.itu.service.pos.TransactionDetailImplService.InvaidUnitOfMeasurementException;
+import net.bogor.itu.service.pos.TransactionDetailImplService.StockNotFoundException;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
 
@@ -12,7 +14,7 @@ public interface TransactionDetailService {
 
 	TransactionDetail findById(String id);
 	
-	TransactionDetail save(TransactionDetail transactionDetail);
+	TransactionDetail save(TransactionDetail transactionDetail) throws StockNotFoundException, InvaidUnitOfMeasurementException;
 	
 	EntityListWrapper<TransactionDetail> findByKeyword(String keyword, int limit,
 			int page);
