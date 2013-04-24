@@ -159,7 +159,7 @@ public class AccountingHandler extends PacketHandlerBase {
 							PaymentMethod.PREPAID)) {
 				LOG.info("End of quota balance: " + username);
 				userPackage.setStatus(Status.END);
-
+				packageService.save(userPackage);
 				radiusService.logout(macAddress);
 
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
@@ -187,7 +187,7 @@ public class AccountingHandler extends PacketHandlerBase {
 						&& (!"2".equalsIgnoreCase(acctStatusType))) {
 					LOG.info("End of quota balance: " + username);
 					userPackage.setStatus(Status.END);
-
+					packageService.save(userPackage);
 					radiusService.logout(macAddress);
 				}
 			}
