@@ -127,6 +127,7 @@ public class TransactionAction extends DefaultAction implements
 			model.setInternetPackage(packageManagerService.findById(model
 					.getTransactionDetail().getInternetPackage().getId()));
 			model.getTransactionDetail().setItem(null);
+			model.getTransactionDetail().setUom(null);
 			model.getTransactionDetail().setPrice(
 					model.getInternetPackage().getPrice());
 		}
