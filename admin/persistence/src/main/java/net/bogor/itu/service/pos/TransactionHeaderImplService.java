@@ -49,18 +49,16 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 			th.setCash(transactionHeader.getCash());
 			th.setComplete(true);
 			for (TransactionDetail td : th.getDetails()) {
-				InventoryOnhand stock = onhandRepository.findByItem(td.getItem().getId()); 
-				
-				if (td.getConversion() != null) {
-					stock.setStock(stock.getStock()-(td.getQuantity()
-							* td.getConversion().getMultiplyRate()));
-					System.err.println("Kurangi " + td.getItem().getName()
-							+ " " + td.getQuantity()
-							* td.getConversion().getMultiplyRate());
-				} else {
-					stock.setStock(stock.getStock()-(td.getQuantity()));
-					System.err.println("Kurangi " + td.getItem().getName()
-							+ " " + td.getQuantity());
+				if (td.getItem() != null) {
+					InventoryOnhand stock = onhandRepository.findByItem(td
+							.getItem().getId());
+					if (td.getConversion() != null) {
+						stock.setStock(stock.getStock()
+								- (td.getQuantity() * td.getConversion()
+										.getMultiplyRate()));
+					} else {
+						stock.setStock(stock.getStock() - (td.getQuantity()));
+					}
 				}
 			}
 			packageRepository.save(th.getId(), th.getUser());
