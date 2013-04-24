@@ -16,6 +16,7 @@ import net.bogor.itu.service.radius.ConnectionHistoryService;
 import net.bogor.itu.service.radius.UserPackageService;
 import net.jradius.dictionary.Attr_AcctInputOctets;
 import net.jradius.dictionary.Attr_AcctOutputOctets;
+import net.jradius.dictionary.Attr_AcctStatusType;
 import net.jradius.dictionary.Attr_AcctUniqueSessionId;
 import net.jradius.dictionary.Attr_CallingStationId;
 import net.jradius.dictionary.Attr_UserName;
@@ -59,7 +60,6 @@ public class AccountingHandler extends PacketHandlerBase {
 					.getValueObject().toString();
 			String uniqueSessionId = rp.get(Attr_AcctUniqueSessionId.TYPE)
 					.getValue().getValueObject().toString();
-
 			String acctStatusType = req.getAttributeValue("Acct-Status-Type")
 					.toString();
 
@@ -120,30 +120,7 @@ public class AccountingHandler extends PacketHandlerBase {
 				historyService.save(connectionHistory);
 
 				LOG.info("Done persisting history for user: " + username);
-			}
-
-			Date now = new Date(System.currentTimeMillis());
-			LOG.info("Current time: " + now);
-			LOG.info("Package expired at: " + userPackage.getEndDate());
-
-			// Package expired
-			if (!"2".equalsIgnoreCase(acctStatusType)) {
-				if (now.compareTo(userPackage.getEndDate()) > 0) {
-					LOG.info("Expired package: " + internetPackage.getName()
-							+ " for user: " + username);
-
-					userPackage.setStatus(Status.END);
-					packageService.save(userPackage);
-
-					radiusService.logout(macAddress);
-
-					request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
-					return false;
-				}
-			}
-
-			if ("2".equalsIgnoreCase(acctStatusType)
-					|| "3".equalsIgnoreCase(acctStatusType)) {
+			} else if ("2".equalsIgnoreCase(acctStatusType)) {
 				long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
 						.getValue().getValueObject().toString());
 				long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
@@ -151,6 +128,49 @@ public class AccountingHandler extends PacketHandlerBase {
 
 				userPackage.setQuotaBalance(userPackage.getQuotaBalance()
 						- (download + upload));
+
+				packageService.save(userPackage);
+
+				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
+				return false;
+			}
+
+			Date now = new Date(System.currentTimeMillis());
+			LOG.info("Current time: " + now);
+			LOG.info("Package expired at: " + userPackage.getEndDate());
+
+			// Package expired
+			if (now.compareTo(userPackage.getEndDate()) > 0) {
+				LOG.info("Expired package: " + internetPackage.getName()
+						+ " for user: " + username);
+
+				userPackage.setStatus(Status.END);
+				packageService.save(userPackage);
+
+				radiusService.logout(macAddress);
+
+				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
+				return false;
+			}
+
+			if ((!userPackage.isUnlimited())
+					&& userPackage.getQuotaBalance() < 1
+					&& internetPackage.getPaymentMethod().equals(
+							PaymentMethod.PREPAID)) {
+				LOG.info("End of quota balance: " + username);
+				userPackage.setStatus(Status.END);
+
+				radiusService.logout(macAddress);
+
+				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
+				return false;
+			}
+
+			if ("3".equalsIgnoreCase(acctStatusType)) {
+				long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
+						.getValue().getValueObject().toString());
+				long upload = new Long(rp.get(Attr_AcctOutputOctets.TYPE)
+						.getValue().getValueObject().toString());
 
 				LOG.info("Quota Balance: "
 						+ (userPackage.getQuotaBalance() / 1024) + "KB");
@@ -161,7 +181,7 @@ public class AccountingHandler extends PacketHandlerBase {
 						+ internetPackage.getPaymentMethod());
 
 				if ((!userPackage.isUnlimited())
-						&& userPackage.getQuotaBalance() < 1
+						&& userPackage.getQuotaBalance() < (download + upload)
 						&& internetPackage.getPaymentMethod().equals(
 								PaymentMethod.PREPAID)
 						&& (!"2".equalsIgnoreCase(acctStatusType))) {
@@ -170,10 +190,7 @@ public class AccountingHandler extends PacketHandlerBase {
 
 					radiusService.logout(macAddress);
 				}
-
-				packageService.save(userPackage);
 			}
-
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 		}
