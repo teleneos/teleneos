@@ -16,10 +16,12 @@
 			
 			$(function() {
 			$('#package').hide();
+			$('#uom-id').attr('name', 'transactionDetail.uom.id');
 			$('input[name="change"]').change(function() {
 				if ($(this).val() == 'true') {
 					$('#package').hide();
 					$('#uom').fadeIn();
+					$('#uom-id').attr('name', 'transactionDetail.uom.id');
 					$('#item').fadeIn();
 					$('input[name="transactionDetail.quantity"]').parents('.control-group').fadeIn();
 				} else {
@@ -27,6 +29,7 @@
 					$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
 					$('#package').fadeIn();
 					$('#uom').hide();
+					$('#uom-id').attr('name', '');
 				}
 			});
 			
