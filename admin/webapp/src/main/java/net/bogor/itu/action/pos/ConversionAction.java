@@ -33,7 +33,7 @@ public class ConversionAction extends DefaultAction implements
 
 	@Action
 	public ActionResult conversionList() {
-		model.setConversions(conversionService.findAll(model.getMax(),
+		model.setConversions(conversionService.findAll(model.getQ(), model.getMax(),
 				model.getPage() - 1));
 		return new ActionResult("freemarker",
 				"/view/pos/conversion/conversion-list.ftl");

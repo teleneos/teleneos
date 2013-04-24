@@ -10,7 +10,7 @@ public interface ConversionService {
 
 	Conversion save(Conversion conversion);
 
-	EntityListWrapper<Conversion> findAll(int limit, int page);
+	EntityListWrapper<Conversion> findAll(String keyword, int limit, int page);
 	
 	Conversion findConversion(String uom1, String uom2);
 	

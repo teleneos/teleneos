@@ -43,8 +43,8 @@ public class ConversionImplService implements ConversionService {
 	}
 
 	@Override
-	public EntityListWrapper<Conversion> findAll(int limit, int page) {
-		return conversionRepository.findAll(limit, page);
+	public EntityListWrapper<Conversion> findAll(String keyword, int limit, int page) {
+		return conversionRepository.findAll(keyword, limit, page);
 	}
 
 	@Override
