@@ -5,18 +5,15 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.master.PaymentMethod;
 import net.bogor.itu.entity.radius.ConnectionHistory;
 import net.bogor.itu.entity.radius.UserPackage;
 import net.bogor.itu.entity.radius.UserPackage.Status;
-import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.radius.ConnectionHistoryService;
 import net.bogor.itu.service.radius.UserPackageService;
 import net.jradius.dictionary.Attr_AcctInputOctets;
 import net.jradius.dictionary.Attr_AcctOutputOctets;
-import net.jradius.dictionary.Attr_AcctStatusType;
 import net.jradius.dictionary.Attr_AcctUniqueSessionId;
 import net.jradius.dictionary.Attr_CallingStationId;
 import net.jradius.dictionary.Attr_UserName;
@@ -35,9 +32,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class AccountingHandler extends PacketHandlerBase {
 	private static final Log LOG = LogFactory.getLog(AccountingHandler.class);
-
-	@Inject
-	private UserService userService;
 
 	@Inject
 	private RadiusSerivce radiusService;
@@ -63,9 +57,8 @@ public class AccountingHandler extends PacketHandlerBase {
 			String acctStatusType = req.getAttributeValue("Acct-Status-Type")
 					.toString();
 
-			User user = userService.findByUsername(username);
-			UserPackage userPackage = packageService.findActivePackage(user
-					.getId());
+			UserPackage userPackage = packageService
+					.findActivePackage(username);
 
 			// User doesn't subscribe any active package
 			if (userPackage == null) {
@@ -78,7 +71,7 @@ public class AccountingHandler extends PacketHandlerBase {
 
 			InternetPackage internetPackage = userPackage.getInternetPackage();
 
-			LOG.info("Persisting history for user: " + username);
+			LOG.info("User: " + username);
 			LOG.info("Accounting status type: " + acctStatusType);
 			LOG.info("User package status: " + userPackage.getStatus());
 
@@ -114,12 +107,10 @@ public class AccountingHandler extends PacketHandlerBase {
 
 				ConnectionHistory connectionHistory = new ConnectionHistory();
 				connectionHistory.setRadacct(uniqueSessionId);
-				connectionHistory.setUser(user);
+				connectionHistory.setUsername(username);
 				connectionHistory.setUserPackage(userPackage);
 
 				historyService.save(connectionHistory);
-
-				LOG.info("Done persisting history for user: " + username);
 			} else if ("2".equalsIgnoreCase(acctStatusType)) {
 				long download = new Long(rp.get(Attr_AcctInputOctets.TYPE)
 						.getValue().getValueObject().toString());
@@ -160,6 +151,7 @@ public class AccountingHandler extends PacketHandlerBase {
 				LOG.info("End of quota balance: " + username);
 				userPackage.setStatus(Status.END);
 				packageService.save(userPackage);
+
 				radiusService.logout(macAddress);
 
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
@@ -186,8 +178,10 @@ public class AccountingHandler extends PacketHandlerBase {
 								PaymentMethod.PREPAID)
 						&& (!"2".equalsIgnoreCase(acctStatusType))) {
 					LOG.info("End of quota balance: " + username);
+
 					userPackage.setStatus(Status.END);
 					packageService.save(userPackage);
+
 					radiusService.logout(macAddress);
 				}
 			}

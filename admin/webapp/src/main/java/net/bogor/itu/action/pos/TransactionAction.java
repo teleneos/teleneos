@@ -70,11 +70,8 @@ public class TransactionAction extends DefaultAction implements
 	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "id", trim = true) })
 	@Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/transaction/transaction-form.ftl") })
 	public ActionResult addTransactionHeader() {
-		User user = new User();
-		user.setId(model.getId());
-
 		TransactionHeader tHeader = model.getTransactionHeader();
-		tHeader.setUser(user);
+		tHeader.setUsername(model.getId());
 
 		tHeaderService.save(tHeader);
 
@@ -84,10 +81,8 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/addstarter", method = HttpMethod.GET)
 	public ActionResult addTransactionHeaderStarter() {
-		User user = new User();
-		user.setId(model.getId());
 		TransactionHeader tHeader = model.getTransactionHeader();
-		tHeader.setUser(user);
+		tHeader.setUsername(model.getId());
 
 		tHeaderService.save(tHeader);
 
@@ -102,10 +97,6 @@ public class TransactionAction extends DefaultAction implements
 
 		model.setTransactionHeader(tHeaderService.findById(model
 				.getTransactionHeader().getId()));
-
-		model.setAccts(radacctService.findByUsername(model
-				.getTransactionHeader().getUser().getUser().getUsername(),
-				model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker",
 				"/view/pos/transaction/transaction-detail-form.ftl");

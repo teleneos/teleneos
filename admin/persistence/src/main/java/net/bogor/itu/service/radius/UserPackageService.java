@@ -7,7 +7,7 @@ import net.bogor.itu.entity.radius.UserPackage;
  * 
  */
 public interface UserPackageService {
-	UserPackage findActivePackage(String userId);
+	UserPackage findActivePackage(String username);
 
 	UserPackage save(UserPackage userPackage);
 }

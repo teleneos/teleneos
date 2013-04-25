@@ -12,15 +12,23 @@ import org.meruvian.yama.persistence.EntityListWrapper;
  * 
  */
 public interface UserService {
-	User save(User user) throws Exception;
+	User save(User user);
 
-	User findByUsername(String username) throws Exception;
+	User findByUsername(String username);
 
-	EntityListWrapper<User> findByUsername(String username, int limit, int page)
-			throws Exception;
+	EntityListWrapper<User> findByUsername(String username, int limit, int page);
 
+	/**
+	 * 
+	 * @return [username, total download (in byte), total upload (in byte),
+	 *         online time (in seconds)]
+	 */
 	EntityListWrapper<Object[]> findDetailByUsername(String username,
-			int limit, int page) throws Exception;
+			int limit, int page);
 
 	User remove(User user);
+
+	User changePassword(String username, String newpass);
+
+	void initUser();
 }

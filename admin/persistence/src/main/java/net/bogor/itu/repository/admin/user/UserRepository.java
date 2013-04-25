@@ -12,13 +12,9 @@ import org.meruvian.yama.persistence.EntityListWrapper;
  * 
  */
 public interface UserRepository {
-	User findByUsername(String username) throws Exception;
+	User findByUsername(String username);
 
-	EntityListWrapper<User> findByUsername(String username, int limit, int page)
-			throws Exception;
+	EntityListWrapper<User> findByUsername(String username, int limit, int page);
 
-	EntityListWrapper<Object[]> findDetailByUsername(String username,
-			int limit, int page) throws Exception;
-
-	void persist(User user) throws Exception;
+	void persist(User user);
 }

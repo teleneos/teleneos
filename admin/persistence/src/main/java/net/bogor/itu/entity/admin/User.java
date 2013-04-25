@@ -1,18 +1,19 @@
 package net.bogor.itu.entity.admin;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import net.bogor.itu.entity.Address;
 import net.bogor.itu.entity.Name;
 import net.bogor.itu.entity.master.InternetPackage;
+import net.bogor.itu.entity.radius.Radacct;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.meruvian.yama.security.user.BackendUser;
@@ -24,13 +25,12 @@ import org.meruvian.yama.security.user.BackendUser;
 @Entity
 @Table(name = "tc_user")
 public class User extends DefaultPersistence {
-	private BackendUser user;
+	private BackendUser user = new BackendUser();
 	private Name name = new Name();
 	private Address address = new Address();
 	private Date birthDate;
 	private boolean male = true;
 	private String phone;
-	private InternetPackage internetPackage;
 	private String occupation;
 	private String idcard;
 
@@ -41,8 +41,7 @@ public class User extends DefaultPersistence {
 		setId(id);
 	}
 
-	@OneToOne
-	@JoinColumn(name = "backend_user_id")
+	@Embedded
 	public BackendUser getUser() {
 		return user;
 	}
@@ -95,16 +94,6 @@ public class User extends DefaultPersistence {
 		this.phone = phone;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "package_id")
-	public InternetPackage getInternetPackage() {
-		return internetPackage;
-	}
-
-	public void setInternetPackage(InternetPackage internetPackage) {
-		this.internetPackage = internetPackage;
-	}
-
 	public String getOccupation() {
 		return occupation;
 	}
@@ -120,5 +109,4 @@ public class User extends DefaultPersistence {
 	public void setIdcard(String idcard) {
 		this.idcard = idcard;
 	}
-
 }

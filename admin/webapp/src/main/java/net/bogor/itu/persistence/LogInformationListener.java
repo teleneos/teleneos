@@ -27,7 +27,7 @@ public class LogInformationListener {
 				BackendUser user = null;
 				user = SessionCredentials.currentUser();
 
-				userId = user == null ? null : user.getId();
+				userId = user == null ? null : user.getUsername();
 			}
 
 			DefaultPersistence e = (DefaultPersistence) entity;
@@ -52,7 +52,7 @@ public class LogInformationListener {
 			BackendUser user = null;
 			user = SessionCredentials.currentUser();
 
-			userId = user == null ? null : user.getId();
+			userId = user == null ? null : user.getUsername();
 		}
 
 		if (entity instanceof DefaultPersistence) {

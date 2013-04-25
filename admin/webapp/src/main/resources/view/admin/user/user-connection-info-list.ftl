@@ -1,9 +1,7 @@
 <html>
 	<head>
-		<title><@s.text name="page.onlineuser.title" /></title>
-		<meta name="header" content="<@s.text name="page.onlineuser.header" />">
-		<script type="text/javascript" src="<@s.url value="/scripts/bootbox.min.js" />"></script>
-		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
+		<title><@s.text name="page.statistic.title" /></title>
+		<meta name="header" content="<@s.text name="page.statistic.title" />">
 	</head>
 	<body>
 		<#function byteString byte>
@@ -17,11 +15,28 @@
 				<#return byte?string('0.#') + 'B' />
 			</#if>
 		</#function>
+		<#function timeFormat time>
+			<#if time &gt; (60 * 60 * 24 * 7)>
+				<#return (time / (60 * 60 * 24 * 7))?string('#') + ' Weeks' />
+			<#elseif time &gt; (60 * 60 * 24)>
+				<#return (time / (60 * 60 * 24))?string('#') + ' Days' />
+			<#elseif time &gt; (60 * 60)>
+				<#return (time / (60 * 60))?string('#') + ' Hours' />
+			<#elseif time &gt; 60>
+				<#return (time / 60)?string('#') + ' Min' />
+			<#else>
+				<#return time?string('#') + ' Sec' />
+			</#if>
+		</#function>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/admin-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<form class="form-inline span10 offset2" method="get">
+				<a class="btn btn-primary span2" href="<@s.url value="/admin/user/add" />">
+					<i class="icon-plus icon-white"></i>
+					<@s.text name="button.add" />
+				</a>
+				<form class="form-inline span10" method="get">
 					<div class="input-append pull-right">
 						<input type="text" name="q" value="${q}" />
 						<button class="btn">
@@ -35,32 +50,21 @@
 					<thead>
 						<tr>
 							<th class="span1">#</th>
-							<th><@s.text name="label.admin.onlineuser.id" /></th>
-							<th><@s.text name="label.admin.onlineuser.username" /></th>
-							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
-							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
+							<th><@s.text name="label.login.username" /></th>
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
-							<th></th>
+							<th><@s.text name="label.admin.onlineuser.totalonline" /></th>
 						</tr>
 					</thead>
 					<tbody>
-						<@s.url value="/admin/user/report/" var="reportUrl" />
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list accts.entityList as a>
+						<#list listacc.entityList as d>
 						<tr>
 							<td>${no}</td>
-							<td>${a.radacctid?string('#')}</td>
-							<td><a href="${reportUrl}${a.username!}">${a.username!}</a></td>
-							<td>${a.framedipaddress!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
-							<td>${byteString(a.acctinputoctets)}</td>
-							<td>${byteString(a.acctoutputoctets)}</td>
-							<td>
-								<a class="confirm" data-message="Disconnect ${a.username!}?" href="<@s.url value="/admin/user/disconnect/${a.callingstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
-									<i class="icon-off"></i>
-								</a>
-							</td>
+							<td><a href="<@s.url value="/admin/user/report/${d[0]!}" />">${d[0]!}</a></td>
+							<td>${byteString(d[1]!0)}</td>
+							<td>${byteString(d[2]!0)}</td>
+							<td>${timeFormat(d[3]!0)}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -73,9 +77,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${accts.rowCount?string('#')},
+				items: ${listacc.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(accts.currentPage + 1)?string('#')},
+				currentPage: ${(listacc.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});

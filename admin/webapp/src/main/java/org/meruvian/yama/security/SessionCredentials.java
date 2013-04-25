@@ -11,6 +11,7 @@ import org.meruvian.yama.security.user.BackendUser;
 
 public class SessionCredentials {
 	public static final String YAMA_SECURITY_USER = "YAMA_SECURITY_USER";
+	public static final String YAMA_SECURITY_USER_DETAIL = "YAMA_SECURITY_USER_DETAIL";
 
 	public static HttpServletRequest request() {
 		return ServletActionContext.getRequest();
@@ -26,5 +27,9 @@ public class SessionCredentials {
 
 	public static BackendUser currentUser() {
 		return (BackendUser) session().getAttribute(YAMA_SECURITY_USER);
+	}
+	
+	public static User currentUserDetail() {
+		return (User) session().getAttribute(YAMA_SECURITY_USER_DETAIL);
 	}
 }

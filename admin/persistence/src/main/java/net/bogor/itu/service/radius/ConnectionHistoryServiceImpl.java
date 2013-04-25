@@ -26,7 +26,8 @@ public class ConnectionHistoryServiceImpl implements ConnectionHistoryService {
 			ConnectionHistory it = historyRepository.load(connectionHistory
 					.getId());
 			it.setRadacct(connectionHistory.getRadacct());
-			it.setUser(connectionHistory.getUser());
+			it.setUsername(connectionHistory.getUsername());
+
 			connectionHistory = it;
 		}
 		return connectionHistory;

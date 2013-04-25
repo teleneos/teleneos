@@ -47,6 +47,7 @@
 					
 					<@s.textarea key="label.user.address" name="user.address.street1" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.occupation" name="user.occupation" cssClass="span4" />
+					<@s.select key="label.user.status" name="user.logInformation.statusFlag" list={'ACTIVE' : 'Active', 'INACTIVE' : 'Inactive'} listValue="value" listKey="key" />
 					<div class="form-actions">
 						<#if user.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />

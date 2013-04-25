@@ -4,10 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import net.bogor.itu.entity.admin.User;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 
@@ -16,19 +13,17 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 public class ConnectionHistory extends DefaultPersistence {
 	private static final long serialVersionUID = -2124655892933568537L;
 
-	private User user;
+	private String username;
 	private String radacct;
 	private UserPackage userPackage;
 	private long quotaBalance;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getRadacct() {

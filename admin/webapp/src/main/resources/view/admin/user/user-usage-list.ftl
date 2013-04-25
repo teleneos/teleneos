@@ -71,7 +71,6 @@
 						<#assign no = 1 + ((page - 1) * max) />
 						<#list listacc.entityList as x>
 						<#assign a = x[0] />
-						<#assign b = x[2] />
 						<#assign c = x[1] />
 						<tr>
 							<td>${no}</td>

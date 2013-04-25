@@ -29,8 +29,8 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 	private UserPackageRepository packageRepository;
 
 	@Inject
-	private InventoryOnhandRepository onhandRepository; 
-	
+	private InventoryOnhandRepository onhandRepository;
+
 	@Override
 	public TransactionHeader findById(String id) {
 		return tHeaderRepository.findById(id);
@@ -61,8 +61,8 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 					}
 				}
 			}
-			packageRepository.save(th.getId(), th.getUser());
-			
+			packageRepository.save(th.getId(), th.getUsername());
+
 			transactionHeader = th;
 		}
 
@@ -72,10 +72,7 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 	@Override
 	public EntityListWrapper<TransactionHeader> findByKeyword(String keyword,
 			String order, String orderBy, int limit, int page) {
-		if (StringUtils.isBlank(keyword))
-			return tHeaderRepository.findAll(limit, page);
-		return tHeaderRepository.findByKeyword(keyword, order, orderBy, limit,
-				page, "OR");
+		return tHeaderRepository.findByKeyword(keyword, limit, page);
 	}
 
 }

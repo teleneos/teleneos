@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import net.bogor.itu.entity.admin.User;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
 
@@ -21,16 +17,10 @@ import org.meruvian.yama.persistence.DefaultPersistence;
 @Table(name = "tc_transaction_header")
 public class TransactionHeader extends DefaultPersistence {
 	private long counter;
-	private User user;
 	private Long cash;
+	private String username;
 	private List<TransactionDetail> details = new ArrayList<TransactionDetail>();
 	private boolean complete = false;
-
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
-	}
 
 	public long getCounter() {
 		return counter;
@@ -40,16 +30,20 @@ public class TransactionHeader extends DefaultPersistence {
 		this.counter = counter;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public Long getCash() {
 		return cash;
 	}
 
 	public void setCash(Long cash) {
 		this.cash = cash;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@OneToMany(mappedBy = "transactionHeader")

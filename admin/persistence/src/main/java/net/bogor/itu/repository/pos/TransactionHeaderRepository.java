@@ -3,10 +3,10 @@ package net.bogor.itu.repository.pos;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.persistence.PersistenceRepository;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.springframework.stereotype.Repository;
+
 /**
  * @author Edy Setiawan
  * 
@@ -15,22 +15,12 @@ import org.springframework.stereotype.Repository;
 public class TransactionHeaderRepository extends
 		PersistenceRepository<TransactionHeader> {
 	public EntityListWrapper<TransactionHeader> findByKeyword(String keyword,
-			String order, String orderBy, int limit, int page, String condition) {
+			int limit, int page) {
 
-		String criteria = "(th.user.name.first LIKE ? AND th.user.name.last LIKE ?)";
-		criteria = criteria.replace("AND", condition);
-		criteria += " AND th.logInformation.statusFlag = ? ORDER BY "
-				+ StringUtils.defaultIfEmpty(order, "th.id") + " " + orderBy;
-		Object[] params = {keyword, keyword,
-				StatusFlag.ACTIVE };
-		for (int i = 0; i < params.length - 1; i++) {
-			if (params[i] instanceof String || params[i] == null) {
-				params[i] = StringUtils.defaultIfEmpty((String) params[i], "");
-				params[i] = StringUtils.join(new String[] { "%",
-						(String) params[i], "%" });
-			}
-		}
+		String criteria = "th.username LIKE ? AND th.logInformation.statusFlag = ? ORDER BY "
+				+ "th.logInformation.createDate DESC";
 
-		return findAll(limit, page, "th", criteria, params);
+		return findAll(limit, page, "th", criteria, keyword + "%",
+				StatusFlag.ACTIVE);
 	}
 }

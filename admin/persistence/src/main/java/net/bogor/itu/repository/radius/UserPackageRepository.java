@@ -5,12 +5,12 @@ package net.bogor.itu.repository.radius;
 
 import java.util.List;
 
-import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.InternetPackage;
 import net.bogor.itu.entity.radius.UserPackage;
 import net.bogor.itu.entity.radius.UserPackage.Status;
 import net.bogor.itu.persistence.PersistenceRepository;
 
+import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserPackageRepository extends PersistenceRepository<UserPackage> {
-	public void save(String transactionId, User user) {
+	public void save(String transactionId, String username) {
 		String ql = "SELECT d.internetPackage FROM TransactionDetail d WHERE d.transactionHeader.id = ?1 AND d.internetPackage IS NOT NULL";
 		List<InternetPackage> packages = entityManager
 				.createQuery(ql, InternetPackage.class)
@@ -28,18 +28,19 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 		for (InternetPackage p : packages) {
 			UserPackage userPackage = new UserPackage();
 			userPackage.setInternetPackage(p);
-			userPackage.setUser(user);
+			userPackage.setUsername(username);
 
 			persist(userPackage);
 		}
 	}
 
-	public UserPackage findActive(String userId) {
-		String criteria = "p.user.id = ?1 AND (p.status = ?2 OR p.status = ?3) "
+	public UserPackage findActive(String username) {
+		String criteria = "p.username = ?1 AND (p.status = ?2 OR p.status = ?3) "
+				+ "AND p.internetPackage.logInformation.statusFlag = ?4 "
 				+ "ORDER BY p.logInformation.createDate ASC";
 		List<UserPackage> userPackages = createQuery(entityClass, "p", "p",
-				criteria, userId, Status.NOT_ACTIVATED_YET, Status.ACTIVE)
-				.getResultList();
+				criteria, username, Status.NOT_ACTIVATED_YET, Status.ACTIVE,
+				StatusFlag.ACTIVE).getResultList();
 
 		if (userPackages.size() > 0) {
 			return userPackages.get(0);

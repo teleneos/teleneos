@@ -15,43 +15,30 @@
  */
 package org.meruvian.yama.security.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 
-import net.bogor.itu.entity.radius.Radacct;
-
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.StandardTokenizerFactory;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
-import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
  * @author Dian Aditya
  * 
  */
-@Entity
-@Indexed
-@Table(name = "yama_backend_user")
-@AnalyzerDef(name = "customanalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class), filters = { @TokenFilterDef(factory = LowerCaseFilterFactory.class) })
-public class BackendUser extends DefaultPersistence {
+// @Entity
+// @Indexed
+// @Table(name = "yama_backend_user")
+// @AnalyzerDef(name = "customanalyzer", tokenizer = @TokenizerDef(factory =
+// StandardTokenizerFactory.class), filters = { @TokenFilterDef(factory =
+// LowerCaseFilterFactory.class) })
+@Embeddable
+public class BackendUser {
 	private String username;
 	private String password;
 	private String email;
 	private String website;
 	private String role;
-	private List<Radacct> accts = new ArrayList<Radacct>();
 
 	@Field
 	@Column(unique = true)
@@ -100,16 +87,6 @@ public class BackendUser extends DefaultPersistence {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	@OneToMany
-	@JoinColumn(name = "username", referencedColumnName = "username")
-	public List<Radacct> getAccts() {
-		return accts;
-	}
-
-	public void setAccts(List<Radacct> accts) {
-		this.accts = accts;
 	}
 
 }

@@ -13,7 +13,7 @@
 		</tr>
 		<tr>
 			<td>User</td>
-			<td>: ${transactionHeader.user.user.username!}</td>
+			<td>: ${transactionHeader.username!}</td>
 			<td style="text-align: right;">${transactionHeader.logInformation.createDate?string('hh:mm')}</td>
 		</tr>
 		<tr>

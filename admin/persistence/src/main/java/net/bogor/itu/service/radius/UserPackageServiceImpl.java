@@ -36,7 +36,7 @@ public class UserPackageServiceImpl implements UserPackageService {
 			up.setEndDate(userPackage.getEndDate());
 			up.setInternetPackage(userPackage.getInternetPackage());
 			up.setStatus(userPackage.getStatus());
-			up.setUser(userPackage.getUser());
+			up.setUsername(userPackage.getUsername());
 			up.setQuotaBalance(userPackage.getQuotaBalance());
 			up.setUnlimited(userPackage.isUnlimited());
 			up.getLogInformation().setStatusFlag(

@@ -7,21 +7,14 @@
 			</a>
 		</li>
 		<li>
+			<a href="/admin/user/report">
+				<@s.text name="menu.admin.statistic" />
+			</a>
+		</li>
+		<li>
 			<a href="/admin/user/online">
 				<@s.text name="menu.admin.onlineuser" />
 			</a>
 		</li>
-		<#--
-		<li>
-			<a href="/admin/service">
-				<@s.text name="menu.admin.service" />
-			</a>
-		</li>
-		<li>
-			<a href="/admin/user/group">
-				<@s.text name="menu.admin.group" />
-			</a>
-		</li>
-		-->
 	</ul>
 </div>

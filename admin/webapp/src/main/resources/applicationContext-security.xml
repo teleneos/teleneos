@@ -7,10 +7,13 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean id="passwordEncoder"
+	<bean id="dbPasswordEncoder"
 		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<constructor-arg value="256" />
 	</bean>
+
+	<bean id="ldapPasswordEncoder"
+		class="org.springframework.security.authentication.encoding.LdapShaPasswordEncoder" />
 
 	<bean id="userService" class="org.meruvian.yama.security.UserService" />
 
@@ -51,18 +54,18 @@
 
 	<!-- Database authentication -->
 	<sc:authentication-manager id="authManager">
-		<!-- <sc:ldap-authentication-provider -->
-		<!-- user-details-class="inetOrgPerson" user-search-base="${ldap.user.search_base}" -->
-		<!-- user-search-filter="(uid={0})" group-search-base="${ldap.group.search_base}" -->
-		<!-- role-prefix="${ldap.role.prefix}"> -->
-		<!-- <sc:password-compare> -->
-		<!-- <sc:password-encoder ref="passwordEncoder" /> -->
-		<!-- </sc:password-compare> -->
-		<!-- </sc:ldap-authentication-provider> -->
+		<sc:ldap-authentication-provider
+			user-details-class="inetOrgPerson" user-search-base="${ldap.user.search_base}"
+			user-search-filter="(uid={0})" group-search-base="${ldap.group.search_base}"
+			role-prefix="none">
+			<sc:password-compare>
+				<sc:password-encoder ref="ldapPasswordEncoder" />
+			</sc:password-compare>
+		</sc:ldap-authentication-provider>
 
-		<sc:authentication-provider
-			user-service-ref="userService">
-			<sc:password-encoder ref="passwordEncoder" />
-		</sc:authentication-provider>
+		<!-- <sc:authentication-provider -->
+		<!-- user-service-ref="userService"> -->
+		<!-- <sc:password-encoder ref="dbPasswordEncoder" /> -->
+		<!-- </sc:authentication-provider> -->
 	</sc:authentication-manager>
 </beans>

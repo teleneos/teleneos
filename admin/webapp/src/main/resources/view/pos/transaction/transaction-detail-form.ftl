@@ -61,7 +61,7 @@
 					<#if transactionHeader.id??>
 					<@s.textfield key="label.admin.theader.noinvoice" readonly="true" value="${noInvoice(transactionHeader.counter)}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.date" readonly="true" value="${transactionHeader.logInformation.createDate?string('dd-MM-yyyy')!} ${transactionHeader.logInformation.createDate?string('hh:mm')!}" cssClass="span4" />
-					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.user.user.username!}" cssClass="span4" />
+					<@s.textfield key="label.admin.theader.user" readonly="true" value="${transactionHeader.username!}" cssClass="span4" />
 					<@s.textfield key="label.admin.theader.admin" readonly="true" value="${currentUser.username!}" cssClass="span4" />
 					<#else>
 					<div class="control-group ">

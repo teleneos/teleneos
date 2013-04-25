@@ -25,7 +25,7 @@
 				<table class="table table-striped table-condensed">
 					<thead>
 						<tr>
-							<th>#</th>
+							<th class="span1">#</th>
 							<th><@s.text name="label.admin.theader.user" /></th>
 							<th><@s.text name="label.admin.theader.date" /></th>
 						</tr>
@@ -36,8 +36,8 @@
 						<#list transactionHeaders.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${detailUrl + s.id}">${s.user.name.first!} ${s.user.name.last!}</a></td>
-							<td><strong>${s.logInformation.createDate?string('dd-MM-yyyy')!}</strong> ${s.logInformation.createDate?string('hh:mm')!}</td>
+							<td><a href="${detailUrl + s.id}">${s.username!}</a></td>
+							<td><strong>${s.logInformation.createDate?string('dd-MM-yyyy')!}</strong> ${s.logInformation.createDate?string('HH:mm')!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

@@ -17,7 +17,6 @@ package org.meruvian.yama.security;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -26,9 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.security.user.BackendUser;
-import org.meruvian.yama.security.user.service.BackendUserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,12 +42,14 @@ public class UserService extends SavedRequestAwareAuthenticationSuccessHandler
 		implements UserDetailsService {
 
 	@Inject
-	private BackendUserService userService;
+	private net.bogor.itu.service.admin.UserService userService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		BackendUser user = userService.getByUsername(username);
+		net.bogor.itu.entity.admin.User u = userService
+				.findByUsername(username);
+		BackendUser user = u.getUser();
 
 		if (user != null) {
 			UserDetails details = new User(user.getUsername(),
@@ -69,30 +68,29 @@ public class UserService extends SavedRequestAwareAuthenticationSuccessHandler
 			throws IOException, ServletException {
 
 		String username = null;
-		BackendUser user = null;
+		String authority = null;
 
 		if (authentication.getPrincipal() instanceof User) {
 			User u = (User) authentication.getPrincipal();
 			username = u.getUsername();
-
-			user = userService.getByUsername(username);
-
 		} else if (authentication.getPrincipal() instanceof InetOrgPerson) {
 			InetOrgPerson person = (InetOrgPerson) authentication
 					.getPrincipal();
-			user = new BackendUser();
-			user.setUsername(person.getUid());
-			user.setEmail(person.getMail());
-			user.setPassword(person.getPassword());
-
-			Collection<GrantedAuthority> authorities = person.getAuthorities();
-			String authority = authorities.size() > 0 ? authorities.iterator()
-					.next().getAuthority() : null;
-			user.setRole(authority);
+			username = person.getUsername();
+			authority = person.getAuthorities().isEmpty() ? null : person
+					.getAuthorities().iterator().next().getAuthority();
 		}
+
+		net.bogor.itu.entity.admin.User us = userService
+				.findByUsername(username);
+		BackendUser user = us.getUser();
+		if (authority != null)
+			user.setRole(authority);
 
 		request.getSession().setAttribute(
 				SessionCredentials.YAMA_SECURITY_USER, user);
+		request.getSession().setAttribute(
+				SessionCredentials.YAMA_SECURITY_USER_DETAIL, us);
 
 		if (StringUtils.isBlank(request.getParameter("redirectUri"))) {
 			super.onAuthenticationSuccess(request, response, authentication);

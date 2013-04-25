@@ -35,7 +35,7 @@
 					<table class="table-condensed table-bordered">
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
-							<td class="span3">${user.user.username}</td>
+							<td class="span3">${user.user.username!}</td>
 							<td class="span2"><strong><@s.text name="label.user.name" /></strong></td>
 							<td class="span3">${user.name.first!} ${user.name.last!}</td>
 						</tr>
@@ -71,7 +71,6 @@
 						<#assign no = 1 + ((page - 1) * max) />
 						<#list listacc.entityList as x>
 						<#assign a = x[0] />
-						<#assign b = x[2] />
 						<#assign c = x[1] />
 						<tr>
 							<td>${no}</td>

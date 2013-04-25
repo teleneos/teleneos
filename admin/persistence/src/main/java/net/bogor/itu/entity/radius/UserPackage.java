@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.master.InternetPackage;
 
 import org.meruvian.yama.persistence.DefaultPersistence;
@@ -32,7 +31,7 @@ public class UserPackage extends DefaultPersistence {
 		NOT_ACTIVATED_YET, ACTIVE, END
 	}
 
-	private User user;
+	private String username;
 	private InternetPackage internetPackage;
 	private Date endDate;
 	private Status status = Status.NOT_ACTIVATED_YET;
@@ -40,14 +39,12 @@ public class UserPackage extends DefaultPersistence {
 	private boolean unlimited = false;
 	private List<ConnectionHistory> histories = new ArrayList<ConnectionHistory>();
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@ManyToOne

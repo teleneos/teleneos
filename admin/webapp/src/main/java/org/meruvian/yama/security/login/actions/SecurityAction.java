@@ -17,13 +17,15 @@ package org.meruvian.yama.security.login.actions;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.service.admin.UserService;
+
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.yama.actions.DefaultAction;
-import org.meruvian.yama.security.user.service.BackendUserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.ldap.userdetails.InetOrgPerson;
 
 /**
  * @author Dian Aditya
@@ -34,15 +36,20 @@ public class SecurityAction extends DefaultAction {
 	private String password = "";
 
 	@Inject
-	private BackendUserService userService;
+	private UserService userService;
 
 	@Action(name = "/password", method = HttpMethod.POST)
 	public ActionResult changePassword() {
 		if (!password.trim().equalsIgnoreCase("")) {
-			User user = (User) SecurityContextHolder.getContext()
+			Object principal = SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
-
-			userService.changePassword(user.getUsername(), password);
+			if (principal instanceof User) {
+				User user = (User) principal;
+				userService.changePassword(user.getUsername(), password);
+			} else if (principal instanceof InetOrgPerson) {
+				InetOrgPerson person = (InetOrgPerson) principal;
+				userService.changePassword(person.getUsername(), password);
+			}
 		} else {
 			return new ActionResult("freemarker",
 					"/view/security/change-password-form.ftl");

@@ -22,22 +22,15 @@
 				</a>
 			</li>
 			<li>
+				<a href="/admin/user/report">
+					<@s.text name="menu.admin.statistic" />
+				</a>
+			</li>
+			<li>
 				<a href="/admin/user/online">
 					<@s.text name="menu.admin.onlineuser" />
 				</a>
 			</li>
-			<#--
-			<li>
-				<a href="/admin/service">
-					<@s.text name="menu.admin.service" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/user/group">
-					<@s.text name="menu.admin.group" />
-				</a>
-			</li>
-			-->
 		</ul>
 	</li>
 	<li class="dropdown">
@@ -71,21 +64,6 @@
 					<@s.text name="menu.pos.item" />
 				</a>
 			</li>
-			<#--<li>
-				<a href="/pos/requisition">
-					<@s.text name="menu.pos.requisition" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/po">
-					<@s.text name="menu.pos.purchaseorder" />
-				</a>	
-			</li>
-			<li>
-				<a href="/pos/invoice">
-					<@s.text name="menu.pos.invoice" />
-				</a>	
-			</li>-->
 			<li>
 				<a href="/pos/inventoryonhand">
 					<@s.text name="menu.pos.inventoryonhand" />
@@ -109,33 +87,6 @@
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
-			<#--
-			<li>
-				<a href="/package/prepaid">
-					<@s.text name="menu.package.prepaid" />
-				</a>
-			</li>
-			<li>
-				<a href="/package/postpaid">
-					<@s.text name="menu.package.postpaid" />
-				</a>
-			</li>
-			<li>
-				<a href="/package/reward">
-					<@s.text name="menu.package.reward" />
-				</a>
-			</li>
-			<li>
-				<a href="/package/subscribe">
-					<@s.text name="menu.package.subscribe" />
-				</a>
-			</li>			
-			<li>
-				<a href="/master/group">
-					<@s.text name="menu.master.group" />
-				</a>
-			</li>
-			-->
 			<li>
 				<a href="/master/packages">
 					<@s.text name="menu.master.packagemanager" />
@@ -202,17 +153,17 @@
 		<ul class="dropdown-menu">
 		<li>
 			<a href="/ticket/add">
-				<@s.text name="Submit" />
+				Submit
 			</a>
 		</li>
 		<li>
 			<a href="/ticket/faq">
-				<@s.text name="FAQ" />
+				FAQ
 			</a>
 		</li>
 		<li>
 			<a href="/ticket/status">
-				<@s.text name="Status" />
+				Status
 			</a>
 		</li>
 		</ul>

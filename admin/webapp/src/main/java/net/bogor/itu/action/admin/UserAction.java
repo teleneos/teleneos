@@ -51,8 +51,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/list")
 	public ActionResult userList() throws Exception {
-		model.setDetails(userService.findDetailByUsername(model.getQ(),
-				model.getMax(), model.getPage() - 1));
+		users();
 
 		return new ActionResult("freemarker", "/view/admin/user/user-list.ftl");
 	}
@@ -89,14 +88,13 @@ public class UserAction extends DefaultAction implements
 			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
 			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length"),
 			@RegexFieldValidator(fieldName = "user.phone", expression = "^([0-9]*)$", key = "message.admin.user.phone.notvalid") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
-			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
+			@RequiredFieldValidator(fieldName = "user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userSubmit() throws Exception {
 		boolean isCreate = StringUtils.isBlank(model.getUser().getId());
 
-		model.getUser().setInternetPackage(null);
 		model.getUser().getUser().setRole("USER");
 
 		try {
@@ -120,7 +118,7 @@ public class UserAction extends DefaultAction implements
 		}
 
 		return new ActionResult("/pos/transaction/addstarter?id="
-				+ model.getUser().getId()).setType("redirect");
+				+ model.getUser().getUser().getUsername()).setType("redirect");
 	}
 
 	@Action(name = "/edit/{q}", method = HttpMethod.GET)
@@ -142,7 +140,7 @@ public class UserAction extends DefaultAction implements
 			@RegexFieldValidator(fieldName = "user.user.username", expression = "^[a-z][a-z0-9]+(?:[_][a-z0-9]+)*$", key = "message.admin.user.username.invalidcharacters"),
 			@RegexFieldValidator(fieldName = "user.idcard", expression = "^([0-9]*)$", key = "message.admin.user.idcard.length"),
 			@RegexFieldValidator(fieldName = "user.phone", expression = "^([0-9]*)$", key = "message.admin.user.phone.notvalid") }, emails = { @EmailValidator(fieldName = "user.user.email", key = "message.admin.user.email.notvalid") }, requiredFields = {
-			@RequiredFieldValidator(fieldName = "user.user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
+			@RequiredFieldValidator(fieldName = "user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
