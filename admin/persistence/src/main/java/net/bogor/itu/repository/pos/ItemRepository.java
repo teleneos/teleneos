@@ -18,11 +18,11 @@ public class ItemRepository extends PersistenceRepository<Item> {
 			String orderBy, int limit, int page, String condition) {
 
 		String criteria = "(i.code LIKE ? AND i.name LIKE ? AND i.description LIKE ? " +
-				"AND i.uom.name LIKE ? AND i.itemType.name LIKE ? AND i.category.name LIKE ?)";
+				"AND i.uom.name LIKE ? AND i.category.name LIKE ?)";
 		criteria = criteria.replace("AND", condition);
 		criteria += " AND i.logInformation.statusFlag = ? ORDER BY "
 				+ StringUtils.defaultIfEmpty(order, "i.id") + " " + orderBy;
-		Object[] params = { keyword, keyword, keyword, keyword,keyword, keyword,
+		Object[] params = { keyword, keyword, keyword, keyword, keyword,
 				StatusFlag.ACTIVE };
 		for (int i = 0; i < params.length - 1; i++) {
 			if (params[i] instanceof String || params[i] == null) {
