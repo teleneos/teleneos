@@ -37,7 +37,7 @@
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl + s.id}">${s.item.code!} - ${s.item.name!}</a></td>
-							<td>${s.stock!} ${s.item.uom.name!}</td>
+							<td>${s.stock?string('#')!} ${s.item.uom.name!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

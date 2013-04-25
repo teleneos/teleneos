@@ -33,7 +33,7 @@
 							Quantity
 						</label>
 						<div class="controls">
-							<input name="goodReceivingDetail.quantity" value="0" class="span2" type="text">
+							<input name="goodReceivingDetail.quantity" value="1" class="span2" type="text">
 							<select class="span2" name="goodReceivingDetail.uom.id">
 							<#list uoms.entityList as s>
 								<option value="${s.id!}">${s.name!}</option>
@@ -64,7 +64,7 @@
 							<tr>
 								<td>${no}</td>
 								<td>${s.item.name!}</td>
-								<td style="text-align: center;">${s.quantity!} ${s.uom.name!}</td>
+								<td style="text-align: center;">${s.quantity?string('#')!} ${s.uom.name!}</td>
 								<td>${s.description!}</td>
 							</tr>
 							<#assign no = no + 1 />

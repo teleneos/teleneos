@@ -22,7 +22,7 @@
 							</#list>
 							</select>
 							=
-							<input name="conversion.multiplyRate" value="${conversion.multiplyRate!}" class="span2" type="text">
+							<input name="conversion.multiplyRate" value="${conversion.multiplyRate?string('#')!}" class="span2" type="text">
 							<select class="span2" name="conversion.uomTo.id">
 							<#list uoms.entityList as s>
 								<option value="${s.id!}">${s.name!}</option>

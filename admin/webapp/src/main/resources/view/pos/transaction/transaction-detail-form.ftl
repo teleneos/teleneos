@@ -151,7 +151,7 @@
 									<tr>
 										<td>${no}</td>
 										<td><#if s.item??>${s.item.name!}</#if></td>
-										<td style="text-align: center;"><#if s.item??>${s.quantity!} ${s.uom.name!}<#else>-</#if></td>
+										<td style="text-align: center;"><#if s.item??>${s.quantity?string('#')!} ${s.uom.name!}<#else>-</#if></td>
 										<td style="text-align: right;">${s.price!}</td>
 										<td style="text-align: right;">${price}</td>
 										<#if !transactionHeader.cash??>

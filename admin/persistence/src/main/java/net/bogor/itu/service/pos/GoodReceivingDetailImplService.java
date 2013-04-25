@@ -94,7 +94,8 @@ public class GoodReceivingDetailImplService implements
 			Conversion conversion = conversionService
 					.findConversion(goodReceivingDetail.getUom().getId(), item
 							.getUom().getId());
-			if(conversion!=null){
+			if (conversion != null
+					|| goodReceivingDetail.getUom().getId().equals(item.getUom().getId())) {
 				goodReceivingDetailRepository.persist(goodReceivingDetail);				
 			}else{
 				throw new InvaidUnitOfMeasurementException();
