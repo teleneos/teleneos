@@ -75,12 +75,15 @@
 					</#if>
 					<#if !transactionHeader.cash??>
 					<@s.radio name="change" list={'true' : 'Item', 'false' : 'Internet Package'} listKey="key" listValue="value" value="true" />
-					<div class="control-group " id="item">
+					<div class="control-group <#if fieldErrors.containsKey('transactionDetail.item.name')>error</#if>" id="item">
 						<label class="control-label" for="add_transactionDetail_item_id"> <span class="required">*</span> <@s.text name="page.item.title" /></label>
 						<div class="controls">
 							<@s.hidden name="transactionDetail.item.id" id="item-id" />
 							<input type="text" id="item-name" readonly="true" class="span4" value="<#if transactionDetail.item??> ${transactionDetail.item.name!} </#if>" name="transactionDetail.item.name">
 							<button class="btn openpopup"  type="button" title="<@s.text name="page.item.title" />" object-name="items|name" field-target="item-id|item-name" href="<@s.url value="/pos/item" />">Choose</button>
+							<#if fieldErrors.containsKey('transactionDetail.item.name')>
+								<span class="help-inline">${fieldErrors.get('transactionDetail.item.name').get(0)?string}</span>
+							</#if>
 						</div>
 					</div>
 					<div class="control-group " id="package">
@@ -92,13 +95,18 @@
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
-					<div class="control-group <#if erroruom?string=='true'>error</#if>" id="uom">
+					<div class="control-group <#if erroruom?string=='true' | fieldErrors.containsKey('transactionDetail.item.name')>error</#if>" id="uom">
 						<label class="control-label" for="add_item_category_id"><span class="required">*</span><@s.text name="label.admin.item.uom" /></label>
 							<div class="controls">
 							<@s.hidden id="uom-id" name="transactionDetail.uom.id" />
 							<input type="text" readonly="true" value="<#if transactionDetail.uom??> ${transactionDetail.uom.name!} </#if>" id="uom-name" class="span4" name="transactionDetail.uom.name">
 							<button class="btn openpopup" type="button" title="<@s.text name="page.uom.title" />" object-name="uoms|name" field-target="uom-id|uom-name" href="<@s.url value="/pos/uom" />">Choose</button>
-							<#if erroruom?string=='true'><span class="help-inline">Conversion for this uom is not available</span></#if>
+							<#if erroruom?string=='true'>
+								<span class="help-inline">Conversion for this uom is not available</span>
+							</#if>
+							<#if fieldErrors.containsKey('transactionDetail.uom.name')>
+								<span class="help-inline">${fieldErrors.get('transactionDetail.uom.name').get(0)?string}</span>
+							</#if>
 							</div>
 					</div>
 					<div class="form-actions">

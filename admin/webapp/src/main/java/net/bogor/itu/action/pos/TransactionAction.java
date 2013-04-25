@@ -118,6 +118,23 @@ public class TransactionAction extends DefaultAction implements
 		model.getTransactionDetail().setTransactionHeader(tHeader);
 		if (model.getChange().equalsIgnoreCase("true")) {
 			// model.setInternetPackage(null);
+			if(model.getTransactionDetail().getItem().getId().isEmpty()){
+				addFieldError("transactionDetail.item.name", "Item cannot be empty");
+			}
+			if (model.getTransactionDetail().getQuantity() == 0) {
+				addFieldError("transactionDetail.quantity", "Quantity must greater than 0");
+			}
+			if(model.getTransactionDetail().getUom().getId().isEmpty()){
+				addFieldError("transactionDetail.uom.name", "Unit of measurement cannot be empty");
+			}
+			if(hasFieldErrors()){
+				model.setTransactionDetails(tDetailService.findByKeyword(model
+						.getTransactionHeader().getId(), 0, model.getPage() - 1));
+				model.setTransactionHeader(tHeaderService.findById(model
+						.getTransactionHeader().getId()));
+				return new ActionResult("freemarker",
+						"/view/pos/transaction/transaction-detail-form.ftl");
+			}
 			model.setItem(itemService.findById(model.getTransactionDetail()
 					.getItem().getId()));
 			model.getTransactionDetail().setInternetPackage(null);
