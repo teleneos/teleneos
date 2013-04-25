@@ -5,10 +5,9 @@ import java.text.SimpleDateFormat;
 
 import javax.inject.Inject;
 
-import net.bogor.itu.entity.pos.GoodReceiving;
-import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.service.pos.GoodReceivingDetailService;
 import net.bogor.itu.service.pos.GoodReceivingService;
+import net.bogor.itu.service.pos.InvaidUnitOfMeasurementException;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.UnitOfMeasureService;
 
@@ -133,62 +132,35 @@ public class goodReceivingAction extends DefaultAction implements
 			addFieldError("goodReceivingDetail.uom.id", "Unit of Measurement cannot be empty");
 		}
 		if(hasFieldErrors()){
-			model.setGoodReceiving(goodReceivingService.findById(model
-					.getGoodReceiving().getId()));
-			model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
-			model.setGoodReceivingDetails(goodReceivingDetailService.findByParent(
-					model.getGoodReceiving().getId(), 0, 0));
+			init();
 			return new ActionResult("freemarker",
 					"/view/pos/goodreceiving/goodreceiving-form.ftl");
 		}
 		model.getGoodReceivingDetail().setGoodReceiving(
 				model.getGoodReceiving());
-		goodReceivingDetailService.save(model.getGoodReceivingDetail());
+		try {
+			goodReceivingDetailService.save(model.getGoodReceivingDetail());
+		} catch (InvaidUnitOfMeasurementException e) {
+			model.setErroruom(true);
+			init();
+			return new ActionResult("freemarker",
+					"/view/pos/goodreceiving/goodreceiving-form.ftl");
+		}
 
 		return new ActionResult("/pos/goodreceiving/detail/"
 				+ model.getGoodReceiving().getId()).setType("redirect");
 	}
-	
+	private void init(){
+		model.setGoodReceiving(goodReceivingService.findById(model
+				.getGoodReceiving().getId()));
+		model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
+		model.setGoodReceivingDetails(goodReceivingDetailService.findByParent(
+				model.getGoodReceiving().getId(), 0, 0));
+	}
 	@Action(name = "/inventory", method = HttpMethod.POST)
 	public ActionResult inventory() {
 		goodReceivingDetailService.toInventory(model.getGoodReceiving().getId());
 		return new ActionResult("/pos/goodreceiving/detail/"+model.getGoodReceiving().getId()).setType("redirect");
-	}
-	
-	@Action(name = "/invoice", method = HttpMethod.POST)
-	public ActionResult addInvoice() {
-
-		String item = model.getItem();
-		int i = (item.split(",").length);
-		String is[] = new String[i];
-		is = item.split(",");
-
-		String quantity = model.getQuantity();
-		int q = (quantity.split(",").length);
-		String qs[] = new String[q];
-		qs = quantity.split(",");
-
-		for (int j = 0; j < i; j++) {
-			item = is[j].replace(" ", "");
-			quantity = qs[j].replace(" ", "");
-
-			GoodReceivingDetail in = new GoodReceivingDetail();
-
-			in.setGoodReceiving(goodReceivingService.findById(model
-					.getGoodReceiving().getId()));
-			in.setItem(itemService.findById(item));
-			in.setQuantity(Integer.parseInt(quantity));
-
-			goodReceivingDetailService.save(in);
-
-		}
-
-		GoodReceiving po = new GoodReceiving();
-		po.setId(model.getInvoice().getId());
-		goodReceivingService.save(po);
-
-		return new ActionResult("/pos/goodreceiving/detail/"
-				+ model.getInvoice().getId()).setType("redirect");
 	}
 
 	@Override

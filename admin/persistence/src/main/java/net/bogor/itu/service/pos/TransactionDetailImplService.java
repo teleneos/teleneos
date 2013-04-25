@@ -99,15 +99,7 @@ public class TransactionDetailImplService implements TransactionDetailService {
 			super("Stock Not Found");
 		}
 	}
-	public class InvaidUnitOfMeasurementException extends Exception{
-		
-		private static final long serialVersionUID = -3713025651526065262L;
-
-		public InvaidUnitOfMeasurementException() {
-			super("Invalid Unit of Measurement");
-		}
-		
-	}
+	
 	@Override
 	public EntityListWrapper<TransactionDetail> findByKeyword(String keyword,
 			int limit, int page) {

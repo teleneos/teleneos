@@ -11,7 +11,7 @@ import org.meruvian.yama.persistence.EntityListWrapper;
 public interface GoodReceivingDetailService {
 	GoodReceivingDetail findById(String id);
 
-	GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail);
+	GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail) throws InvaidUnitOfMeasurementException;
 
 	EntityListWrapper<GoodReceivingDetail> findByKeyword(String keyword,
 			int limit, int page);

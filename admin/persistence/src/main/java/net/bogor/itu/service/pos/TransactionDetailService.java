@@ -1,7 +1,6 @@
 package net.bogor.itu.service.pos;
 
 import net.bogor.itu.entity.pos.TransactionDetail;
-import net.bogor.itu.service.pos.TransactionDetailImplService.InvaidUnitOfMeasurementException;
 import net.bogor.itu.service.pos.TransactionDetailImplService.StockNotFoundException;
 
 import org.meruvian.yama.persistence.EntityListWrapper;

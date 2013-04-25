@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import net.bogor.itu.entity.pos.Conversion;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.entity.pos.InventoryOnhand;
+import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.repository.pos.GoodReceivingDetailRepository;
 import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 
@@ -35,6 +36,9 @@ public class GoodReceivingDetailImplService implements
 	@Inject
 	private ConversionService conversionService;
 
+	@Inject
+	private ItemService itemService;
+	
 	@Override
 	public GoodReceivingDetail findById(String id) {
 		return goodReceivingDetailRepository.findById(id);
@@ -83,10 +87,18 @@ public class GoodReceivingDetailImplService implements
 
 	@Override
 	@Transactional
-	public GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail) {
+	public GoodReceivingDetail save(GoodReceivingDetail goodReceivingDetail) throws InvaidUnitOfMeasurementException {
 		if (StringUtils.isBlank(goodReceivingDetail.getId())) {
 			goodReceivingDetail.setId(null);
-			goodReceivingDetailRepository.persist(goodReceivingDetail);
+			Item item = itemService.findById(goodReceivingDetail.getItem().getId());
+			Conversion conversion = conversionService
+					.findConversion(goodReceivingDetail.getUom().getId(), item
+							.getUom().getId());
+			if(conversion!=null){
+				goodReceivingDetailRepository.persist(goodReceivingDetail);				
+			}else{
+				throw new InvaidUnitOfMeasurementException();
+			}
 		} else {
 			GoodReceivingDetail grd = goodReceivingDetailRepository
 					.load(goodReceivingDetail.getId());

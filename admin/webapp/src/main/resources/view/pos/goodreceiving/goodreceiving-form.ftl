@@ -28,7 +28,7 @@
 							<button class="btn openpopup" type="button" title="<@s.text name="label.admin.goodreceiving.item" />" object-name="items|code|name" field-target="item-id|item-code" href="<@s.url value="/pos/item" />">Choose</button>
 						</div>
 					</div>
-					<div class="control-group ">
+					<div class="control-group <#if erroruom?string=='true'>error</#if>">
 						<label class="control-label"> <span class="required">*</span>
 							Quantity
 						</label>
@@ -39,7 +39,9 @@
 								<option value="${s.id!}">${s.name!}</option>
 							</#list>
 							</select>
+							<#if erroruom?string=='true'><span class="help-inline">Conversion for this uom is not available</span></#if>
 						</div>
+						
 					</div>
 					<@s.textarea key="label.admin.goodreceiving.description"  name="goodReceivingDetail.description" cssClass="span4" />
 					<div class="form-actions">

@@ -30,6 +30,7 @@ public class goodReceivingActionModel extends DefaultActionModel {
 	private String quantity;
 	private String item;
 	private String date;
+	private boolean erroruom;
 	
 	public BusinessPartner getBusinessPartner() {
 		return businessPartner;
@@ -145,6 +146,14 @@ public class goodReceivingActionModel extends DefaultActionModel {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public boolean isErroruom() {
+		return erroruom;
+	}
+
+	public void setErroruom(boolean erroruom) {
+		this.erroruom = erroruom;
 	}
 
 }
