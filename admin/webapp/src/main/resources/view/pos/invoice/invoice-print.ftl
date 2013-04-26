@@ -60,6 +60,11 @@
 							<#if s.internetPackage??>
 								<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
 							<#else>
+								<#if s.conversion?? >
+									<#assign price = (s.quantity * s.conversion.multiplyRate!0) * s.price />
+									<#else>
+									<#assign price = s.quantity * s.price />
+								</#if> 
 								<#assign totalPrice = totalPrice + price /> 
 								<#assign totalQnty = totalQnty + s.quantity />
 							</#if> 

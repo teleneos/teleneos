@@ -47,6 +47,14 @@ public class ConversionAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	public ActionResult add() {
+		if(model.getConversion().getMultiplyRate() < 1){
+			addFieldError("conversion.multiplyRate", "Multiply Rate must greater than 0");
+		}
+		if(hasFieldErrors()){
+			model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
+			return new ActionResult("freemarker",
+					"/view/pos/conversion/conversion-form.ftl");	
+		}
 		conversionService.save(model.getConversion());
 		return redirectToIndex;
 	}

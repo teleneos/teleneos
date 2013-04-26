@@ -9,7 +9,7 @@
 			<div class="span10">
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
 					<@s.hidden name="conversion.id" />
-					<div class="control-group ">
+					<div class="control-group  <#if fieldErrors.containsKey('conversion.multiplyRate')>error</#if>">
 						<label class="control-label"> 
 							<span class="required">*</span>
 							Conversion from
@@ -28,6 +28,9 @@
 								<option value="${s.id!}">${s.name!}</option>
 							</#list>
 							</select>
+							<#if fieldErrors.containsKey('conversion.multiplyRate')>
+								<span class="help-inline">${fieldErrors.get('conversion.multiplyRate').get(0)?string}</span>
+							</#if>
 						</div>
 					</div>
 					<div class="form-actions">
