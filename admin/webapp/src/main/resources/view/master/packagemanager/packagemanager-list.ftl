@@ -13,6 +13,8 @@
 				<#return (time / (60))?string('#') + ' Hours' />
 			<#elseif (time >= 1)>
 				<#return (time)?string('#') + ' Min' />
+			<#elseif (time == 0)>
+				<#return '-' />
 			</#if>
 		</#function>
 		<div class="row-fluid">
