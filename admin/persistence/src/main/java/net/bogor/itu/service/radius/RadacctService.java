@@ -1,5 +1,6 @@
 package net.bogor.itu.service.radius;
 
+import net.bogor.itu.entity.radius.ConnectionHistory;
 import net.bogor.itu.entity.radius.Radacct;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -14,17 +15,24 @@ public interface RadacctService {
 	EntityListWrapper<Radacct> findByUsername(String username, int limit,
 			int page);
 
-	EntityListWrapper<Radacct> findOnlineUser(String username, int limit,
+	/**
+	 * 
+	 * @param username
+	 * @param limit
+	 * @param page
+	 * @return [{@link Radacct}, {@link ConnectionHistory}]
+	 */
+	EntityListWrapper<Object[]> findOnlineUser(String username, int limit,
 			int page);
-	
+
 	public boolean checkIsOnline(String username);
-	
+
 	Radacct findFirstSession(String username);
 
 	Object[] findStatistic(String username);
-	
+
 	Radacct findByUniq(String uniq);
-	
+
 	EntityListWrapper<Object[]> findDetailByUsername(String username,
 			int limit, int page);
 }

@@ -76,9 +76,9 @@
 							<td>${no}</td>
 							<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
 							<td>${a.radacctid!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
+							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('HH:mm:ss')}</strong></td>
 							<td>
-								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('hh:mm:ss')}</strong>
+								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('HH:mm:ss')}</strong>
 								<span class="label">${timeFormat(a.acctsessiontime)}</span>
 							</td>
 							<td>${byteString(a.acctinputoctets)}</td>

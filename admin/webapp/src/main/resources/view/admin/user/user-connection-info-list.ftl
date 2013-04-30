@@ -54,6 +54,8 @@
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
 							<th><@s.text name="label.admin.onlineuser.totalonline" /></th>
+							<th class="span1"><@s.text name="label.admin.onlineuser.statistic" /></th>
+							<th class="span1"><@s.text name="label.admin.onlineuser.package" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -61,10 +63,16 @@
 						<#list listacc.entityList as d>
 						<tr>
 							<td>${no}</td>
-							<td><a href="<@s.url value="/admin/user/report/${d[0]!}" />">${d[0]!}</a></td>
+							<td><a href="<@s.url value="/admin/user/edit/${d[0]!}" />">${d[0]!}</a></td>
 							<td>${byteString(d[1]!0)}</td>
 							<td>${byteString(d[2]!0)}</td>
 							<td>${timeFormat(d[3]!0)}</td>
+							<td style="text-align: center;">
+								<a href="<@s.url value="/admin/user/report/${d[0]!}" />"><i class="icon-list-alt"></i></a>
+							</td>
+							<td style="text-align: center;">
+								<a href="<@s.url value="/admin/user/subscription/${d[0]!}" />"><i class="icon-qrcode"></i></a>
+							</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

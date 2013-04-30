@@ -16,6 +16,7 @@ import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.ldap.NameAlreadyBoundException;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
@@ -112,6 +113,14 @@ public class UserAction extends DefaultAction implements
 			if (e.getMessage().contains("email"))
 				addFieldError("user.user.email",
 						getText("message.admin.user.email.inuse"));
+
+			return new ActionResult("freemarker",
+					"/view/admin/user/user-form.ftl");
+		} catch (NameAlreadyBoundException e) {
+			model.getUser().getUser().setPassword(null);
+
+			addFieldError("user.user.username",
+					getText("message.admin.user.username.inuse"));
 
 			return new ActionResult("freemarker",
 					"/view/admin/user/user-form.ftl");

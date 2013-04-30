@@ -8,13 +8,13 @@ import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.radius.RadiusSerivce;
 import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.radius.RadacctService;
+import net.bogor.itu.service.radius.UserPackageService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.yama.actions.DefaultAction;
-import org.meruvian.yama.security.user.BackendUser;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -36,6 +36,9 @@ public class OnlineUserAction extends DefaultAction implements
 	@Inject
 	private RadiusSerivce radiusSerivce;
 
+	@Inject
+	private UserPackageService uPackageService;
+
 	private OnlineUserActionModel model = new OnlineUserActionModel();
 
 	@Action
@@ -45,7 +48,7 @@ public class OnlineUserAction extends DefaultAction implements
 
 	@Action(name = "/online")
 	public ActionResult onlineStatus() {
-		model.setAccts(radacctService.findOnlineUser(model.getQ(),
+		model.setListacc(radacctService.findOnlineUser(model.getQ(),
 				model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker",
@@ -67,6 +70,7 @@ public class OnlineUserAction extends DefaultAction implements
 				model.getMax(), model.getPage() - 1));
 		model.setUser(userService.findByUsername(model.getUid()));
 		model.setStatistic(radacctService.findStatistic(model.getUid()));
+		model.setUserPackage(uPackageService.findActivePackage(model.getUid()));
 
 		if (model.getUser() == null) {
 			User user = new User();

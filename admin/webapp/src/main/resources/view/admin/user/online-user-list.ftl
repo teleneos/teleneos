@@ -41,21 +41,26 @@
 							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
 							<th><@s.text name="label.admin.onlineuser.download" /></th>
 							<th><@s.text name="label.admin.onlineuser.upload" /></th>
+							<th><@s.text name="label.admin.onlineuser.package" /></th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<@s.url value="/admin/user/report/" var="reportUrl" />
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list accts.entityList as a>
+						<#list listacc.entityList as l>
+						<#assign a = l[0] />
+						<#assign history = l[1] />
 						<tr>
 							<td>${no}</td>
 							<td>${a.radacctid?string('#')}</td>
 							<td><a href="${reportUrl}${a.username!}">${a.username!}</a></td>
 							<td>${a.framedipaddress!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('hh:mm:ss')}</strong></td>
+							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('HH:mm:ss')}</strong></td>
 							<td>${byteString(a.acctinputoctets)}</td>
 							<td>${byteString(a.acctoutputoctets)}</td>
+							<#assign ip = history.userPackage.internetPackage />
+							<td title="${ip.name!}"><a href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
 							<td>
 								<a class="confirm" data-message="Disconnect ${a.username!}?" href="<@s.url value="/admin/user/disconnect/${a.callingstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
 									<i class="icon-off"></i>

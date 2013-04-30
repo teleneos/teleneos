@@ -14,7 +14,7 @@
 		<tr>
 			<td>User</td>
 			<td>: ${transactionHeader.username!}</td>
-			<td style="text-align: right;">${transactionHeader.logInformation.createDate?string('hh:mm')}</td>
+			<td style="text-align: right;">${transactionHeader.logInformation.createDate?string('HH:mm')}</td>
 		</tr>
 		<tr>
 			<td>Admin</td>

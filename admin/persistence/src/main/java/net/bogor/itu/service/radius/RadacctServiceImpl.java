@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import net.bogor.itu.entity.radius.Radacct;
 import net.bogor.itu.repository.radius.RadacctRepository;
 
-import org.hibernate.loader.custom.Return;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,7 @@ public class RadacctServiceImpl implements RadacctService {
 	}
 
 	@Override
-	public EntityListWrapper<Radacct> findOnlineUser(String username,
+	public EntityListWrapper<Object[]> findOnlineUser(String username,
 			int limit, int page) {
 		return radacctRepo.findOnlineUser(username, limit, page);
 	}

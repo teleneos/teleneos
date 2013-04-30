@@ -39,22 +39,17 @@
 						<tr <#if u.logInformation.statusFlag == 'INACTIVE'>class="muted"</#if>>
 							<td>${no}</td>
 							<td><a href="<@s.url value="/admin/user/edit/${u.user.username}" />">${u.user.username!}</a></td>
-							<td>${u.name.first!} ${u.name.last!}</td>
+							<td>${u.name.first!}<#if u.name.last != '-'> ${u.name.last}</#if></td>
 							<td>${u.phone!}</td>
 							<td>${u.idcard!}</td>
-							<td>${u.occupation!} ${u.user.role!}</td>
+							<td>${u.occupation!}</td>
 							<td>
+								<#--
 								<a href="<@s.url value="/admin/user/report/${u.user.username!}" />" title="<@s.text name="tooltip.user.report"><@s.param>${u.user.username!}</@s.param></@s.text>">
 									<i class="icon-list"></i>
 								</a>
+								-->
 							</td>
-							<#--
-							<td>
-								<a href="<@s.url value="/admin/user/disconnect/${a.username!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
-									<i class="icon-off"></i>
-								</a>
-							</td>
-							-->
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

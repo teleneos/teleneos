@@ -6,6 +6,7 @@ import net.bogor.itu.entity.radius.UserPackage;
 import net.bogor.itu.repository.radius.UserPackageRepository;
 
 import org.apache.commons.lang.StringUtils;
+import org.meruvian.yama.persistence.EntityListWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +47,17 @@ public class UserPackageServiceImpl implements UserPackageService {
 		}
 
 		return userPackage;
+	}
+
+	@Override
+	public EntityListWrapper<UserPackage> findPackageByUser(String username,
+			int limit, int page) {
+		return packageRepository.findByUsername(username, limit, page);
+	}
+
+	@Override
+	public EntityListWrapper<UserPackage> findUserByPackageCode(String code,
+			int limit, int page) {
+		return packageRepository.findByPackageCode(code, limit, page);
 	}
 }

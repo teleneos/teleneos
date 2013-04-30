@@ -5,13 +5,6 @@
 			<@s.text name="page.home" />
 		</a>
 	</li>
-<!-- 	<#if user != 'null'> -->
-<!-- 	<li> -->
-<!-- 		<a href='<@s.url value="/user/statistic" />'> -->
-<!-- 			<@s.text name="Subscription" /> -->
-<!-- 		</a> -->
-<!-- 	</li> -->
-<!-- 	</#if> -->
 </ul>
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />
@@ -22,6 +15,7 @@
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			<i class="icon-user icon-white"></i>
+			${currentUser.username!}
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">

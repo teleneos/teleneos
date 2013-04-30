@@ -2,7 +2,11 @@
 <html>
 	<#include "/view/decorator/basic/head.ftl" />
 	<body>
+		<#if currentUser.role == 'ADMINISTRATOR'>
 		<#include "/view/decorator/nav/admin-topnav.ftl" />
+		<#elseif currentUser.role == 'USER'>
+		<#include "/view/decorator/nav/user-topnav.ftl" />
+		</#if>
 		
 		<div class="container" id="content">
 			<#if page.getProperty('meta.header')??>

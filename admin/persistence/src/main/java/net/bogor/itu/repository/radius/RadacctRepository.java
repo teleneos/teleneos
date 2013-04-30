@@ -52,7 +52,8 @@ public class RadacctRepository extends
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT a.username, SUM(a.acctinputoctets), SUM(a.acctoutputoctets), SUM(a.acctsessiontime) FROM Radacct a WHERE a.username LIKE ?1 GROUP BY a.username";
+		String ql = "SELECT a.username, SUM(a.acctinputoctets), SUM(a.acctoutputoctets), "
+				+ "SUM(a.acctsessiontime) FROM Radacct a WHERE a.username LIKE ?1 GROUP BY a.username";
 
 		Query query = entityManager.createQuery(ql);
 		query.setParameter(1, username + "%");
@@ -124,15 +125,14 @@ public class RadacctRepository extends
 		}
 	}
 
-	public EntityListWrapper<Radacct> findOnlineUser(String username,
+	public EntityListWrapper<Object[]> findOnlineUser(String username,
 			int limit, int page) {
-		EntityListWrapper<Radacct> list = new EntityListWrapper<Radacct>();
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
 		list.setLimit(limit);
 		list.setCurrentPage(page);
 
-		String ql = "SELECT r FROM Radacct r WHERE r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.radacctid ASC";
-		TypedQuery<Radacct> query = entityManager
-				.createQuery(ql, Radacct.class);
+		String ql = "SELECT r, c FROM Radacct r, ConnectionHistory c WHERE r.acctuniqueid = c.radacct AND r.username LIKE ?1 AND r.acctstoptime IS NULL ORDER BY r.radacctid ASC";
+		Query query = entityManager.createQuery(ql);
 		query.setParameter(1, username + "%");
 
 		if (limit > 0) {

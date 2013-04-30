@@ -10,6 +10,7 @@ import net.bogor.itu.entity.radius.UserPackage;
 import net.bogor.itu.entity.radius.UserPackage.Status;
 import net.bogor.itu.persistence.PersistenceRepository;
 
+import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.springframework.stereotype.Repository;
 
@@ -40,12 +41,24 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 				+ "ORDER BY p.logInformation.createDate ASC";
 		List<UserPackage> userPackages = createQuery(entityClass, "p", "p",
 				criteria, username, Status.NOT_ACTIVATED_YET, Status.ACTIVE,
-				StatusFlag.ACTIVE).getResultList();
+				StatusFlag.ACTIVE).setMaxResults(1).getResultList();
 
 		if (userPackages.size() > 0) {
 			return userPackages.get(0);
 		}
 
 		return null;
+	}
+
+	public EntityListWrapper<UserPackage> findByUsername(String username,
+			int limit, int page) {
+		return findAll(limit, page, "p",
+				"p.username LIKE ?1 ORDER BY p.logInformation.updateDate DESC",
+				username + "%");
+	}
+
+	public EntityListWrapper<UserPackage> findByPackageCode(String code,
+			int limit, int page) {
+		return findAll(limit, page, "p", "p.internetPackage.code = ?1", code);
 	}
 }

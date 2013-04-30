@@ -2,6 +2,7 @@ package net.bogor.itu.action.admin;
 
 import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.radius.Radacct;
+import net.bogor.itu.entity.radius.UserPackage;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -13,12 +14,13 @@ import org.meruvian.yama.persistence.EntityListWrapper;
 public class OnlineUserActionModel extends DefaultActionModel {
 	private Radacct acct = new Radacct();
 	private User user = new User();
+	private UserPackage userPackage = new UserPackage();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
 	private EntityListWrapper<Object[]> listacc = new EntityListWrapper<Object[]>();
 
 	private Object[] statistic;
 	private String uid;
-	
+
 	public String getUid() {
 		return uid;
 	}
@@ -41,6 +43,14 @@ public class OnlineUserActionModel extends DefaultActionModel {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public UserPackage getUserPackage() {
+		return userPackage;
+	}
+
+	public void setUserPackage(UserPackage userPackage) {
+		this.userPackage = userPackage;
 	}
 
 	public EntityListWrapper<Radacct> getAccts() {
