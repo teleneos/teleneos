@@ -3,6 +3,8 @@ package net.bogor.itu.service.pos;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.pos.InventoryOnhand;
+import net.bogor.itu.entity.pos.StockAudit;
+import net.bogor.itu.entity.pos.StockAudit.Type;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.repository.pos.InventoryOnhandRepository;
@@ -31,6 +33,9 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 	@Inject
 	private InventoryOnhandRepository onhandRepository;
 
+	@Inject
+	private StockAuditService auditService;
+	
 	@Override
 	public TransactionHeader findById(String id) {
 		return tHeaderRepository.findById(id);
@@ -53,11 +58,14 @@ public class TransactionHeaderImplService implements TransactionHeaderService {
 					InventoryOnhand stock = onhandRepository.findByItem(td
 							.getItem().getId());
 					if (td.getConversion() != null) {
+						int out = (td.getQuantity() * td.getConversion()
+								.getMultiplyRate());
 						stock.setStock(stock.getStock()
-								- (td.getQuantity() * td.getConversion()
-										.getMultiplyRate()));
+								- out);
+						auditService.save(new StockAudit(td.getItem(), Type.OUTBOUND, out, "sales user "+th.getUsername(), stock.getStock()));
 					} else {
 						stock.setStock(stock.getStock() - (td.getQuantity()));
+						auditService.save(new StockAudit(td.getItem(), Type.OUTBOUND, td.getQuantity(), "sales user "+th.getUsername(), stock.getStock()));
 					}
 				}
 			}

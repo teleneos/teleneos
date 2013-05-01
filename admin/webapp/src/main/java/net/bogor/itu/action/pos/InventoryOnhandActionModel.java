@@ -1,6 +1,8 @@
 package net.bogor.itu.action.pos;
 
 import net.bogor.itu.entity.pos.InventoryOnhand;
+import net.bogor.itu.entity.pos.StockAudit;
+
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
 
@@ -12,6 +14,7 @@ public class InventoryOnhandActionModel extends DefaultActionModel {
 
 	private InventoryOnhand inventoryOnhand = new InventoryOnhand();
 	private EntityListWrapper<InventoryOnhand> inventoryOnhands = new EntityListWrapper<InventoryOnhand>();
+	private EntityListWrapper<StockAudit> auditLogs = new EntityListWrapper<StockAudit>();
 
 	public InventoryOnhand getInventoryOnhand() {
 		return inventoryOnhand;
@@ -29,4 +32,13 @@ public class InventoryOnhandActionModel extends DefaultActionModel {
 			EntityListWrapper<InventoryOnhand> inventoryOnhands) {
 		this.inventoryOnhands = inventoryOnhands;
 	}
+
+	public EntityListWrapper<StockAudit> getAuditLogs() {
+		return auditLogs;
+	}
+
+	public void setAuditLogs(EntityListWrapper<StockAudit> auditLogs) {
+		this.auditLogs = auditLogs;
+	}
+
 }

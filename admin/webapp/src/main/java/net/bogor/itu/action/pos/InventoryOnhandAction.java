@@ -3,6 +3,8 @@ package net.bogor.itu.action.pos;
 import javax.inject.Inject;
 
 import net.bogor.itu.service.pos.InventoryOnhandService;
+import net.bogor.itu.service.pos.StockAuditService;
+
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -15,12 +17,18 @@ import com.opensymphony.xwork2.ModelDriven;
 @Action(name = "/pos/inventoryonhand")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/inventoryonhand/inventoryonhand-form.ftl") })
 public class InventoryOnhandAction extends DefaultAction implements ModelDriven<InventoryOnhandActionModel>{
+	
+	private static final long serialVersionUID = 2325372941568461182L;
+	
 	private InventoryOnhandActionModel model = new InventoryOnhandActionModel();
 	private ActionResult redirectToIndex = new ActionResult("redirect",
 			"/pos/inventoryonhand");
 	
 	@Inject
 	private InventoryOnhandService inventoryOnhandService;
+	
+	@Inject
+	private StockAuditService auditService;
 	
 	@Action
 	public ActionResult inventoryOnhandList() {
@@ -49,6 +57,15 @@ public class InventoryOnhandAction extends DefaultAction implements ModelDriven<
 
 		return new ActionResult("freemarker",
 				"/view/pos/inventoryonhand/inventoryonhand-form.ftl");
+	}
+	
+	@Action(name = "/audit/{inventoryOnhand.item.id}", method = HttpMethod.GET)
+	public ActionResult audit() {
+		model.setAuditLogs(auditService.findByItem(model.getInventoryOnhand()
+				.getItem().getId(), null, "ASC", model.getMax(),
+				model.getPage() - 1));
+		return new ActionResult("freemarker",
+				"/view/pos/inventoryonhand/audit-list.ftl");
 	}
 
 	@Action(name = "/edit/{inventoryOnhand.id}", method = HttpMethod.POST)

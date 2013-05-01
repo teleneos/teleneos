@@ -6,6 +6,8 @@ import net.bogor.itu.entity.pos.Conversion;
 import net.bogor.itu.entity.pos.GoodReceivingDetail;
 import net.bogor.itu.entity.pos.InventoryOnhand;
 import net.bogor.itu.entity.pos.Item;
+import net.bogor.itu.entity.pos.StockAudit;
+import net.bogor.itu.entity.pos.StockAudit.Type;
 import net.bogor.itu.repository.pos.GoodReceivingDetailRepository;
 import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 
@@ -38,6 +40,9 @@ public class GoodReceivingDetailImplService implements
 
 	@Inject
 	private ItemService itemService;
+	
+	@Inject
+	private StockAuditService auditService;
 	
 	@Override
 	public GoodReceivingDetail findById(String id) {
@@ -82,6 +87,7 @@ public class GoodReceivingDetailImplService implements
 				onhand.setStock(qtyConvert);
 			}
 			inventoryOnhandRepository.persist(onhand);
+			auditService.save(new StockAudit(onhand.getItem(), Type.INBOUND, qtyConvert, "receiving from "+goodReceivingDetail.getGoodReceiving().getBusinessPartner().getName()+" invoice no "+goodReceivingDetail.getGoodReceiving().getInvoiceNo(), onhand.getStock()));
 		}
 	}
 
