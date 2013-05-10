@@ -56,7 +56,7 @@
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
-				<@s.form theme="bootstrap" cssClass="form-horizontal">
+				<@s.form action="/pos/transaction/detail/%{transactionHeader.id}" theme="bootstrap" cssClass="form-horizontal">
 					<@s.hidden name="transactionHeader.id" />
 					<#if transactionHeader.id??>
 					<@s.textfield key="label.admin.theader.noinvoice" readonly="true" value="${noInvoice(transactionHeader.counter)}" cssClass="span4" />

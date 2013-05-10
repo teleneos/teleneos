@@ -37,7 +37,7 @@
 							<td>${no}</td>
 							<td>${s.logInformation.createDate!}</td>
 							<td>${s.description!}</td>
-							<td>${s.quantity?string('#')!}</td>
+							<td><#if s.type.ordinal() == 1 > (-</#if>${s.quantity?string('#')!}<#if s.type.ordinal() == 1 >)</#if></td>
 							<td>${s.stock?string('#')!}</td>
 						</tr>
 						<#assign no = no + 1 />

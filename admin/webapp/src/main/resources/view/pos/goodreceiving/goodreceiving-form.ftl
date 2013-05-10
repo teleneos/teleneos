@@ -25,7 +25,7 @@
 						<div class="controls">
 							<@s.hidden name="goodReceivingDetail.item.id" id="item-id" />
 							<input type="text" id="item-code" readonly="true" class="span4">
-							<button class="btn openpopup" type="button" title="<@s.text name="label.admin.goodreceiving.item" />" object-name="items|code|name" field-target="item-id|item-code" href="<@s.url value="/pos/item" />">Choose</button>
+							<button class="btn openpopup" type="button" title="<@s.text name="label.admin.goodreceiving.item" />" object-name="items|name|name" field-target="item-id|item-code" href="<@s.url value="/pos/item" />">Choose</button>
 						</div>
 					</div>
 					<div class="control-group <#if erroruom?string=='true'>error</#if>">

@@ -30,7 +30,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 @Action(name = "/pos/transaction")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/pos/transaction/transaction-detail-form.ftl") })
 public class TransactionAction extends DefaultAction implements
-		ModelDriven<TransactionActionModel>{
+		ModelDriven<TransactionActionModel> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -104,21 +104,24 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/detail/{transactionHeader.id}", method = HttpMethod.POST)
 	public ActionResult addFormDetail() {
-		TransactionHeader tHeader = tHeaderService.findById(model.getTransactionHeader().getId());
+		TransactionHeader tHeader = tHeaderService.findById(model
+				.getTransactionHeader().getId());
 		model.setTransactionHeader(tHeader);
 		model.getTransactionDetail().setTransactionHeader(tHeader);
 		if (model.getChange().equalsIgnoreCase("true")) {
-			// model.setInternetPackage(null);
-			if(model.getTransactionDetail().getItem().getId().isEmpty()){
-				addFieldError("transactionDetail.item.name", "Item cannot be empty");
+			if (model.getTransactionDetail().getItem().getId().isEmpty()) {
+				addFieldError("transactionDetail.item.name",
+						"Item cannot be empty");
 			}
 			if (model.getTransactionDetail().getQuantity() == 0) {
-				addFieldError("transactionDetail.quantity", "Quantity must greater than 0");
+				addFieldError("transactionDetail.quantity",
+						"Quantity must greater than 0");
 			}
-			if(model.getTransactionDetail().getUom().getId().isEmpty()){
-				addFieldError("transactionDetail.uom.name", "Unit of measurement cannot be empty");
+			if (model.getTransactionDetail().getUom().getId().isEmpty()) {
+				addFieldError("transactionDetail.uom.name",
+						"Unit of measurement cannot be empty");
 			}
-			if(hasFieldErrors()){
+			if (hasFieldErrors()) {
 				model.setTransactionDetails(tDetailService.findByKeyword(model
 						.getTransactionHeader().getId(), 0, model.getPage() - 1));
 				model.setTransactionHeader(tHeaderService.findById(model
@@ -131,7 +134,6 @@ public class TransactionAction extends DefaultAction implements
 			model.getTransactionDetail().setInternetPackage(null);
 			model.getTransactionDetail().setPrice(model.getItem().getPrice());
 		} else {
-			// model.setItem(null);
 			model.setInternetPackage(packageManagerService.findById(model
 					.getTransactionDetail().getInternetPackage().getId()));
 			model.getTransactionDetail().setItem(null);
@@ -142,9 +144,10 @@ public class TransactionAction extends DefaultAction implements
 
 		try {
 			tDetailService.save(model.getTransactionDetail());
-		} catch (StockNotFoundException e) {			
-			addFieldError("transactionDetail.quantity", "Stock for this item is not available");
-			if(hasFieldErrors()){
+		} catch (StockNotFoundException e) {
+			addFieldError("transactionDetail.quantity",
+					"Stock for this item is not available");
+			if (hasFieldErrors()) {
 				model.setTransactionDetails(tDetailService.findByKeyword(model
 						.getTransactionHeader().getId(), 0, model.getPage() - 1));
 				model.setTransactionHeader(tHeaderService.findById(model
@@ -153,9 +156,9 @@ public class TransactionAction extends DefaultAction implements
 						"/view/pos/transaction/transaction-detail-form.ftl");
 			}
 		} catch (InvaidUnitOfMeasurementException e) {
-				model.setErroruom(true);
-				return new ActionResult("freemarker",
-						"/view/pos/transaction/transaction-detail-form.ftl");
+			model.setErroruom(true);
+			return new ActionResult("freemarker",
+					"/view/pos/transaction/transaction-detail-form.ftl");
 		}
 
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
@@ -170,21 +173,27 @@ public class TransactionAction extends DefaultAction implements
 	}
 
 	@Action(name = "/cash", method = HttpMethod.POST)
-//	@Validations(fieldExpressions = {
-//			@FieldExpressionValidator(expression = "model.transactionHeader.cash > model.grandtotal", key="message.admin.pos.cash.minus", fieldName="transactionHeader.cash")
-//	})
 	public ActionResult addCashTransaction() {
-		if(model.getTransactionHeader().getCash() < model.getGrandtotal()){
-			addFieldError("transactionHeader.cash", "Insufficient cash");
-			if(hasFieldErrors()){
-				model.setTransactionDetails(tDetailService.findByKeyword(model
-						.getTransactionHeader().getId(), 0, model.getPage() - 1));
-				model.setTransactionHeader(tHeaderService.findById(model
-						.getTransactionHeader().getId()));
-				return new ActionResult("freemarker",
-						"/view/pos/transaction/transaction-detail-form.ftl");
+
+		if (model.getTransactionHeader().getCash() == null) {
+			addFieldError("transactionHeader.cash", "Cash cannot be empty");
+		}
+
+		if (model.getTransactionHeader().getCash() != null) {
+			if (model.getTransactionHeader().getCash() < model.getGrandtotal()) {
+				addFieldError("transactionHeader.cash", "Insufficient cash");
 			}
 		}
+		
+		if (hasFieldErrors()) {
+			model.setTransactionDetails(tDetailService.findByKeyword(model
+					.getTransactionHeader().getId(), 0, model.getPage() - 1));
+			model.setTransactionHeader(tHeaderService.findById(model
+					.getTransactionHeader().getId()));
+			return new ActionResult("freemarker",
+					"/view/pos/transaction/transaction-detail-form.ftl");
+		}
+
 		TransactionHeader tHeader = model.getTransactionHeader();
 		model.getTransactionHeader().setId(tHeader.getId());
 		tHeaderService.save(model.getTransactionHeader());
