@@ -2,19 +2,17 @@
 	<ul class="nav nav-list">
 		<li id="nav-header" class="nav-header"><@s.text name="Ticketing" /></li>
 		<li>
-			<a href="/ticket/add">
-				<@s.text name="Submit" />
-			</a>
-		</li>
-		<li>
-			<a href="/ticket/faq">
-				<@s.text name="FAQ" />
-			</a>
-		</li>
-		<li>
-			<a href="/ticket/status">
-				<@s.text name="Status" />
-			</a>
+		<#if currentUser??>
+			<#if currentUser.role != 'ADMINISTRATOR'>
+					<a href="/ticket/user/status">
+						<@s.text name="Status" />
+					</a>
+			<#else>
+					<a href="/ticket">
+						<@s.text name="Status" />
+					</a>
+			</#if>
+		</#if>
 		</li>
 	</ul>
 </div>

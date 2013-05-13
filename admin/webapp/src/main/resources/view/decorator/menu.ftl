@@ -152,16 +152,16 @@
 		</a>
 		<ul class="dropdown-menu">
 		<li>
-			<a href="/ticket/department">
-				Department
-			</a>
-		</li>
-		<li>
 			<a href="/ticket">
 				Ticket
 			</a>
 		</li>
 		<#--
+		<li>
+			<a href="/ticket/department">
+				Department
+			</a>
+		</li>
 		<li>
 			<a href="/ticket/add">
 				Submit

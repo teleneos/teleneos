@@ -5,6 +5,16 @@
 			<@s.text name="page.home" />
 		</a>
 	</li>
+	<#if currentUser??>
+	<#if currentUser.role != 'ADMINISTRATOR'>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title=""> Ticketing <b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li><a href="/ticket/user/status"> Ticket </a></li>
+		</ul>
+	</li>
+	</#if>
+	</#if>
 </ul>
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />
