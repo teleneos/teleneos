@@ -92,6 +92,7 @@ public class UserAction extends DefaultAction implements
 			@RequiredFieldValidator(fieldName = "user.logInformation.statusFlag", key = "message.admin.user.flag.notnull"),
 			@RequiredFieldValidator(fieldName = "user.birthDate", key = "message.admin.user.birthdate.notvalid") }, stringLengthFields = {
 			@StringLengthFieldValidator(fieldName = "user.idcard", key = "message.admin.user.idcard.length", minLength = "13", maxLength = "13", trim = true),
+			@StringLengthFieldValidator(fieldName = "pass", key = "message.admin.user.password.length", minLength = "6"),
 			@StringLengthFieldValidator(fieldName = "user.user.password", key = "message.admin.user.password.length", minLength = "6") })
 	public ActionResult userSubmit() throws Exception {
 		boolean isCreate = StringUtils.isBlank(model.getUser().getId());
