@@ -69,7 +69,6 @@ public class TransactionDetailRepository extends
 			Query query = entityManager.createQuery(ql)
 					.setParameter(1, format.parse(date))
 					.setParameter(2, c.getTime());
-			System.err.println("date 1: "+c.getTime().toString()+"|"+format.parse(date).toString());
 			list.setEntityList(query.getResultList());
 		} catch (ParseException e) {
 			e.printStackTrace();
