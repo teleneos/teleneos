@@ -58,6 +58,13 @@ public class ConversionAction extends DefaultAction implements
 		conversionService.save(model.getConversion());
 		return redirectToIndex;
 	}
+	
+	@Action(name = "/edit/{q}", method = HttpMethod.GET)
+	public String editForm() {
+		model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
+		model.setConversion(conversionService.findById(model.getQ()));
+		return DefaultAction.INPUT;
+	}
 
 	@Override
 	public ConversionActionModel getModel() {

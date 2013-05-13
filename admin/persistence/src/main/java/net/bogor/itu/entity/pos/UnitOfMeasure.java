@@ -1,5 +1,6 @@
 package net.bogor.itu.entity.pos;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -16,6 +17,7 @@ public class UnitOfMeasure extends DefaultPersistence{
 	private String name;
 	private String description;
 	
+	@Column(unique=true)
 	public String getName() {
 		return name;
 	}

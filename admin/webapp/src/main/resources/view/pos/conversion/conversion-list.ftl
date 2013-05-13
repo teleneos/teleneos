@@ -31,10 +31,11 @@
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
+						<@s.url value="/pos/conversion/edit/" var="editUrl" />
 						<#list conversions.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td>1 ${s.uomFrom.name!} = ${s.multiplyRate?string('#')!} ${s.uomTo.name!}</a></td>
+							<td><a href="${editUrl + s.id}">1 ${s.uomFrom.name!} = ${s.multiplyRate?string('#')!} ${s.uomTo.name!}</a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
