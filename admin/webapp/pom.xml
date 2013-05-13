@@ -220,6 +220,11 @@
 			<artifactId>explorercanvas</artifactId>
 			<version>r3</version>
 		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.2</version>
+		</dependency>
 	</dependencies>
 
 	<description>The struts2 modules under the umbrella of Meruvian Yama project. Includes rest handler, annotation support for struts2, and many others.</description>

@@ -101,7 +101,7 @@
 		</a>
 		<ul class="dropdown-menu">
 			<li>
-				<a href="/report/store">
+				<a href="/report/store/daily">
 					<@s.text name="menu.report.accounting" />
 				</a>
 			</li>

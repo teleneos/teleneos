@@ -1,6 +1,7 @@
 package net.bogor.itu.service.pos;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -133,6 +134,26 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Transactional
 	public void remove(TransactionDetail detail) {
 		tDetailRepository.delete(tDetailRepository.load(detail.getId()));
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> daily(String date) {
+		return tDetailRepository.daily(date);
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> monthly(String date) {
+		return tDetailRepository.monthly(date);
+	}
+
+	@Override
+	public Date getFirstTransaction() {
+		return tDetailRepository.getFirstTransaction();
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> weekly(String date) {
+		return tDetailRepository.weekly(date);
 	}
 
 }

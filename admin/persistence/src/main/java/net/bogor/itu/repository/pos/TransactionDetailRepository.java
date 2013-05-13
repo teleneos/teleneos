@@ -2,8 +2,11 @@ package net.bogor.itu.repository.pos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import net.bogor.itu.entity.pos.TransactionDetail;
@@ -52,7 +55,28 @@ public class TransactionDetailRepository extends
 		list.setEntityList(query.getResultList());
 		return list;
 	}
-
+	
+	public EntityListWrapper<Object[]> daily(String date){
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		String ql = "SELECT t, COUNT(t.item.id), COUNT(t.internetPackage.id) FROM TransactionDetail t WHERE t.logInformation.createDate BETWEEN ? AND ? GROUP BY t.item.id, t.internetPackage.id";
+		Calendar c = Calendar.getInstance(); 
+		try {
+			c.setTime(format.parse(date));
+			c.add(Calendar.HOUR_OF_DAY, 23);
+			c.add(Calendar.MINUTE, 59);
+			c.add(Calendar.SECOND, 59);
+			Query query = entityManager.createQuery(ql)
+					.setParameter(1, format.parse(date))
+					.setParameter(2, c.getTime());
+			System.err.println("date 1: "+c.getTime().toString()+"|"+format.parse(date).toString());
+			list.setEntityList(query.getResultList());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	public List<TransactionDetail> findByHeader(String headerId, boolean item) {
 		String criteria = " WHERE d.transactionHeader.id = ?1 AND "
 				+ (item ? "d.item" : "d.internetPackage") + " IS NOT NULL";
@@ -60,4 +84,50 @@ public class TransactionDetailRepository extends
 		return createQuery(entityClass, "d", "d", criteria, headerId)
 				.getResultList();
 	}
+
+	public EntityListWrapper<Object[]> monthly(String date) {
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
+		SimpleDateFormat format = new SimpleDateFormat("MM/yyyy");
+		String ql = "SELECT t, COUNT(t.item.id), COUNT(t.internetPackage.id) FROM TransactionDetail t WHERE t.logInformation.createDate BETWEEN ? AND ? GROUP BY t.item.id, t.internetPackage.id";
+		Calendar c = Calendar.getInstance(); 
+		try {
+			c.setTime(format.parse(date));
+			c.add(Calendar.MONTH, 1);			
+			Query query = entityManager.createQuery(ql)
+					.setParameter(1, format.parse(date))
+					.setParameter(2, c.getTime());
+			list.setEntityList(query.getResultList());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public EntityListWrapper<Object[]> weekly(String date) {
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String ql = "SELECT t, COUNT(t.item.id), COUNT(t.internetPackage.id) FROM TransactionDetail t WHERE t.logInformation.createDate BETWEEN ? AND ? GROUP BY t.item.id, t.internetPackage.id";
+		Calendar c = Calendar.getInstance(); 
+		try {
+			c.setTime(format.parse(date));
+			c.add(Calendar.DATE, 6);
+			Query query = entityManager.createQuery(ql)
+					.setParameter(1, format.parse(date))
+					.setParameter(2, c.getTime());
+			list.setEntityList(query.getResultList());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public Date getFirstTransaction() {
+		Query query = entityManager.createQuery("SELECT t.logInformation.createDate FROM TransactionDetail t ORDER BY t.logInformation.createDate ASC").setMaxResults(1);
+		try {
+			return (Date) query.getSingleResult();	
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }

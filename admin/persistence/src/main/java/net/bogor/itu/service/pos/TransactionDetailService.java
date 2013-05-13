@@ -1,5 +1,7 @@
 package net.bogor.itu.service.pos;
 
+import java.util.Date;
+
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.service.pos.TransactionDetailImplService.StockNotFoundException;
 
@@ -19,8 +21,16 @@ public interface TransactionDetailService {
 			int page);
 	
 	EntityListWrapper<Object[]> report(String from, String to);
-
+	
 	EntityListWrapper<Object[]> internet(String periodfrom, String periodto);
 	
+	EntityListWrapper<Object[]> daily(String date);
+	
 	void remove(TransactionDetail detail);
+
+	EntityListWrapper<Object[]> monthly(String date);
+	
+	Date getFirstTransaction();
+
+	EntityListWrapper<Object[]> weekly(String date);
 }
