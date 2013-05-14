@@ -3,6 +3,7 @@ package net.bogor.itu.action.ticket;
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
 
+import net.bogor.itu.entity.ticket.PremadeAnswer;
 import net.bogor.itu.entity.ticket.Ticket;
 import net.bogor.itu.entity.ticket.TicketThread;
 
@@ -13,6 +14,8 @@ public class TicketActionModel extends DefaultActionModel {
 	
 	private TicketThread ticketThread = new TicketThread();
 	private EntityListWrapper<TicketThread> ticketThreads = new EntityListWrapper<TicketThread>();
+	
+	private EntityListWrapper<PremadeAnswer> answers = new EntityListWrapper<PremadeAnswer>();
 	
 	private boolean close = false;
 
@@ -54,6 +57,14 @@ public class TicketActionModel extends DefaultActionModel {
 
 	public void setClose(boolean close) {
 		this.close = close;
+	}
+
+	public EntityListWrapper<PremadeAnswer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(EntityListWrapper<PremadeAnswer> answers) {
+		this.answers = answers;
 	}
 
 }

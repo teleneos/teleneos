@@ -2,6 +2,13 @@
 <head>
 <title><@s.text name="page.ticket.title" /></title>
 <meta name="header" content="<@s.text name="page.ticket.header" />">
+<script type="text/javascript">
+$(function() {
+	$('#premade').change(function() {
+		$('#message').val($("#premade option:selected").val());
+	});
+});
+</script>
 <style type="text/css">
 th {
 	text-align: left;
@@ -116,7 +123,15 @@ td,th {
 									<tr>
 										<td><h4>Post Reply</h4>
 										<form action="" method="post">
-											<textarea style="width: 95%;" rows="" cols="" name="ticketThread.message">${ticketThread.message!}</textarea>
+											<#if currentUser.role == 'ADMINISTRATOR'>
+											<b>Premade Answer : </b><select id="premade">
+												<option value="">--Select Option--</option>
+												<#list answers.entityList as x>
+												<option value="${x.content!}">${x.title!}</option>
+												</#list>
+											</#if>
+											</select>
+											<textarea style="width: 95%;" rows="" cols="" name="ticketThread.message" id="message">${ticketThread.message!}</textarea>
 											<input type="submit" class="btn" value="Submit"> <#if currentUser.role == 'ADMINISTRATOR'><input type="checkbox" name="close" value="true"> Close on Reply </#if> 
 										</form>
 										</td>
@@ -131,4 +146,5 @@ td,th {
 		</div>
 	</div>
 </body>
+
 </html>

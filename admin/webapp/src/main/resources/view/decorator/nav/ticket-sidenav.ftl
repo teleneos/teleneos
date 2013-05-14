@@ -14,5 +14,14 @@
 			</#if>
 		</#if>
 		</li>
+		<#if currentUser??>
+		<#if currentUser.role == 'ADMINISTRATOR'>
+		<li>
+			<a href="/ticket/premade">
+				<@s.text name="Premade Answer" />
+			</a>
+		</li>
+		</#if>
+		</#if>
 	</ul>
 </div>

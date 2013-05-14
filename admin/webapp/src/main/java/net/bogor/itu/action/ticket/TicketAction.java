@@ -3,6 +3,7 @@ package net.bogor.itu.action.ticket;
 import javax.inject.Inject;
 
 import net.bogor.itu.entity.ticket.Ticket;
+import net.bogor.itu.service.ticket.PremadeAnswerService;
 import net.bogor.itu.service.ticket.TicketService;
 import net.bogor.itu.service.ticket.TicketThreadService;
 
@@ -34,6 +35,9 @@ public class TicketAction extends DefaultAction implements
 	
 	@Inject
 	private TicketThreadService threadService;
+	
+	@Inject
+	private PremadeAnswerService answerService;
 	
 	@Action
 	public ActionResult ticketList() {
@@ -67,6 +71,7 @@ public class TicketAction extends DefaultAction implements
 		model.setTicket(ticketService.findById(model.getTicket().getId()));
 		model.setTicketThreads(threadService.findByTicket(model.getTicket()
 				.getId(), "i.logInformation.createDate", "ASC", 0, 0));
+		model.setAnswers(answerService.findByKeyword("", null, "ASC", 0, 0));
 		return new ActionResult("freemarker",
 				"/view/ticket/ticket-detail.ftl");
 	}

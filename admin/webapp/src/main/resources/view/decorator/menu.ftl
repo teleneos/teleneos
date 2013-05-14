@@ -156,6 +156,11 @@
 				Ticket
 			</a>
 		</li>
+		<li>
+			<a href="/ticket/premade">
+				Premade Answer
+			</a>
+		</li>
 		<#--
 		<li>
 			<a href="/ticket/department">
