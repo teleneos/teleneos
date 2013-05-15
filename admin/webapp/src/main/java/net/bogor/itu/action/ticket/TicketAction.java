@@ -17,6 +17,8 @@ import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.meruvian.yama.security.SessionCredentials;
 
 import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 @Action(name = "/ticket")
 @Results({ @Result(name = DefaultAction.INPUT, type = "freemarker", location = "/view/ticket/ticket-form.ftl") })
@@ -51,8 +53,12 @@ public class TicketAction extends DefaultAction implements
 		return new ActionResult("freemarker",
 				"/view/ticket/ticket-form.ftl");
 	}
-	
+		
 	@Action(name = "/user/submit", method = HttpMethod.POST)
+	@Validations(requiredStrings = { 
+			@RequiredStringValidator(fieldName = "ticket.subject", trim = true, key = "label.ticket.subject.notnull"),
+			@RequiredStringValidator(fieldName = "ticket.message", trim = true, key = "label.ticket.message.notnull"),
+			})
 	public ActionResult addTicket() {
 		ticketService.save(model.getTicket());
 		return redirectToIndex;

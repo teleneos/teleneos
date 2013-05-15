@@ -47,4 +47,10 @@ public class PremadeAnswerServiceImpl implements PremadeAnswerService {
 		return premadeAnswerRepository.findById(id);
 	}
 
+	@Override
+	@Transactional
+	public void remove(PremadeAnswer answer) {
+		premadeAnswerRepository.delete(answer);
+	}
+
 }

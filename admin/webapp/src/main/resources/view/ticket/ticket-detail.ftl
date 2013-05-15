@@ -71,7 +71,7 @@ td,th {
 								cellpadding="3" cellspacing="1" width="100%">
 								<tbody>
 									<tr>
-										<th>Status:</th>
+										<th width="30%">Status:</th>
 										<td><#if ticket.logInformation.statusFlag == 'ACTIVE' >OPEN<#else>CLOSE</#if></td>
 									</tr>
 									<tr>

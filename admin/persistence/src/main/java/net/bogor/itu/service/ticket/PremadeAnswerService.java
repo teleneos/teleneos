@@ -9,4 +9,5 @@ public interface PremadeAnswerService {
 			String orderBy, int limit, int page);
 	PremadeAnswer save(PremadeAnswer premadeAnswer);
 	PremadeAnswer findById(String id);
+	void remove(PremadeAnswer answer);
 }

@@ -41,7 +41,7 @@ public class PremadeAnswerAction extends DefaultAction implements
 	public ActionResult addForm() {
 		return new ActionResult("freemarker",
 				"/view/ticket/premade/premade-form.ftl");
-	}
+	} 
 	
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = { 
@@ -50,6 +50,12 @@ public class PremadeAnswerAction extends DefaultAction implements
 		})
 	public ActionResult addAnswer() {
 		premadeAnswerService.save(model.getAnswer());
+		return redirectToIndex;
+	}
+	
+	@Action(name = "/remove/{answer.id}", method = HttpMethod.POST)
+	public ActionResult removeAnswer() {
+		premadeAnswerService.remove(premadeAnswerService.findById(model.getAnswer().getId()));
 		return redirectToIndex;
 	}
 	
@@ -71,7 +77,6 @@ public class PremadeAnswerAction extends DefaultAction implements
 			@RequiredStringValidator(fieldName = "answer.title", trim = true, key = "label.ticket.premade.title.notnull") ,
 			@RequiredStringValidator(fieldName = "answer.content", trim = true, key = "label.ticket.premade.content.notnull")
 		})
-	
 	public ActionResult updateService() {
 		return addAnswer();
 	}

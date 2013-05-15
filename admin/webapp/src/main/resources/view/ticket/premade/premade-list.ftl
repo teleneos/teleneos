@@ -28,16 +28,19 @@
 							<th>#</th>
 							<th><@s.text name="label.premade.title" /></th>
 							<th><@s.text name="label.premade.content" /></th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
 						<@s.url value="/ticket/premade/edit/" var="editUrl" />
+						<@s.url value="/ticket/premade/remove/" var="deleteUrl" />
 						<#list answers.entityList as s>
 						<tr>
 							<td>${no}</td>
 							<td><a href="${editUrl}${s.id}">${s.title!}</a></td>
-							<td>${s.content!}</a></td>
+							<td>${s.content!}</td>
+							<td><a class="btn confirm" title="Confirmation" href="${deleteUrl}${s.id!}" data-message="Are you sure to remove ${s.title!}?"><i class="icon-ban-circle"></i></a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -47,6 +50,8 @@
 			</div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/scripts/bootbox.min.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
