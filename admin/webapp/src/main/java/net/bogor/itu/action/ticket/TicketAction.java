@@ -72,6 +72,13 @@ public class TicketAction extends DefaultAction implements
 				"/view/ticket/user-ticket-status.ftl");
 	}
 	
+	@Action(name = "/answer", method = HttpMethod.GET)
+	public ActionResult answerList() {
+		model.setAnswers(answerService.findByKeyword(model.getQ(), null, "ASC", model.getMax(), model.getPage() - 1));
+		return new ActionResult("freemarker",
+				"/blank.ftl");
+	}
+	
 	@Action(name = "/detail/{ticket.id}", method = HttpMethod.GET)
 	public ActionResult ticketDetail() {
 		model.setTicket(ticketService.findById(model.getTicket().getId()));
