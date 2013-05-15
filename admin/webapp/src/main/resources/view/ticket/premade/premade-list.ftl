@@ -32,10 +32,11 @@
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
+						<@s.url value="/ticket/premade/edit/" var="editUrl" />
 						<#list answers.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td>${s.title!}</a></td>
+							<td><a href="${editUrl}${s.id}">${s.title!}</a></td>
 							<td>${s.content!}</a></td>
 						</tr>
 						<#assign no = no + 1 />

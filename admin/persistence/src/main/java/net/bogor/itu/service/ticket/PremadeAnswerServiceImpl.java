@@ -42,4 +42,9 @@ public class PremadeAnswerServiceImpl implements PremadeAnswerService {
 		return premadeAnswer;
 	}
 
+	@Override
+	public PremadeAnswer findById(String id) {
+		return premadeAnswerRepository.findById(id);
+	}
+
 }

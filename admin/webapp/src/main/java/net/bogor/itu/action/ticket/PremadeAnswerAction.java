@@ -53,6 +53,29 @@ public class PremadeAnswerAction extends DefaultAction implements
 		return redirectToIndex;
 	}
 	
+	@Action(name = "/edit/{answer.id}", method = HttpMethod.GET)
+	public ActionResult editForm() {
+		String id = model.getAnswer().getId();
+		if (id == null)
+			return redirectToIndex;
+		model.setAnswer(premadeAnswerService.findById(id));
+		if (model.getAnswer() == null)
+			return redirectToIndex;
+
+		return new ActionResult("freemarker",
+				"/view/ticket/premade/premade-form.ftl");
+	}
+
+	@Action(name = "/edit/{answer.id}", method = HttpMethod.POST)
+	@Validations(requiredStrings = { 
+			@RequiredStringValidator(fieldName = "answer.title", trim = true, key = "label.ticket.premade.title.notnull") ,
+			@RequiredStringValidator(fieldName = "answer.content", trim = true, key = "label.ticket.premade.content.notnull")
+		})
+	
+	public ActionResult updateService() {
+		return addAnswer();
+	}
+	
 	@Override
 	public PremadeAnswerActionModel getModel() {
 		return model;
