@@ -19,19 +19,10 @@ th {
 }
 
 table.message,table.response,table.note {
-	border-width: 1px 1px 1px;
-	border-style: solid solid none;
-	-moz-border-top-colors: none;
-	-moz-border-right-colors: none;
-	-moz-border-bottom-colors: none;
-	-moz-border-left-colors: none;
-	border-image: none;
-	border-color: rgb(173, 173, 173);
+	border: 1px solid rgb(205, 205, 205);
+	border-radius: 3px 3px 3px 3px;
 }
 
-table.message th {
-	background-color: rgb(195, 217, 255);
-}
 
 table.message th,table.response th,table.note th {
 	line-height: 24px;
@@ -53,6 +44,15 @@ td,th {
 	color: rgb(62, 62, 62);
 	text-decoration: none;
 	border: medium none;
+}
+
+.ok {
+	background: -moz-linear-gradient(center top, rgb(253, 253, 253),
+		rgb(234, 234, 234) ) repeat scroll 0% 0%/100% auto rgb(234, 234, 234);
+	text-shadow: 0px 1px white;
+	border-bottom: 1px solid rgb(205, 205, 205);
+	color: rgb(99, 99, 99);
+	font-weight: 600;
 }
 </style>
 </head>
@@ -99,6 +99,7 @@ td,th {
 					</tr>
 				</tbody>
 			</table>
+			
 			<table border="0" cellpadding="2" cellspacing="0" width="100%">
 				<tbody>
 					<tr>
@@ -111,7 +112,7 @@ td,th {
 								<tbody>
 								<#list ticketThreads.entityList as x>
 								<tr>
-								<th>${x.logInformation.createDate!} by ${x.logInformation.createBy!}</th>
+								<th class="ok">${x.logInformation.createDate!} by ${x.logInformation.createBy!}</th>
 								</tr>
 								<tr>
 									<td>${x.message!}</td>
