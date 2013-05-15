@@ -82,6 +82,10 @@ td,th {
 										<th>Create Date:</th>
 										<td>${ticket.logInformation.createDate!}</td>
 									</tr>
+									<tr>
+										<th>Message:</th>
+										<td><b>${ticket.message!}</b></td>
+									</tr>
 								</tbody>
 							</table>
 						</td>
