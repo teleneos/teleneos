@@ -15,7 +15,7 @@
 					<@s.textarea key="label.admin.item.description"  name="item.description" cssClass="span4" />
 					<@s.textfield key="label.admin.item.price" required="true" name="item.price" cssClass="span4" />
 					<div class="control-group ">
-						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.uom" /><span class="required">*</span></label>
+						<label class="control-label" for="add_item_category_id"><span class="required">*</span> <@s.text name="label.admin.item.uom" /></label>
 							<div class="controls">
 							<@s.hidden id="uom-id" name="item.uom.id" />
 							<input type="text" readonly="true" value="<#if item.uom??> ${item.uom.name!} </#if>" id="uom-name" class="span4" name="item.uom.name">
