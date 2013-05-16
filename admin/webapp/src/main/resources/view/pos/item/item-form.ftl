@@ -23,7 +23,7 @@
 							</div>
 					</div>
 					<div class="control-group ">
-						<label class="control-label" for="add_item_category_id"><@s.text name="label.admin.item.category" /><span class="required">*</span></label>
+						<label class="control-label" for="add_item_category_id"><span class="required">*</span> <@s.text name="label.admin.item.category" /></label>
 							<div class="controls">
 							<@s.hidden id="category-id" name="item.category.id" />
 							<input type="text" readonly="true" value="<#if item.category??> ${item.category.name!} </#if>" id="category-name" class="span4" name="item.category.name">
