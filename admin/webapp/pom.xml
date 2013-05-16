@@ -211,9 +211,14 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.bogor</groupId>
+			<artifactId>itu-networking</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>flot</artifactId>
-			<version>0.7</version>
+			<version>0.8.0-1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>

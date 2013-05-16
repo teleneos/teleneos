@@ -1,19 +1,49 @@
 <html>
 	<head>
-		<title><@s.text name="Utilization" /></title>
-		<meta name="header" content="<@s.text name="Network Utilization" />">
+		<title><@s.text name="page.utilization.title" /></title>
+		<meta name="header" content="<@s.text name="page.utilization.header" />">
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<@s.url value="/static/explorercanvas/r3/excanvas.min.js" />"></script><![endif]-->
-		<script type="text/javascript" src="<@s.url value="/static/flot/0.7/jquery.flot.min.js" />"></script>
-		<script type="text/javascript" src="<@s.url value="/static/flot/0.7/jquery.flot.pie.min.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.min.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.pie.min.js" />"></script>
+		<style type="text/css">
+			.flot-y-axis > .flot-tick-label:after, .speed:after {
+				content: " %";
+			}
+		</style>
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/network-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-					<div class="span12" style="height: 200px;" id="networkchart">
-					
+					<div class="span12" style="height: 250px;" id="networkchart">
+						<img src="<@s.url value="/images/loading.gif" />" />
 					</div>
+				</div>
+				<br>
+				<div class="row-fluid">
+					<table class="table table-condensed table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th></th>
+								<th>last</th>
+								<th>min</th>
+								<th>avg</th>
+								<th>max</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Processor load</td>
+								<td>[avg]</td>
+								<td id="td-last-proc" class="speed"></td>
+								<td id="td-min-proc" class="speed"></td>
+								<td id="td-avg-proc" class="speed"></td>
+								<td id="td-max-proc" class="speed"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<hr>
 				<div class="row-fluid">
@@ -25,184 +55,198 @@
 									<th>Value</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="tb-items">
 								<tr>
-									<td>CPU</td>
-									<td>processor 0: Genuine ...</td>
-								</tr>
-								<tr>
-									<td>CPU idle time</td>
-									<td class="s5">95.75 %</td>
-								</tr>
-								<tr>
-									<td>CPU interrupt time</td>
-									<td class="s6">0%</td>
-								</tr>
-								<tr>
-									<td>CPU iowait time</td>
-									<td class="s5">2.6 %</td>
-								</tr>
-								<tr>
-									<td>CPU nice time</td>
-									<td class="s6">0%</td>
-								</tr>
-								<tr>
-									<td>CPU softirq time</td>
-									<td class="s5">0.008342 %</td>
-								</tr>
-								<tr>
-									<td>CPU steal time</td>
-									<td class="s6">0%</td>
-								</tr>
-								<tr>
-									<td>CPU system time</td>
-									<td class="s5">0.21 %</td>
-								</tr>
-								<tr>
-									<td>CPU user time</td>
-									<td class="s5">1.1 %</td>
-								</tr>
-								<tr>
-									<td>Download speed for scenario "web".</td>
-									<td>0 Bps</td>
-								</tr>
-								<tr>
-									<td>Download speed for step "op" of scenario "web".</td>
-									<td>0 Bps</td>
-								</tr>
-								<tr>
-									<td>Download speed for step "op2" of scenario "web".</td>
-									<td>11.08 KBps</td>
-								</tr>
-								<tr>
-									<td>Download speed for step "op3" of scenario "web".</td>
-									<td>43.19 KBps</td>
-								</tr>
-								<tr>
-									<td>Failed step of scenario "web".</td>
-									<td class="s4">1</td>
-								</tr>
-								<tr>
-									<td>Free disk space on /</td>
-									<td>25.79 GB</td>
-								</tr>
-								<tr>
-									<td>Free disk space on / (percentage)</td>
-									<td class="s5">81.71 %</td>
+									<td colspan="2">
+										<img src="<@s.url value="/images/loading.gif" />" />
+									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="span5 well">
-						<div style="height: 250px;margin-bottom: 50px;" id="swapchart"></div>
 						<div>
-							<p><strong>CPU Usage</strong></p>
-							<div style="height: 250px;" id="cpuchart"></div>
+							<p><strong>Swap Usage</strong></p>
+							<div style="height: 250px;margin-bottom: 50px;" id="swapchart">
+								<img src="<@s.url value="/images/loading.gif" />" />
+							</div>
 						</div>
-						<hr>
-						<table class="table table-condensed table-striped">
-							<thead>
-							<tr>
-								<th></th>
-								<th></th>
-								<th>last</th>
-								<th>min</th>
-								<th>avg</th>
-								<th>max</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>Processor load</td>
-								<td>[avg]</td>
-								<td>0.79</td>
-								<td>0.58</td>
-								<td>0.78</td>
-								<td>0.82</td>
-							</tr>
-							</tbody>
-						</table>
+						<div>
+							<p><strong>Disk Usage</strong></p>
+							<div style="height: 250px;" id="diskchart">
+								<img src="<@s.url value="/images/loading.gif" />" />
+							</div>
+						</div>
 					</div>
 				</div>
 				<br>
 				<div class="row-fluid">
 					<div class="span12">
-						
 					</div>
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
 		var data = [], totalPoints = 300;
+		
+		function byteString(st) {
+			st = new Number(st);
 			
-		function random() {
-			if (data.length > 0)
-				data = data.slice(1);
+			if (st > (1024 * 1024 * 1024)) {
+				return (st / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
+			} else if (st > (1024 * 1024)) {
+				return (st / (1024 * 1024)).toFixed(2) + 'MB';
+			} else if (st > (1024)) {
+				return (st / (1024)).toFixed(2) + 'KB';
+			} else {
+				return (st < 0 ? 0 : st).toFixed(2) + 'B';
+			}
+		}
+		
+		function showSwap() {
+			$.getJSON('<@s.url />/swap.json', function(data) {
+				var total = new Number(data.items[1].lastvalue);
+				var free = new Number(data.items[0].lastvalue);
+				var used = total - free;
 
-			// Do a random walk
+				$.plot($('#swapchart'), 
+					[{ label: "Used space (" + byteString(used) + ")", data: used }, 
+					{ label: "Free space (" + byteString(free) + ")", data: free }], {
+					series: {
+						pie: {
+							show: true
+						}
+					},
+					legend: {
+						show: true
+					}
+				});
+			});
+		}
+		
+		function showDisk() {
+			$.getJSON('<@s.url />/disk.json', function(data) {
+				var used = new Number(data.items[1].lastvalue);
+				var free = new Number(data.items[0].lastvalue);
+				var total = new Number(data.items[2].lastvalue);
 
-			while (data.length < totalPoints) {
-
-				var prev = data.length > 0 ? data[data.length - 1] : 50,
-					y = prev + Math.random() * 10 - 5;
-
-				if (y < 0) {
-					y = 0;
-				} else if (y > 100) {
-					y = 100;
+				$.plot($('#diskchart'), 
+					[{ label: "Used space (" + byteString(used) + ")", data: used }, 
+					{ label: "Free space (" + byteString(free) + ")", data: free }], {
+					series: {
+						pie: {
+							show: true
+						}
+					},
+					legend: {
+						show: true
+					}
+				});
+			});
+		}
+		
+		function updateUz() {
+			$.getJSON('<@s.url />/processor.json', function(data) {
+				var uz = data.history;
+				var result = uz.result;
+				var i = result.length;
+				
+				var uzdata = [];
+				
+				var option = { 
+					series: {
+						lines: { show: true, fill: true },
+						points: { show: false },
+						shadowSize: 0
+					},
+					xaxis: {
+						labelAngle: 45,
+						ticks: []
+					}
+				};
+				
+				var max = 0;
+				var min = 9999;
+				var avg = 0;
+				var last = 0;
+				
+				for (r in result) {
+					r = result[r];
+					var val = new Number(r.value);
+					
+					uzdata.push([i, val]);
+					var date = new Date(new Number(r.clock + '000'));
+					var hour = date.getHours();
+					var min = date.getMinutes();
+					option.xaxis.ticks.push([i, (hour <= 9 ? '0' : '') + hour + ':' + (min <= 9 ? '0' : '') + min]);
+					
+					if (val > max) {
+						max = val;
+					}
+					
+					if (val < min) {
+						min = val;
+					}
+					
+					avg += val;
+					last = val;
+					
+					i--;
 				}
-
-				data.push(y);
-			}
-
-			// Zip the generated y values with the x values
-
-			var res = [];
-			for (var i = 0; i < data.length; ++i) {
-				res.push([i, data[i]])
-			}
-
-			return res;
+				
+				avg = avg / result.length;
+				$('#td-last-proc').text(last.toFixed(2));
+				$('#td-min-proc').text(min.toFixed(2));
+				$('#td-avg-proc').text(avg.toFixed(2));
+				$('#td-max-proc').text(max.toFixed(2));
+				
+				$.plot($("#networkchart"), [
+					{ label: "CPU Usage", data: uzdata},
+				], option);
+			});
+			
+			setTimeout(updateUz, 1000 * 60);
+		}
+		
+		function showItems() {
+			$.getJSON('<@s.url />/items.json', function(data) {
+				var tb = $('#tb-items');
+				tb.empty();
+				
+				for (d in data.items) {
+					d = data.items[d];
+					
+					var key = new String(d.key_);
+					var fIdx = key.lastIndexOf('[');
+					var lIdx = key.lastIndexOf(']');
+					
+					key = key.substring(fIdx > 0 ? fIdx + 1 : fIdx, lIdx > 0 ? lIdx : key.length);
+					var keys = key.split(',');
+					var name = d.name;
+					
+					var tr = $('<tr></tr>');
+					
+					var tdName = $('<td></td>');
+					for (k = 0; k < keys.length; k++) {
+						name = name.replace('$' + (k + 1), keys[k]);
+					}
+					tdName.append(name);
+					tr.append(tdName);
+					
+					var tdVal = $('<td></td>');
+					tdVal.append(d.lastvalue + d.units);
+					tr.append(tdVal);
+					
+					tb.append(tr);
+				}
+			});
 		}
 		
 		$(function() {
-			var data1 = random();
-			
-			data = [];
-			var data2 = random();
-			
-			data = [];
-			var data3 = random();
-			
-			var option = { 
-				series: {
-					lines: { show: true },
-					points: { show: false }
-				}
-			};
-			
-			$.plot($("#networkchart"), [
-				{ label: "Traffic", data: data1 },
-			], option);
-			
-			$.plot($("#cpuchart"), [
-				{ label: "CPU 1", data: data1 },
-				{ label: "CPU 2", data: data2 },
-				{ label: "CPU 3", data: data3 }
-			], option);
-						
-			$.plot($('#swapchart'), [{ label: "Total space (20%)", data: 2 }, { label: "Free space (80%)", data: 8 }], {
-				series: {
-					pie: {
-						show: true
-					}
-				},
-				legend: {
-					show: true
-				}
-			});
-			
-			$('#swapchart').prepend('<strong>Swap Usage</strong>');
+			showSwap();
+			updateUz();
+			showDisk();
+			showItems();
 		});
 		</script>
 	</body>

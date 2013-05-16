@@ -11,6 +11,7 @@
 			classpath:/applicationContext-persistence.xml
 			classpath:/applicationContext-security.xml
 			classpath:/applicationContext-radius.xml
+			classpath:/applicationContext-networking.xml
 		</param-value>
 	</context-param>
 

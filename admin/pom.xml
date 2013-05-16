@@ -46,6 +46,7 @@
 		<module>webapp</module>
 		<module>persistence</module>
 		<module>radius</module>
+		<module>networking</module>
 	</modules>
 
 	<build>

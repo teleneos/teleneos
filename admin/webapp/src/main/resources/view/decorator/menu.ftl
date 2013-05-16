@@ -11,7 +11,7 @@
 <#if user != 'null'>
 <ul class="nav">
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.admin" />">
 			<@s.text name="menu.admin" />
 			<b class="caret"></b>
 		</a>
@@ -34,7 +34,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.pos" />">
 			<@s.text name="menu.pos" />
 			<b class="caret"></b>
 		</a>
@@ -82,7 +82,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.package" />">
 			<@s.text name="menu.package" />
 			<b class="caret"></b>
 		</a>
@@ -95,7 +95,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="/report" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="/report" data-toggle="dropdown" title="<@s.text name="menu.report" />">
 			<@s.text name="menu.report" />
 			<b class="caret"></b>
 		</a>
@@ -108,39 +108,29 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			Network
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.network" />">
+			<@s.text name="menu.network" />
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
 			<li>
 				<a href="/network/availability">
-					Availability
+					<@s.text name="menu.network.availability" />
 				</a>
 			</li>
 			<li>
 				<a href="/network/monitoring">
-					Monitoring
-				</a>
-			</li>
-			<li>
-				<a href="/network/remote">
-					Remote Desktop
+					<@s.text name="menu.network.monitoring" />
 				</a>
 			</li>
 			<li>
 				<a href="/network/performance">
-					Performance
+					<@s.text name="menu.network.performance" />
 				</a>
 			</li>
 			<li>
 				<a href="/network/utilization">
-					Utilization
-				</a>
-			</li>
-			<li>
-				<a href="/network/report">
-					Report
+					<@s.text name="menu.network.utilization" />
 				</a>
 			</li>
 		</ul>

@@ -63,3 +63,11 @@ span.required {
 label.control-label:after {
 	content : " :";
 }
+
+.flot-x-axis > .flot-tick-label {
+	margin-top:10px;
+	-moz-transform:rotate(-90deg);
+	-o-transform:rotate(-90deg);
+	-webkit-transform:rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}

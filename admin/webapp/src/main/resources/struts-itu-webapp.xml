@@ -9,38 +9,26 @@
 			<result type="freemarker">/admin/backend-index.ftl</result>
 		</action>
 	</package>
-	
+
 	<package name="ticket" extends="yama-default" namespace="/ticket">
 		<action name="add">
-		    <result type="freemarker">/view/ticket/ticket.ftl</result>
+			<result type="freemarker">/view/ticket/ticket.ftl</result>
 		</action>
 		<action name="response">
-		    <result type="freemarker">/view/ticket/ticket-response-service.ftl</result>
+			<result type="freemarker">/view/ticket/ticket-response-service.ftl</result>
 		</action>
 		<action name="faq">
-		    <result type="freemarker">/view/ticket/faq.ftl</result>
+			<result type="freemarker">/view/ticket/faq.ftl</result>
 		</action>
 		<action name="status">
-		    <result type="freemarker">/view/ticket/status.ftl</result>
+			<result type="freemarker">/view/ticket/status.ftl</result>
 		</action>
 	</package>
-	
+
 	<!-- Temporary -->
 	<package name="network" extends="yama-default" namespace="/network">
-		<action name="availability">
-			<result type="freemarker">/view/network/availability.ftl</result>
-		</action>
-		<action name="monitoring">
-			<result type="freemarker">/view/network/performance.ftl</result>
-		</action>
 		<action name="log">
 			<result type="freemarker">/view/network/log.ftl</result>
-		</action>
-		<action name="performance">
-			<result type="freemarker">/view/network/performance.ftl</result>
-		</action>
-		<action name="utilization">
-			<result type="freemarker">/view/network/utilization.ftl</result>
 		</action>
 		<action name="report">
 			<result type="freemarker">/view/network/performance.ftl</result>

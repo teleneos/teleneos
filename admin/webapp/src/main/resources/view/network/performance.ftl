@@ -1,9 +1,9 @@
 <html>
 	<head>
-		<title><@s.text name="Network Performance" /></title>
-		<meta name="header" content="<@s.text name="Network performance" />">
+		<title><@s.text name="page.performance.title" /></title>
+		<meta name="header" content="<@s.text name="page.performance.header" />">
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<@s.url value="/static/explorercanvas/r3/excanvas.min.js" />"></script><![endif]-->
-		<script type="text/javascript" src="<@s.url value="/static/flot/0.7/jquery.flot.min.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.min.js" />"></script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -11,7 +11,7 @@
 			<div class="span10">
 				<div class="row-fluid">
 					<div class="span12" style="height: 300px;" id="chart">
-					
+						<img src="<@s.url value="/images/loading.gif" />" />
 					</div>
 				</div>
 				<br>
@@ -19,32 +19,24 @@
 					<div class="span12">
 						<table class="table table-condensed table-striped">
 							<thead>
-							<tr>
-								<th></th>
-								<th></th>
-								<th>last</th>
-								<th>min</th>
-								<th>avg</th>
-								<th>max</th>
-							</tr>
+								<tr>
+									<th></th>
+									<th></th>
+									<th>last</th>
+									<th>min</th>
+									<th>avg</th>
+									<th>max</th>
+								</tr>
 							</thead>
 							<tbody>
-							<tr>
-								<td>Incoming network traffic on wlan0</td>
-								<td>[avg]</td>
-								<td>418.1 Kbps</td>
-								<td>3.58 Kbps</td>
-								<td>58.78 Kbps</td>
-								<td>459.62 Kbps</td>
-							</tr>
-							<tr>
-								<td>Outgoing network traffic on wlan0</td>
-								<td>[avg]</td>
-								<td>18.1 Kbps</td>
-								<td>3.58 Kbps</td>
-								<td>58.78 Kbps</td>
-								<td>29.62 Kbps</td>
-							</tr>
+								<tr>
+									<td>Values processed by server per second</td>
+									<td>[avg]</td>
+									<td id="td-last-proc" class="speed"></td>
+									<td id="td-min-proc" class="speed"></td>
+									<td id="td-avg-proc" class="speed"></td>
+									<td id="td-max-proc" class="speed"></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -52,55 +44,71 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-		var data = [], totalPoints = 300;
-			
-		function random() {
-			if (data.length > 0)
-				data = data.slice(1);
-
-			// Do a random walk
-
-			while (data.length < totalPoints) {
-
-				var prev = data.length > 0 ? data[data.length - 1] : 50,
-					y = prev + Math.random() * 10 - 5;
-
-				if (y < 0) {
-					y = 0;
-				} else if (y > 100) {
-					y = 100;
+		function updateData() {
+			$.getJSON('<@s.url />/data.json', function(data) {
+				var performance = data.history;
+				var result = performance.result;
+				var i = result.length;
+				
+				var inData = [];
+				
+				var max = 0;
+				var min = 9999;
+				var avg = 0;
+				var last = 0;
+				
+				var option = { 
+					series: {
+						lines: { show: true, fill: true },
+						points: { show: false },
+						shadowSize: 0
+					},
+					xaxis: {
+						labelAngle: 45,
+						ticks: []
+					}
+				};
+				
+				for (r in result) {
+					r = result[r];
+					var val = new Number(r.value);
+					
+					inData.push([i, val]);
+					var date = new Date(new Number(r.clock + '000'));
+					var hour = date.getHours();
+					var min = date.getMinutes();
+					option.xaxis.ticks.push([i, (hour <= 9 ? '0' : '') + hour + ':' + (min <= 9 ? '0' : '') + min]);
+					
+					if (val > max) {
+						max = val;
+					}
+					
+					if (val < min) {
+						min = val;
+					}
+					
+					avg += val;
+					last = val;
+					
+					i--;
 				}
-
-				data.push(y);
-			}
-
-			// Zip the generated y values with the x values
-
-			var res = [];
-			for (var i = 0; i < data.length; ++i) {
-				res.push([i, data[i]])
-			}
-
-			return res;
+				
+				avg = avg / result.length;
+				$('#td-last-proc').text(last.toFixed(2));
+				$('#td-min-proc').text(min.toFixed(2));
+				$('#td-avg-proc').text(avg.toFixed(2));
+				$('#td-max-proc').text(max.toFixed(2));
+				
+				$.plot($("#chart"), [
+					{ label: "Values processed by server", data: inData }
+				], option);
+			});
+			
+			setTimeout(updateData, 1000 * 60);
 		}
 		
 		$(function() {
-			var data1 = random();
-			
-			data = [];
-			var data2 = random();
-			
-			var option = { 
-				series: {
-					lines: { show: true },
-					points: { show: false }
-				}
-			};
-			
-			$.plot($("#chart"), [{ label: "Outgoing", data: data1 }, { label: "Incoming", data: data2 }], option);
-			var yaxisLabel = $("<div class='axisLabel yaxisLabel'></div>")
-				.text("Kbps")
-				.appendTo($("#chart"));
+			updateData();
 		});
 		</script>
 	</body>

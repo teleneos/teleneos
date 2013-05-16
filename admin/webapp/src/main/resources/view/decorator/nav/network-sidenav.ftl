@@ -1,35 +1,25 @@
 <div class="span2">
 	<ul class="nav nav-list">
-		<li id="nav-header" class="nav-header">Network</li>
+		<li id="nav-header" class="nav-header"><@s.text name="menu.network" /></li>
 		
 		<li>
 			<a href="/network/availability">
-				Availability
+				<@s.text name="menu.network.availability" />
 			</a>
 		</li>
 		<li>
 			<a href="/network/monitoring">
-				Monitoring
-			</a>
-		</li>
-		<li>
-			<a href="/network/remote">
-				Remote Desktop
+				<@s.text name="menu.network.monitoring" />
 			</a>
 		</li>
 		<li>
 			<a href="/network/performance">
-				Performance
+				<@s.text name="menu.network.performance" />
 			</a>
 		</li>
 		<li>
 			<a href="/network/utilization">
-				Utilization
-			</a>
-		</li>
-		<li>
-			<a href="/network/report">
-				Report
+				<@s.text name="menu.network.utilization" />
 			</a>
 		</li>
 	</ul>
