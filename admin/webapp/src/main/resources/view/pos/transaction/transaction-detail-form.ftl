@@ -37,7 +37,7 @@
 		</script>
 	</head>
 	<body>
-	<#function noInvoice counter>
+		<#function noInvoice counter>
 			<#if counter &gt;= 100000>
 				<#return counter?string('#')/>
 			<#elseif counter &gt;= 10000>

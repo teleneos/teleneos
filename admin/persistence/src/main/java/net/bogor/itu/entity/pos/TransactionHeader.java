@@ -3,6 +3,7 @@ package net.bogor.itu.entity.pos;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +22,8 @@ public class TransactionHeader extends DefaultPersistence {
 	private String username;
 	private List<TransactionDetail> details = new ArrayList<TransactionDetail>();
 	private boolean complete = false;
-
+	
+	@Column(name = "counter", unique = true, nullable = false, columnDefinition = "serial")
 	public long getCounter() {
 		return counter;
 	}
