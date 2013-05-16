@@ -21,6 +21,11 @@
 				<@s.text name="Premade Answer" />
 			</a>
 		</li>
+		<li>
+			<a href="/ticket/category">
+				<@s.text name="Ticket Category" />
+			</a>
+		</li>
 		</#if>
 		</#if>
 	</ul>

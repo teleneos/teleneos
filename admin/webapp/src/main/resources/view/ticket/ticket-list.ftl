@@ -28,6 +28,7 @@
 							<th><@s.text name="label.ticket.priority" /></th>
 							<th><@s.text name="label.ticket.from" /></th>
 							<th><@s.text name="label.ticket.status" /></th>
+							<th><@s.text name="label.ticket.category" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,6 +43,7 @@
 							<td>${s.priority!}</td>
 							<td>${s.logInformation.createBy!}</td>
 							<td><#if s.logInformation.statusFlag == 'ACTIVE' >OPEN<#else>CLOSE</#if></td>
+							<td>${s.category.name!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>

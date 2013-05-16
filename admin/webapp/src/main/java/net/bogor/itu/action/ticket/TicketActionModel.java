@@ -5,6 +5,7 @@ import org.meruvian.yama.persistence.EntityListWrapper;
 
 import net.bogor.itu.entity.ticket.PremadeAnswer;
 import net.bogor.itu.entity.ticket.Ticket;
+import net.bogor.itu.entity.ticket.TicketCategory;
 import net.bogor.itu.entity.ticket.TicketThread;
 
 public class TicketActionModel extends DefaultActionModel {
@@ -14,6 +15,8 @@ public class TicketActionModel extends DefaultActionModel {
 	
 	private TicketThread ticketThread = new TicketThread();
 	private EntityListWrapper<TicketThread> ticketThreads = new EntityListWrapper<TicketThread>();
+	
+	private EntityListWrapper<TicketCategory> categories = new EntityListWrapper<TicketCategory>();
 	
 	private EntityListWrapper<PremadeAnswer> answers = new EntityListWrapper<PremadeAnswer>();
 	
@@ -65,6 +68,14 @@ public class TicketActionModel extends DefaultActionModel {
 
 	public void setAnswers(EntityListWrapper<PremadeAnswer> answers) {
 		this.answers = answers;
+	}
+
+	public EntityListWrapper<TicketCategory> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(EntityListWrapper<TicketCategory> categories) {
+		this.categories = categories;
 	}
 
 }

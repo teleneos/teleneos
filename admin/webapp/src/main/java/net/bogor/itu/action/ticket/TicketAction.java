@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import net.bogor.itu.entity.ticket.Ticket;
 import net.bogor.itu.service.ticket.PremadeAnswerService;
+import net.bogor.itu.service.ticket.TicketCategoryService;
 import net.bogor.itu.service.ticket.TicketService;
 import net.bogor.itu.service.ticket.TicketThreadService;
 
@@ -41,6 +42,9 @@ public class TicketAction extends DefaultAction implements
 	@Inject
 	private PremadeAnswerService answerService;
 	
+	@Inject
+	private TicketCategoryService ticketCategoryService;
+	
 	@Action
 	public ActionResult ticketList() {
 		model.setTickets(ticketService.findByKeyword(model.getQ(), null, "ASC",
@@ -58,7 +62,8 @@ public class TicketAction extends DefaultAction implements
 	@Validations(requiredStrings = { 
 			@RequiredStringValidator(fieldName = "ticket.subject", trim = true, key = "label.ticket.subject.notnull"),
 			@RequiredStringValidator(fieldName = "ticket.message", trim = true, key = "label.ticket.message.notnull"),
-			})
+			@RequiredStringValidator(fieldName = "ticket.category.id", trim = true, key = "label.ticket.category.notnull")
+		})
 	public ActionResult addTicket() {
 		ticketService.save(model.getTicket());
 		return redirectToIndex;
@@ -123,6 +128,15 @@ public class TicketAction extends DefaultAction implements
 		return new ActionResult("redirect",
 				"/ticket/user/detail/"+model.getTicket().getId());
 	}
+	
+	@Action(name = "/user/category")
+	public ActionResult answeListUser() {
+		model.setCategories(ticketCategoryService.findByKeyword(model.getQ(),
+				null, "ASC", model.getMax(), model.getPage() - 1));
+		return new ActionResult("freemarker",
+				"/view/ticket/category/category-list.ftl");
+	}
+	
 	@Override
 	public TicketActionModel getModel() {
 		return model;

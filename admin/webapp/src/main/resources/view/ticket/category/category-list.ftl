@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title><@s.text name="page.ticket.title" /></title>
-		<meta name="header" content="<@s.text name="page.ticket.header" />">
+		<title><@s.text name="page.ticket.category.title.page" /></title>
+		<meta name="header" content="<@s.text name="page.ticket.category.header" />">
 	</head>
 	<body>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/ticket-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/ticket/user/submit" />">
+				<a class="btn btn-primary span2" href="<@s.url value="/ticket/category/add" />">
 					<i class="icon-plus icon-white"></i>
 					<@s.text name="button.add" />
 				</a>
@@ -26,25 +26,21 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.ticket.code" /></th>
-							<th><@s.text name="label.ticket.date" /></th>
-							<th><@s.text name="label.ticket.subject" /></th>
-							<th><@s.text name="label.ticket.priority" /></th>
-							<th><@s.text name="label.ticket.status" /></th>
-							<th><@s.text name="label.ticket.category" /></th>
+							<th><@s.text name="label.ticket.category.name" /></th>
+							<th><@s.text name="label.ticket.category.description" /></th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list tickets.entityList as s>
+						<@s.url value="/ticket/category/edit/" var="editUrl" />
+						<@s.url value="/ticket/category/remove/" var="deleteUrl" />
+						<#list categories.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href=/ticket/user/detail/${s.id!}>${s.code!}</a></td>
-							<td>${s.logInformation.createDate!}</td>
-							<td>${s.subject!}</td>
-							<td>${s.priority!}</td>
-							<td><#if s.logInformation.statusFlag == 'ACTIVE' >OPEN<#else>CLOSE</#if></td>
-							<td>${s.category.name!}</td>
+							<td><a href="${editUrl}${s.id}">${s.name!}</a></td>
+							<td>${s.description!}</td>
+							<td><a class="btn confirm" title="Confirmation" href="${deleteUrl}${s.id!}" data-message="Are you sure to remove ${s.title!}?"><i class="icon-ban-circle"></i></a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -54,12 +50,14 @@
 			</div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/scripts/bootbox.min.js" />"></script>
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${tickets.rowCount?string('#')},
+				items: ${categories.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(tickets.currentPage + 1)?string('#')},
+				currentPage: ${(categories.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?q=${q}&page='
 			});
 		});
