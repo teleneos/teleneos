@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import net.bogor.itu.action.admin.OnlineUserActionModel;
 import net.bogor.itu.service.admin.UserService;
 import net.bogor.itu.service.radius.RadacctService;
+import net.bogor.itu.service.radius.UserPackageService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -32,17 +33,38 @@ public class UserAction extends DefaultAction implements
 	@Inject
 	private UserService userService;
 
+	@Inject
+	private UserPackageService packageService;
+
 	@Action
+	public ActionResult index() throws Exception {
+		return statistic();
+	}
+
+	@Action(name = "/history")
 	public ActionResult statistic() throws Exception {
 		BackendUser user = SessionCredentials.currentUser();
-		model.setListacc(radacctService.findDetailByUsername(user.getUsername(),
-				model.getMax(), model.getPage() - 1));
-		
+		model.setListacc(radacctService.findDetailByUsername(
+				user.getUsername(), model.getMax(), model.getPage() - 1));
+
 		model.setUser(userService.findByUsername(user.getUsername()));
 		model.setStatistic(radacctService.findStatistic(user.getUsername()));
 
+		return new ActionResult("freemarker", "/view/user/user-usage-list.ftl");
+	}
+
+	@Action(name = "/subscription")
+	public ActionResult subscription() {
+		model.setQ(SessionCredentials.currentUser().getUsername());
+
+		model.setUserPackages(packageService.findPackageByUser(model.getQ(),
+				model.getMax(), model.getPage() - 1));
+		model.setUser(userService.findByUsername(model.getQ()));
+		model.setStatistic(radacctService.findStatistic(model.getQ()));
+		model.setUserPackage(packageService.findActivePackage(model.getQ()));
+
 		return new ActionResult("freemarker",
-				"/view/admin/user/user-usage-list.ftl");
+				"/view/user/user-subscription-list.ftl");
 	}
 
 	@Override

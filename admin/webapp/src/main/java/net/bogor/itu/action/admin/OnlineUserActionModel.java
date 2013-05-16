@@ -17,6 +17,7 @@ public class OnlineUserActionModel extends DefaultActionModel {
 	private UserPackage userPackage = new UserPackage();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
 	private EntityListWrapper<Object[]> listacc = new EntityListWrapper<Object[]>();
+	private EntityListWrapper<UserPackage> userPackages = new EntityListWrapper<UserPackage>();
 
 	private Object[] statistic;
 	private String uid;
@@ -75,6 +76,14 @@ public class OnlineUserActionModel extends DefaultActionModel {
 
 	public void setListacc(EntityListWrapper<Object[]> listacc) {
 		this.listacc = listacc;
+	}
+
+	public EntityListWrapper<UserPackage> getUserPackages() {
+		return userPackages;
+	}
+
+	public void setUserPackages(EntityListWrapper<UserPackage> userPackages) {
+		this.userPackages = userPackages;
 	}
 
 }

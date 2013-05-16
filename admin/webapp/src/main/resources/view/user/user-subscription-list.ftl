@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<title><@s.text name="page.subscription.title" /></title>
-		<meta name="header" content="<@s.text name="page.subscription.header" />">
+		<title><@s.text name="page.usersubs.title" /></title>
+		<meta name="header" content="<@s.text name="page.usersubs.header" />">
 	</head>
 	<body>
 		<#function byteString byte>
@@ -29,7 +29,7 @@
 			</#if>
 		</#function>
 		<div class="row-fluid">
-			<#include "/view/decorator/nav/admin-sidenav.ftl" />
+			<#include "/view/decorator/nav/user-sidenav.ftl" />
 			<#assign status = ['In use', 'Active', 'End'] />
 			<div class="span10">
 				<div class="row-fluid">
@@ -52,7 +52,7 @@
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.activepackage" /></strong></td>
 							<#if userPackage??>
 							<#assign ip = userPackage.internetPackage />
-							<td class="span3"><a title="${ip.name!}" href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
+							<td class="span3">${ip.code!} (${ip.name!} / <#if (userPackage.status.ordinal() < 2)>${byteString(userPackage.quotaBalance)}</#if>)</td>
 							<#else>
 							<td class="span3">-</td>
 							</#if>
@@ -75,8 +75,8 @@
 						<#list userPackages.entityList as p>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${packageUrl + p.internetPackage.code!}">${p.internetPackage.code!}</a></td>
-							<td><a href="${packageUrl + p.internetPackage.code!}">${p.internetPackage.name!}</a></td>
+							<td>${p.internetPackage.code!}</td>
+							<td>${p.internetPackage.name!}</td>
 							<td><#if p.endDate??>${p.endDate?string('dd-MM-yyyy HH:mm:ss')}<#else>-</#if></td>
 							<td <#if (p.status.ordinal() < 2)>title="<@s.text name="label.user.subscription.quota" /> ${byteString(p.quotaBalance)}"</#if>>
 								<#assign label = ['success', 'success', 'important'] />

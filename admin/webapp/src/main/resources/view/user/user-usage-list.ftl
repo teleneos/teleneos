@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<title><@s.text name="page.subscription.title" /></title>
-		<meta name="header" content="<@s.text name="page.subscription.header" />">
+		<title><@s.text name="page.userstat.title" /></title>
+		<meta name="header" content="<@s.text name="page.userstat.header" />">
 	</head>
 	<body>
 		<#function byteString byte>
@@ -29,11 +29,10 @@
 			</#if>
 		</#function>
 		<div class="row-fluid">
-			<#include "/view/decorator/nav/admin-sidenav.ftl" />
-			<#assign status = ['In use', 'Active', 'End'] />
+			<#include "/view/decorator/nav/user-sidenav.ftl" />
 			<div class="span10">
 				<div class="row-fluid">
-				<table class="table-condensed table-bordered">
+					<table class="table-condensed table-bordered">
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
 							<td class="span3">${user.user.username!}</td>
@@ -49,13 +48,8 @@
 						<tr>
 							<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalonline" /></strong></td>
 							<td class="span3">${timeFormat(statistic[2]!0)}</td>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.activepackage" /></strong></td>
-							<#if userPackage??>
-							<#assign ip = userPackage.internetPackage />
-							<td class="span3"><a title="${ip.name!}" href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
-							<#else>
-							<td class="span3">-</td>
-							</#if>
+							<td class="span2"></td>
+							<td class="span3"></td>
 						</tr>
 					</table>
 				</div>
@@ -64,24 +58,32 @@
 					<thead>
 						<tr>
 							<th class="span1">#</th>
-							<th colspan="2"><@s.text name="label.master.packagemanager.name" /></th>
-							<th><@s.text name="label.user.subscription.enddate" /></th>
-							<th><@s.text name="label.user.status" /></th>
+							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
+							<th><@s.text name="label.admin.onlineuser.accid" /></th>
+							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
+							<th><@s.text name="label.admin.onlineuser.stoptime" /></th>
+							<th><@s.text name="label.admin.onlineuser.download" /></th>
+							<th><@s.text name="label.admin.onlineuser.upload" /></th>
+							<th><@s.text name="label.admin.onlineuser.package" /></th>
 						</tr>
 					</thead>
 					<tbody>
-						<@s.url var="packageUrl" value="/master/packages?q=" />
 						<#assign no = 1 + ((page - 1) * max) />
-						<#list userPackages.entityList as p>
+						<#list listacc.entityList as x>
+						<#assign a = x[0] />
+						<#assign c = x[1] />
 						<tr>
 							<td>${no}</td>
-							<td><a href="${packageUrl + p.internetPackage.code!}">${p.internetPackage.code!}</a></td>
-							<td><a href="${packageUrl + p.internetPackage.code!}">${p.internetPackage.name!}</a></td>
-							<td><#if p.endDate??>${p.endDate?string('dd-MM-yyyy HH:mm:ss')}<#else>-</#if></td>
-							<td <#if (p.status.ordinal() < 2)>title="<@s.text name="label.user.subscription.quota" /> ${byteString(p.quotaBalance)}"</#if>>
-								<#assign label = ['success', 'success', 'important'] />
-								<span class="label label-${label[p.status.ordinal()]}">${status[p.status.ordinal()]}</span>
+							<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
+							<td>${a.radacctid!}</td>
+							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('HH:mm:ss')}</strong></td>
+							<td>
+								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('HH:mm:ss')}</strong>
+								<span class="label">${timeFormat(a.acctsessiontime)}</span>
 							</td>
+							<td>${byteString(a.acctinputoctets)}</td>
+							<td>${byteString(a.acctoutputoctets)}</td>
+							<td>${c.userPackage.internetPackage.name!}</td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
@@ -94,9 +96,9 @@
 		<script type="text/javascript">
 		$(function() {
 			$('#pagination').pagination({
-				items: ${userPackages.rowCount?string('#')},
+				items: ${listacc.rowCount?string('#')},
 				itemsOnPage: ${max?string('#')},
-				currentPage: ${(userPackages.currentPage + 1)?string('#')},
+				currentPage: ${(listacc.currentPage + 1)?string('#')},
 				hrefTextPrefix: '?page='
 			});
 		});
