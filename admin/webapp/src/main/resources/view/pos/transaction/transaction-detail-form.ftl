@@ -65,7 +65,7 @@
 					<@s.textfield key="label.admin.theader.admin" readonly="true" value="${currentUser.username!}" cssClass="span4" />
 					<#else>
 					<div class="control-group ">
-						<label class="control-label" for="add_id"><@s.text name="menu.admin.user" /> <span class="required">*</span></label>
+						<label class="control-label" for="add_id"><span class="required">*</span> <@s.text name="menu.admin.user" /></label>
 						<div class="controls">
 							<@s.hidden name="id" id="user-id" />
 							<input type="text" id="user-name" readonly="true" class="span4">
