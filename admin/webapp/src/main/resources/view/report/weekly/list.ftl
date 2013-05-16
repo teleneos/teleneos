@@ -54,7 +54,7 @@
 									<td>${a.item.code!}</td>
 									<td>${a.item.name!}</td>
 									<td style="text-align:right;">${a.price!}</td>
-									<td>${b?string('#')!}</td>
+									<td style="text-align:right;">${b?string('#')!}</td>
 									<td style="text-align:right;">${b*a.price}</td>
 								</tr>
 								<#assign no = no + 1 />
@@ -64,7 +64,7 @@
 								</#list>
 								<tr>
 									<th colspan="4">Total</th>
-									<td>${qty}</td>
+									<td style="text-align:right;">${qty}</td>
 									<td style="text-align:right;">${total}</td>
 								</tr>
 							</tbody>
