@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 
+import net.bogor.itu.entity.radius.UserPackage;
+import net.bogor.itu.service.radius.UserPackageService;
 import net.jradius.dictionary.Attr_AuthType;
 import net.jradius.dictionary.Attr_UserName;
 import net.jradius.dictionary.Attr_UserPassword;
@@ -41,6 +43,9 @@ public class AuthorizationHandler extends PacketHandlerBase {
 	@Inject
 	private UserDetailsService userService;
 
+	@Inject
+	private UserPackageService packageService;
+
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
 		AttributeList ci = request.getConfigItems();
@@ -54,10 +59,11 @@ public class AuthorizationHandler extends PacketHandlerBase {
 				.get(Attr_UserPassword.TYPE);
 
 		LOG.info("Authorize user: " + username);
-		
+
 		try {
-			UserDetails user = userService.loadUserByUsername((String) username
-					.getValue().getValueObject());
+			String usernamee = (String) username.getValue().getValueObject();
+
+			UserDetails user = userService.loadUserByUsername(usernamee);
 
 			Authentication authentication = new UsernamePasswordAuthenticationToken(
 					user, new String(password.getValue().getBytes()),
@@ -65,12 +71,19 @@ public class AuthorizationHandler extends PacketHandlerBase {
 
 			authentication = manager.authenticate(authentication);
 
-			SecurityContextHolder.getContext()
-					.setAuthentication(authentication);
+			UserPackage userPackage = packageService
+					.findActivePackage(usernamee);
 
-			ci.add(new Attr_AuthType("Accept"), true);
+			if (userPackage == null) {
+				ci.add(new Attr_AuthType("Reject"), true);
 
-			LOG.info("Authorization success for user: " + user.getUsername());
+				LOG.info("No active package for user: " + user.getUsername());
+			} else {
+				ci.add(new Attr_AuthType("Accept"), true);
+
+				LOG.info("Authorization success for user: "
+						+ user.getUsername());
+			}
 		} catch (BadCredentialsException e) {
 			ci.add(new Attr_AuthType("Reject"), true);
 		} catch (NoResultException e) {

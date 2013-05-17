@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import net.bogor.itu.entity.master.InternetPackage;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -75,6 +76,7 @@ public class UserPackage extends DefaultPersistence {
 		this.status = status;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "userPackage")
 	public List<ConnectionHistory> getHistories() {
 		return histories;
