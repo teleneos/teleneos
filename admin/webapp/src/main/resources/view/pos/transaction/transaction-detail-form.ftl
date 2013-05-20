@@ -52,7 +52,19 @@
 				<#return '00000' + counter?string('#') />
 			</#if>
 		</#function>
-	
+		<#function timeFormat time>
+			<#if (time = (60 * 24 * 7))>
+				<#return (time / (60 * 24 * 7))?string('#') + ' Weeks' />
+			<#elseif (time >= (60 * 24))>
+				<#return (time / (60 * 24))?string('#') + ' Days' />
+			<#elseif (time >= 60)>
+				<#return (time / (60))?string('#') + ' Hours' />
+			<#elseif (time >= 1)>
+				<#return (time)?string('#') + ' Min' />
+			<#elseif (time == 0)>
+				<#return '-' />
+			</#if>
+		</#function>
 		<div class="row-fluid">
 			<#include "/view/decorator/nav/pos-sidenav.ftl" />
 			<div class="span10">
@@ -195,17 +207,18 @@
 									<tr>
 										<td>${nox}</td>
 										<td>${s.internetPackage.name!}</td>
-										<td style="text-align: right;">${s.internetPackage.price!}</td>
+										<td style="text-align: right;">${s.internetPackage.price!} <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> </td>
 										<#if !transactionHeader.cash??>
 										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"></i></a></td>
 										</#if>
 									</tr>
 									<#assign no = no + 1 />
-									<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+									<#if s.internetPackage.paymentMethod != 'POSTPAID' >
+										<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+									</#if>
 								</#if>
 								</#list>
 								<#assign nox = nox - 1 />
-								
 								<tr>
 									<td></td>
 									<td><strong><@s.text name="label.admin.tdetail.total" /></strong></td>

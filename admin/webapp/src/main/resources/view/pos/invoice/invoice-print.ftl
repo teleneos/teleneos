@@ -1,3 +1,16 @@
+<#function timeFormat time>
+	<#if (time = (60 * 24 * 7))>
+		<#return (time / (60 * 24 * 7))?string('#') + ' Weeks' />
+	<#elseif (time >= (60 * 24))>
+		<#return (time / (60 * 24))?string('#') + ' Days' />
+	<#elseif (time >= 60)>
+		<#return (time / (60))?string('#') + ' Hours' />
+	<#elseif (time >= 1)>
+		<#return (time)?string('#') + ' Min' />
+	<#elseif (time == 0)>
+		<#return '-' />
+	</#if>
+</#function>
 <table>
 	<thead>
 		<tr>
@@ -53,12 +66,14 @@
 								<td>${no}</td>
 								<td>&nbsp;&nbsp;&nbsp;&nbsp;<#if s.item??>${s.item.name!}</#if><#if s.internetPackage??>${s.internetPackage.code!}</#if></td>
 								<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
-								<td style="text-align: right;">${s.price!}</td>
-								<td style="text-align: right;"><#if s.item??>${price}<#else>${s.internetPackage.price!0}</#if></td>
+								<td style="text-align: right;">${s.price!} <#if s.internetPackage?? > <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> </#if></td>
+								<td style="text-align: right;"><#if s.item??>${price}<#else><#if s.internetPackage.paymentMethod != 'POSTPAID' >${s.internetPackage.price!0}<#else>-</#if></#if></td>
 							</tr>
 							<#assign no = no + 1 /> 
 							<#if s.internetPackage??>
-								<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
+								<#if s.internetPackage.paymentMethod != 'POSTPAID' >
+									<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
+								</#if>
 							<#else>
 								<#if s.conversion?? >
 									<#assign price = (s.quantity * s.conversion.multiplyRate!0) * s.price />
