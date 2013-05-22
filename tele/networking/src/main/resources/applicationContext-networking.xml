@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="requestFactory"
+		class="org.springframework.http.client.SimpleClientHttpRequestFactory" />
+
+	<bean id="zabbixAPIRepository" class="org.teleneos.networking.zabbix.ZabbixAPIRepository"
+		abstract="true" p:zabbixUrl="${zabbix.url}">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.StringHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="zabbixRequestRepository" class="org.teleneos.networking.zabbix.ZabbixRequestRepository"
+		parent="zabbixAPIRepository" p:requestFactory-ref="requestFactory">
+		<property name="interceptors">
+			<list>
+				<bean class="org.teleneos.networking.zabbix.ZabbixAuthInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="zabbixUserLoginRepository" class="org.teleneos.networking.zabbix.auth.UserLoginRepository"
+		parent="zabbixAPIRepository" p:requestFactory-ref="requestFactory" />
+
+	<bean id="session" class="org.teleneos.networking.zabbix.auth.SessionToken" />
+
+	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+</beans>

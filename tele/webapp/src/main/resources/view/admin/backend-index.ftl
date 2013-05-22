@@ -1,0 +1,1 @@
+<h1>Welcome to Telecentre Administrator home page!</h1>

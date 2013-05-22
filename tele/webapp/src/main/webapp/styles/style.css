@@ -1,0 +1,73 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+button.btn,input.btn {
+	min-width: 100px;
+}
+
+header {
+	margin-bottom: 18px;
+	border-bottom: 2px solid #777;
+}
+
+header h1 {
+	font-size: 150%;
+	margin-bottom: 5px;
+}
+
+.footer {
+	margin-top: 25px;
+}
+
+.static-footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+}
+
+/* IE 6 */
+* html .static-footer {
+   position:absolute;
+   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+}
+
+.modal form {
+	margin: 0;
+}
+
+.modal-static {
+	position: relative;
+	top: auto;
+	left: auto;
+	margin: 0 auto;
+	z-index: 1;
+	max-width: 100%;
+}
+
+.container#content {
+	min-height: 300px;
+}
+
+span.required {
+	color: #da4f49;
+}
+
+label.control-label:after {
+	content : " :";
+}
+
+.flot-x-axis > .flot-tick-label {
+	margin-top:10px;
+	-moz-transform:rotate(-90deg);
+	-o-transform:rotate(-90deg);
+	-webkit-transform:rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}

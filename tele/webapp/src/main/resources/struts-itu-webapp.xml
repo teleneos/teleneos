@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="index" extends="yama-default" namespace="/">
+		<action name="welcome">
+			<result type="freemarker">/admin/backend-index.ftl</result>
+		</action>
+	</package>
+
+	<package name="ticket" extends="yama-default" namespace="/ticket">
+		<action name="add">
+			<result type="freemarker">/view/ticket/ticket.ftl</result>
+		</action>
+		<action name="response">
+			<result type="freemarker">/view/ticket/ticket-response-service.ftl</result>
+		</action>
+		<action name="faq">
+			<result type="freemarker">/view/ticket/faq.ftl</result>
+		</action>
+		<action name="status">
+			<result type="freemarker">/view/ticket/status.ftl</result>
+		</action>
+	</package>
+
+	<!-- Temporary -->
+	<package name="network" extends="yama-default" namespace="/network">
+		<action name="log">
+			<result type="freemarker">/view/network/log.ftl</result>
+		</action>
+		<action name="report">
+			<result type="freemarker">/view/network/performance.ftl</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,26 @@
+<decorators>
+	<excludes>
+		<pattern>/styles/*</pattern>
+		<pattern>/scripts/*</pattern>
+		<pattern>/images/*</pattern>
+		<pattern>*.json</pattern>
+		<pattern>*.xml</pattern>
+		<pattern>*.htm</pattern>
+	</excludes>
+
+	<decorator name="admin" page="/view/decorator/default-decorator.ftl">
+		<pattern>/</pattern>
+		<pattern>/home</pattern>
+		<pattern>/admin/*</pattern>
+	</decorator>
+	
+	<decorator name="user" page="/view/decorator/user-decorator.ftl">
+		<pattern>/user/*</pattern>
+		<pattern>/user</pattern>
+		<pattern>/ticket/user/*</pattern>
+	</decorator>
+
+	<decorator name="security" page="/view/decorator/security-decorator.ftl">
+		<pattern>/security/*</pattern>
+	</decorator>
+</decorators> 

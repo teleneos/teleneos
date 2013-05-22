@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="attributeDictionary" class="net.jradius.dictionary.AttributeDictionaryImpl" />
+
+	<bean id="radiusProcessor" class="net.jradius.freeradius.FreeRadiusProcessor"
+		scope="prototype" />
+
+	<bean id="radiusListener" class="net.jradius.freeradius.FreeRadiusListener" />
+
+	<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:ehcache.xml" />
+
+	<bean id="otpListener" class="net.jradius.webservice.WebServiceListener"
+		p:cacheName="otpRequest" p:cacheManager-ref="cacheManager" />
+
+	<bean id="webServiceListener" class="net.jradius.webservice.WebServiceListener"
+		scope="prototype" p:cacheManager-ref="cacheManager" />
+
+	<bean id="otpProcessor" class="net.jradius.webservice.OTPProxyProcessor"
+		scope="prototype" />
+
+	<bean id="sessionFactory" class="net.jradius.session.RadiusSessionFactory" />
+
+	<bean id="sessionKeyProvider" class="net.jradius.session.RadiusSessionKeyProvider" />
+
+	<bean id="sessionManager" class="net.jradius.session.JRadiusSessionManager"
+		p:cacheManager-ref="cacheManager" />
+
+	<bean id="jRadiusManager" class="net.jradius.impl.JRadiusManagerImpl"
+		destroy-method="destroy" p:configFile="jradius-config.xml" />
+
+	<bean id="accountingHandler" class="org.teleneos.radius.handler.AccountingHandler" />
+
+	<bean id="authorizationHandler" class="org.teleneos.radius.handler.AuthorizationHandler" />
+</beans>
