@@ -3,10 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.teleneos</groupId>
-		<artifactId>teleneos</artifactId>
+		<artifactId>tele</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>tele-yama</artifactId>
+	<name>Teleneos - Yama Extension</name>
+	<description>Yama extension for Teleneos</description>
 
 	<dependencies>
 		<!-- Servlet -->
@@ -128,7 +130,7 @@
 			<artifactId>spring-security-ldap</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-		
+
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
