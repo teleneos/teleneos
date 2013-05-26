@@ -3,11 +3,15 @@
  */
 package id.co.bonet.itu.noc.log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import id.co.bonet.itu.noc.log.entity.JsonRPC;
 import id.co.bonet.itu.noc.log.entity.UserLoginResponse;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.component.file.FileComponent;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.apache.commons.logging.Log;
@@ -21,7 +25,8 @@ import org.springframework.beans.factory.annotation.Value;
  * 
  */
 public class ZabbixLogRouteBuilder extends SpringRouteBuilder {
-	private static final Log LOG = LogFactory.getLog(ZabbixLogRouteBuilder.class);
+	private static final Log LOG = LogFactory
+			.getLog(ZabbixLogRouteBuilder.class);
 
 	private JsonRPC rpc;
 	private ObjectMapper mapper;
@@ -98,5 +103,6 @@ public class ZabbixLogRouteBuilder extends SpringRouteBuilder {
 				.setHeader(Exchange.HTTP_METHOD, constant("POST"))
 				.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 				/* .setHeader(Exchange.HTTP_URI, constant(nocUri)) */.to(nocUri);
+
 	}
 }

@@ -2,20 +2,85 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:spring="http://camel.apache.org/schema/spring"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.0-M1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
 	<context:component-scan base-package="id.co.bonet.itu.noc" />
 	<context:property-placeholder location="classpath:/db.properties" />
 
 	<bean id="routeBuilder" class="id.co.bonet.itu.noc.log.ZabbixLogRouteBuilder" />
+	<bean id="routeBuilder1" class="id.co.bonet.itu.noc.log.LogThrowerRouteBuilder" />
 
 	<spring:camelContext id="camelContext">
 		<spring:consumerTemplate id="consumer" />
 		<spring:template id="producer" />
 
-		<spring:routeBuilder ref="routeBuilder" />
+<!-- 		<spring:routeBuilder ref="routeBuilder" /> -->
+		<spring:routeBuilder ref="routeBuilder1" />
 	</spring:camelContext>
+	
+	<rabbit:connection-factory id="amqpConnectionFactory" />
+	<rabbit:template id="amqpTemplate" connection-factory="amqpConnectionFactory" 
+	      message-converter="messageConverter"/>
+	<rabbit:admin connection-factory="amqpConnectionFactory"/>
+	
+	<bean id="amqpConnectionFactory" 
+	      class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+	    <property name="host" value="localhost"/>
+	    <property name="port" value="5673"/>
+	    <property name="username" value="guest"/>
+	    <property name="password" value="guest"/>
+	    <property name="virtualHost" value="/"/>
+	</bean>
+
+	<bean id="messageConverter" class="amqp.spring.converter.XStreamConverter"/>
+
+
+<!-- 	 <bean id="amqp" class="org.apache.camel.component.amqp.AMQPComponent"> -->
+<!-- 		 <property name="connectionFactory"> -->
+<!--                 <bean class="org.apache.qpid.client.AMQConnectionFactory"> -->
+<!--                 <constructor-arg index="0" type="java.lang.String"  -->
+<!--                         value="amqp://guest:guest@/localhost?brokerlist='tcp://localhost:5672'" /> -->
+<!--                 </bean> -->
+<!--         </property> -->
+<!-- 	 </bean> -->
+	
+<!-- 	<bean id="amqp" class="org.apache.camel.component.amqp.AMQPComponent"> -->
+<!-- 		<property name="connectionFactory" ref="amqConnectionFactory" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="amqConnectionFactory" class="org.apache.qpid.client.AMQConnectionFactory"> -->
+<!-- 		<property name="host" value="localhost" /> -->
+<!-- 		<property name="port" value="5672" /> -->
+<!-- 		<property name="defaultUsername" value="guest" /> -->
+<!-- 		<property name="defaultPassword" value="guest" /> -->
+<!-- 		<property name="virtualPath" value="/development" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="jmsConnectionFactory"  -->
+<!-- 	   class="org.apache.activemq.ActiveMQConnectionFactory"> -->
+<!-- 	   <property name="brokerURL" value="tcp://localhost:61616" /> -->
+<!-- 	   <property name="brokerURL" value="tcp://192.168.2.3:61616" />  -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="pooledConnectionFactory"  -->
+<!-- 	   class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop"> -->
+<!-- 	   <property name="maxConnections" value="8" /> -->
+<!-- 	   <property name="connectionFactory" ref="jmsConnectionFactory" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="jmsConfig"  -->
+<!-- 	   class="org.apache.camel.component.jms.JmsConfiguration"> -->
+<!-- 	   <property name="connectionFactory" ref="pooledConnectionFactory"/> -->
+<!-- 	   <property name="concurrentConsumers" value="10"/> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="activemq"  -->
+<!-- 	    class="org.apache.activemq.camel.component.ActiveMQComponent"> -->
+<!-- 	    <property name="configuration" ref="jmsConfig"/> -->
+<!-- 	</bean> -->
+	
 </beans>

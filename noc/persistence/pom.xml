@@ -49,5 +49,48 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>1.1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-math</artifactId>
+					<groupId>org.apache.commons</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jets3t</artifactId>
+					<groupId>net.java.dev.jets3t</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-beanutils-core</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.mortbay.jetty</groupId> -->
+<!-- 					<artifactId>jetty</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.mortbay.jetty</groupId> -->
+<!-- 					<artifactId>jetty-util</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.mortbay.jetty</groupId> -->
+<!-- 					<artifactId>jsp-api-2.1</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.mortbay.jetty</groupId> -->
+<!-- 					<artifactId>jsp-2.1</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>tomcat</groupId> -->
+<!-- 					<artifactId>jasper-runtime</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>tomcat</groupId> -->
+<!-- 					<artifactId>jasper-compiler</artifactId> -->
+<!-- 				</exclusion> -->
+			</exclusions>
+		</dependency>
 	</dependencies>
 </project>
