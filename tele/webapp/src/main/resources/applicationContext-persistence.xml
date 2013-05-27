@@ -34,6 +34,12 @@
 				<value>org.teleneos</value>
 			</array>
 		</property>
+		<property name="jpaProperties">
+		    <props>
+		        <prop key="org.hibernate.envers.audit_table_suffix">_aud</prop>
+		        <prop key="org.hibernate.envers.revision_on_collection_change">false</prop>
+		    </props>
+		</property>
 	</bean>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"

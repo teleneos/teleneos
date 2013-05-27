@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -12,6 +13,7 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity()
+@Audited
 @Table(name = "tc_requisition")
 public class Requisition extends DefaultPersistence {
 

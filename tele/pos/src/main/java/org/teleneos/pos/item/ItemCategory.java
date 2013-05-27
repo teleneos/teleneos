@@ -3,6 +3,7 @@ package org.teleneos.pos.item;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -10,6 +11,7 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_item_category")
 public class ItemCategory extends DefaultPersistence {
 

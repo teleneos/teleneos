@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.teleneos.pos.conversion.Conversion;
@@ -17,6 +19,7 @@ import org.teleneos.radius.internetpackage.InternetPackage;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_transaction_detail")
 public class TransactionDetail extends DefaultPersistence {
 
@@ -30,6 +33,7 @@ public class TransactionDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	public Item getItem() {
 		return item;
 	}
@@ -57,6 +61,7 @@ public class TransactionDetail extends DefaultPersistence {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "transcation_header_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	public TransactionHeader getTransactionHeader() {
 		return transactionHeader;
 	}
@@ -67,6 +72,7 @@ public class TransactionDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "internetpackage_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	public InternetPackage getInternetPackage() {
 		return internetPackage;
 	}
@@ -77,6 +83,7 @@ public class TransactionDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "uom_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	public UnitOfMeasure getUom() {
 		return uom;
 	}
@@ -87,6 +94,7 @@ public class TransactionDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "conversion_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	public Conversion getConversion() {
 		return conversion;
 	}

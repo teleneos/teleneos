@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -11,6 +12,7 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_unit_of_measure")
 public class UnitOfMeasure extends DefaultPersistence {
 

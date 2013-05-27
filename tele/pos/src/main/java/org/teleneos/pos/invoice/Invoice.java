@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.teleneos.pos.po.PurchaseOrder;
 
@@ -15,6 +17,7 @@ import org.teleneos.pos.po.PurchaseOrder;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_invoice")
 public class Invoice extends DefaultPersistence {
 
@@ -59,6 +62,7 @@ public class Invoice extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "purchaseorder_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}

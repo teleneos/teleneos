@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.teleneos.pos.item.Item;
 
@@ -13,6 +15,7 @@ import org.teleneos.pos.item.Item;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_purchase_order_detail")
 public class PurchaseOrderDetail extends DefaultPersistence {
 
@@ -23,6 +26,7 @@ public class PurchaseOrderDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "purchaseorder_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}
@@ -33,6 +37,7 @@ public class PurchaseOrderDetail extends DefaultPersistence {
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public Item getItem() {
 		return item;
 	}
