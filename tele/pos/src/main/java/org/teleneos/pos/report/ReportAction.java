@@ -1,5 +1,8 @@
 package org.teleneos.pos.report;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,31 +34,35 @@ public class ReportAction extends DefaultAction implements
 
 	@Action(method = HttpMethod.GET, name = "store/daily")
 	public ActionResult daily() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		if (!StringUtils.isEmpty(model.getDate())) {
 			model.setItemReports(transactionDetailService.daily(model.getDate()));
+		}else{
+			model.setItemReports(transactionDetailService.daily(dateFormat.format(new Date())));
+			model.setDate(dateFormat.format(new Date()));
 		}
 		return new ActionResult("freemarker", "/view/report/daily/list.ftl");
 	}
 
 	@Action(method = HttpMethod.GET, name = "store/weekly")
 	public ActionResult weekly() {
-		LocalDate startDate = LocalDate.fromDateFields(transactionDetailService
-				.getFirstTransaction());
+		LocalDate startDate = LocalDate.fromDateFields(transactionDetailService.getFirstTransaction());
 		if (startDate.getDayOfWeek() != 1) {
 			startDate = startDate.minusDays(startDate.getDayOfWeek() + 1);
 		}
 		if (startDate != null) {
 			LocalDate endDate = LocalDate.now();
-			for (LocalDate date = startDate; date.isBefore(endDate); date = date
-					.plusDays(1)) {
+			for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 				if (date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
 					model.getDates().add(date.toDate());
 				}
 			}
 		}
 		if (!StringUtils.isEmpty(model.getDate())) {
-			model.setItemReports(transactionDetailService.weekly(model
-					.getDate()));
+			model.setItemReports(transactionDetailService.weekly(model.getDate()));
+		}else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			model.setItemReports(transactionDetailService.weekly(format.format(model.getDates().get(model.getDates().size()-1))));
 		}
 		return new ActionResult("freemarker", "/view/report/weekly/list.ftl");
 	}
@@ -65,6 +72,10 @@ public class ReportAction extends DefaultAction implements
 		if (!StringUtils.isEmpty(model.getDate())) {
 			model.setItemReports(transactionDetailService.monthly(model
 					.getDate()));
+		}else{
+			SimpleDateFormat format = new SimpleDateFormat("MM/yyyy");
+			model.setItemReports(transactionDetailService.monthly(format.format(new Date())));
+			model.setDate(format.format(new Date()));
 		}
 		return new ActionResult("freemarker", "/view/report/monthly/list.ftl");
 	}
