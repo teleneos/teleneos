@@ -1,10 +1,12 @@
 package net.bogor.itu.action.pos;
 
 import net.bogor.itu.entity.master.InternetPackage;
+import net.bogor.itu.entity.pos.Conversion;
 import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionDetail;
 import net.bogor.itu.entity.pos.TransactionHeader;
 import net.bogor.itu.entity.radius.Radacct;
+import net.bogor.itu.entity.radius.UserPackage;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -19,6 +21,8 @@ public class TransactionActionModel extends DefaultActionModel {
 	private EntityListWrapper<TransactionHeader> transactionHeaders = new EntityListWrapper<TransactionHeader>();
 	private TransactionDetail transactionDetail = new TransactionDetail();
 	private EntityListWrapper<TransactionDetail> transactionDetails = new EntityListWrapper<TransactionDetail>();
+	private EntityListWrapper<Conversion> conversions = new EntityListWrapper<Conversion>();
+	private UserPackage userPackage = new UserPackage();
 	private String id;
 	private Item item = new Item();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
@@ -133,6 +137,22 @@ public class TransactionActionModel extends DefaultActionModel {
 
 	public void setGrandtotal(long grandtotal) {
 		this.grandtotal = grandtotal;
+	}
+
+	public UserPackage getUserPackage() {
+		return userPackage;
+	}
+
+	public void setUserPackage(UserPackage userPackage) {
+		this.userPackage = userPackage;
+	}
+
+	public EntityListWrapper<Conversion> getConversions() {
+		return conversions;
+	}
+
+	public void setConversions(EntityListWrapper<Conversion> conversions) {
+		this.conversions = conversions;
 	}
 
 }

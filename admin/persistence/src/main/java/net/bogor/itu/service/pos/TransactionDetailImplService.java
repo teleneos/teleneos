@@ -9,8 +9,10 @@ import net.bogor.itu.entity.pos.Conversion;
 import net.bogor.itu.entity.pos.InventoryOnhand;
 import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.entity.pos.TransactionDetail;
+import net.bogor.itu.entity.radius.UserPackage.Status;
 import net.bogor.itu.repository.pos.InventoryOnhandRepository;
 import net.bogor.itu.repository.pos.TransactionDetailRepository;
+import net.bogor.itu.service.radius.UserPackageService;
 
 import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -36,6 +38,10 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	
 	@Inject
 	private InventoryOnhandRepository onhandRepository;
+	
+	@Inject
+	private UserPackageService userPackageService;
+	
 	@Override
 	public TransactionDetail findById(String id) {
 		return tDetailRepository.findById(id);
@@ -133,7 +139,12 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Override
 	@Transactional
 	public void remove(TransactionDetail detail) {
-		tDetailRepository.delete(tDetailRepository.load(detail.getId()));
+		TransactionDetail transactionDetail = tDetailRepository.load(detail.getId()); 
+		if (transactionDetail.getUserPackage() != null) {
+			transactionDetail.getUserPackage().setStatus(Status.ACTIVE);
+			userPackageService.save(transactionDetail.getUserPackage());
+		}
+		tDetailRepository.delete(transactionDetail);
 	}
 
 	@Override

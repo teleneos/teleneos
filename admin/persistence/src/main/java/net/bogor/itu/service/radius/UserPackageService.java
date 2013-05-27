@@ -9,6 +9,8 @@ import net.bogor.itu.entity.radius.UserPackage;
  * 
  */
 public interface UserPackageService {
+	UserPackage findById(String id);
+	
 	UserPackage findActivePackage(String username);
 
 	UserPackage save(UserPackage userPackage);
@@ -18,4 +20,6 @@ public interface UserPackageService {
 
 	EntityListWrapper<UserPackage> findUserByPackageCode(String code,
 			int limit, int page);
+	
+	EntityListWrapper<UserPackage> findPostpaidUser(String keyword, int limit, int page);
 }

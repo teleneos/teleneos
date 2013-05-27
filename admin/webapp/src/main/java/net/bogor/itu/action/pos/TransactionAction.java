@@ -1,16 +1,20 @@
 package net.bogor.itu.action.pos;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
-import net.bogor.itu.entity.admin.User;
 import net.bogor.itu.entity.pos.TransactionHeader;
+import net.bogor.itu.entity.radius.UserPackage.Status;
 import net.bogor.itu.service.master.PackageManagerService;
+import net.bogor.itu.service.pos.ConversionService;
 import net.bogor.itu.service.pos.InvaidUnitOfMeasurementException;
 import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.TransactionDetailImplService.StockNotFoundException;
 import net.bogor.itu.service.pos.TransactionDetailService;
 import net.bogor.itu.service.pos.TransactionHeaderService;
 import net.bogor.itu.service.radius.RadacctService;
+import net.bogor.itu.service.radius.UserPackageService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -51,6 +55,12 @@ public class TransactionAction extends DefaultAction implements
 	@Inject
 	private PackageManagerService packageManagerService;
 
+	@Inject
+	private UserPackageService userPackageService;
+	
+	@Inject
+	private ConversionService conversionService;
+	
 	@Action
 	public ActionResult transactionList() {
 		model.setTransactionHeaders(tHeaderService.findByKeyword(model.getQ(),
@@ -97,7 +107,9 @@ public class TransactionAction extends DefaultAction implements
 
 		model.setTransactionHeader(tHeaderService.findById(model
 				.getTransactionHeader().getId()));
-
+		
+		model.setConversions(conversionService.findAll("", 0, 0));
+		
 		return new ActionResult("freemarker",
 				"/view/pos/transaction/transaction-detail-form.ftl");
 	}
@@ -117,7 +129,7 @@ public class TransactionAction extends DefaultAction implements
 				addFieldError("transactionDetail.quantity",
 						"Quantity must greater than 0");
 			}
-			if (model.getTransactionDetail().getUom().getId().isEmpty()) {
+			if (model.getTransactionDetail().getUom() == null) {
 				addFieldError("transactionDetail.uom.name",
 						"Unit of measurement cannot be empty");
 			}
@@ -132,14 +144,40 @@ public class TransactionAction extends DefaultAction implements
 			model.setItem(itemService.findById(model.getTransactionDetail()
 					.getItem().getId()));
 			model.getTransactionDetail().setInternetPackage(null);
+			model.getTransactionDetail().setUserPackage(null);
 			model.getTransactionDetail().setPrice(model.getItem().getPrice());
-		} else {
+		} else if(model.getChange().equalsIgnoreCase("true")) {
 			model.setInternetPackage(packageManagerService.findById(model
 					.getTransactionDetail().getInternetPackage().getId()));
 			model.getTransactionDetail().setItem(null);
 			model.getTransactionDetail().setUom(null);
+			model.getTransactionDetail().setUserPackage(null);
 			model.getTransactionDetail().setPrice(
 					model.getInternetPackage().getPrice());
+		} else {
+			model.setUserPackage(userPackageService.findById(model
+					.getTransactionDetail().getUserPackage().getId()));
+			model.getTransactionDetail().setInternetPackage(null);
+			model.getTransactionDetail().setItem(null);
+			model.getTransactionDetail().setUom(null);
+			long internetTime = model.getUserPackage().getEndDate().getTime()
+					- model.getUserPackage().getLogInformation()
+							.getCreateDate().getTime();
+			model.getTransactionDetail()
+					.setPrice(
+							((TimeUnit.MILLISECONDS.toMinutes(internetTime) / model
+									.getUserPackage().getInternetPackage()
+									.getTime()) * model.getUserPackage()
+									.getInternetPackage().getPrice()));
+			if (TimeUnit.MILLISECONDS.toMinutes(internetTime)
+					% model.getUserPackage().getInternetPackage().getPrice() != 0) {
+				model.getTransactionDetail().setPrice(
+						model.getTransactionDetail().getPrice()
+								+ model.getUserPackage().getInternetPackage()
+										.getPrice());
+			}
+			model.getUserPackage().setStatus(Status.END);
+			userPackageService.save(model.getUserPackage());
 		}
 
 		try {
@@ -174,7 +212,6 @@ public class TransactionAction extends DefaultAction implements
 
 	@Action(name = "/cash", method = HttpMethod.POST)
 	public ActionResult addCashTransaction() {
-
 		if (model.getTransactionHeader().getCash() == null) {
 			addFieldError("transactionHeader.cash", "Cash cannot be empty");
 		}

@@ -60,4 +60,14 @@ public class UserPackageServiceImpl implements UserPackageService {
 			int limit, int page) {
 		return packageRepository.findByPackageCode(code, limit, page);
 	}
+
+	@Override
+	public EntityListWrapper<UserPackage> findPostpaidUser(String keyword, int limit, int page) {
+		return packageRepository.findPostpaidUser(keyword ,limit, page);
+	}
+
+	@Override
+	public UserPackage findById(String id) {
+		return packageRepository.findById(id);
+	}
 }

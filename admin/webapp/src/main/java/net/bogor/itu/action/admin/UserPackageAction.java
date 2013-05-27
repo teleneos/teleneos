@@ -33,6 +33,13 @@ public class UserPackageAction extends DefaultAction implements
 	@Inject
 	private RadacctService radacctService;
 
+	@Action(name = "postpaid")
+	public ActionResult postpaid() {
+		model.setUserPackages(packageService.findPostpaidUser(model.getQ(), model.getMax(),
+				model.getPage() - 1));
+		return new ActionResult("freemarker", "/blank.ftl");
+	}
+
 	@Action(name = "/subscription/{q}")
 	public ActionResult packages() {
 		model.setUserPackages(packageService.findPackageByUser(model.getQ(),
