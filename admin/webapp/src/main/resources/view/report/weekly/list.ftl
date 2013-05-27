@@ -14,7 +14,11 @@
 						Week Ending : 
 						<select name="date" id="date">
 						    <#list dates as x>
-						    	<option value="${x?datetime?string("yyyy-MM-dd")}">${x?date}</option>
+						    	<#if !x_has_next>
+						    		<option value="${x?datetime?string("yyyy-MM-dd")}" selected="selected">${x?date}</option>
+						    	<#else>
+						    		<option value="${x?datetime?string("yyyy-MM-dd")}">${x?date}</option>
+						    	</#if>
 						    </#list>
 						</select>
 						<button class="btn" type="submit">
