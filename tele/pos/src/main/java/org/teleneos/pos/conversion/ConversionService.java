@@ -12,4 +12,5 @@ public interface ConversionService {
 
 	Conversion findConversion(String uom1, String uom2);
 
+	EntityListWrapper<Conversion> findTargetConversion(String from);
 }

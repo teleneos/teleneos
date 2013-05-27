@@ -19,11 +19,19 @@ public class ConversionRepository extends PersistenceRepository<Conversion> {
 		try {
 			return (Conversion) query.getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
 
+	public EntityListWrapper<Conversion> findTargetConversion(String from){
+		TypedQuery<Conversion> query = createQuery(entityClass, "d", "d",
+				"( d.uomTo.id = ? ) AND d.logInformation.statusFlag = ?",
+				from, StatusFlag.ACTIVE);
+		EntityListWrapper<Conversion> paging = new EntityListWrapper<Conversion>();
+		paging.setEntityList(query.getResultList());
+		return paging;
+	}
+	
 	public EntityListWrapper<Conversion> findAll(String keyword, int limit,
 			int page) {
 		TypedQuery<Conversion> query = createQuery(

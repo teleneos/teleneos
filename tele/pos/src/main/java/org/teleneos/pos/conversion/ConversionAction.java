@@ -8,6 +8,8 @@ import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.teleneos.pos.item.Item;
+import org.teleneos.pos.item.ItemService;
 import org.teleneos.pos.uom.UnitOfMeasureService;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -25,7 +27,9 @@ public class ConversionAction extends DefaultAction implements
 	private UnitOfMeasureService uomService;
 	@Inject
 	private ConversionService conversionService;
-
+	@Inject
+	private ItemService itemService;
+	
 	private ActionResult redirectToIndex = new ActionResult("redirect",
 			"/pos/conversion");
 
@@ -43,6 +47,16 @@ public class ConversionAction extends DefaultAction implements
 		return DefaultAction.INPUT;
 	}
 
+	@Action(name = "/from", method = HttpMethod.GET)
+	public String target() {
+		Item item = itemService.findById(model.getQ());
+		model.setConversions(conversionService.findTargetConversion(item.getUom().getId()));
+		Conversion e = new Conversion();
+		e.setUomFrom(item.getUom());
+		model.getConversions().getEntityList().add(0, e);
+		return DefaultAction.INPUT;
+	}
+	
 	@Action(name = "/add", method = HttpMethod.POST)
 	public ActionResult add() {
 		if (model.getConversion().getMultiplyRate() < 1) {
