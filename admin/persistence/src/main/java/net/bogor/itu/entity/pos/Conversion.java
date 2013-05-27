@@ -5,9 +5,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 @Entity
+@Audited
 @Table(name = "tc_conversion")
 public class Conversion extends DefaultPersistence {
 
@@ -19,6 +22,7 @@ public class Conversion extends DefaultPersistence {
 
 	@ManyToOne()
 	@JoinColumn(name = "uom_from_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public UnitOfMeasure getUomFrom() {
 		return uomFrom;
 	}
@@ -29,6 +33,7 @@ public class Conversion extends DefaultPersistence {
 
 	@ManyToOne()
 	@JoinColumn(name = "uom_to_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public UnitOfMeasure getUomTo() {
 		return uomTo;
 	}

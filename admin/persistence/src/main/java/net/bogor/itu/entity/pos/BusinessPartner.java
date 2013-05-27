@@ -6,12 +6,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
  * @author Edy Setiawan
  */
 @Entity()
+@Audited
 @Table(name = "tc_business_partner")
 public class BusinessPartner extends DefaultPersistence {
 

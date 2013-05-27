@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.meruvian.yama.persistence.DefaultPersistence;
 
 /**
@@ -12,6 +14,7 @@ import org.meruvian.yama.persistence.DefaultPersistence;
  * 
  */
 @Entity
+@Audited
 @Table(name = "tc_item_type")
 public class ItemType extends DefaultPersistence {
 
@@ -30,6 +33,7 @@ public class ItemType extends DefaultPersistence {
 
 	@ManyToOne()
 	@JoinColumn(name = "uom_id")
+	@Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 	public UnitOfMeasure getUom() {
 		return uom;
 	}

@@ -36,7 +36,14 @@
 				<value>org.meruvian.yama.security.user</value>
 				<value>org.meruvian.yama.persistence</value>
 				<value>net.bogor.itu.entity</value>
+				<value>net.bogor.itu.persistence</value>
 			</array>
+		</property>
+		<property name="jpaProperties">
+		    <props>
+		        <prop key="org.hibernate.envers.audit_table_suffix">_aud</prop>
+		        <prop key="org.hibernate.envers.revision_on_collection_change">false</prop>
+		    </props>
 		</property>
 	</bean>
 

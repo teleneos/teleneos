@@ -54,5 +54,10 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>4.1.0.Final</version>
+		</dependency>
 	</dependencies>
 </project>
