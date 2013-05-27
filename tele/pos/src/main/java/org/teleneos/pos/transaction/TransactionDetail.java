@@ -5,14 +5,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.teleneos.pos.conversion.Conversion;
 import org.teleneos.pos.item.Item;
 import org.teleneos.pos.uom.UnitOfMeasure;
 import org.teleneos.radius.internetpackage.InternetPackage;
+import org.teleneos.radius.userpackage.UserPackage;
 
 /**
  * @author Edy Setiawan
@@ -23,11 +24,14 @@ import org.teleneos.radius.internetpackage.InternetPackage;
 @Table(name = "tc_transaction_detail")
 public class TransactionDetail extends DefaultPersistence {
 
+	private static final long serialVersionUID = -6190694884542857298L;
+	
 	private Item item;
 	private int quantity = 1;
 	private Long price = 0L;
 	private TransactionHeader transactionHeader;
 	private InternetPackage internetPackage;
+	private UserPackage userPackage;
 	private UnitOfMeasure uom;
 	private Conversion conversion;
 
@@ -81,6 +85,17 @@ public class TransactionDetail extends DefaultPersistence {
 		this.internetPackage = internetPackage;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "userpackage_id")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	public UserPackage getUserPackage() {
+		return userPackage;
+	}
+
+	public void setUserPackage(UserPackage userPackage) {
+		this.userPackage = userPackage;
+	}
+	
 	@ManyToOne
 	@JoinColumn(name = "uom_id")
 	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)

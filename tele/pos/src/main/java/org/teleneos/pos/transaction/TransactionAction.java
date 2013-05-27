@@ -1,5 +1,7 @@
 package org.teleneos.pos.transaction;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
@@ -13,6 +15,8 @@ import org.teleneos.pos.transaction.TransactionDetailImplService.StockNotFoundEx
 import org.teleneos.pos.uom.InvaidUnitOfMeasurementException;
 import org.teleneos.radius.accounting.RadacctService;
 import org.teleneos.radius.internetpackage.PackageManagerService;
+import org.teleneos.radius.userpackage.UserPackage.Status;
+import org.teleneos.radius.userpackage.UserPackageService;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -46,6 +50,9 @@ public class TransactionAction extends DefaultAction implements
 	@Inject
 	private PackageManagerService packageManagerService;
 
+	@Inject
+	private UserPackageService userPackageService;
+	
 	@Action
 	public ActionResult transactionList() {
 		model.setTransactionHeaders(tHeaderService.findByKeyword(model.getQ(),
@@ -112,7 +119,7 @@ public class TransactionAction extends DefaultAction implements
 				addFieldError("transactionDetail.quantity",
 						"Quantity must greater than 0");
 			}
-			if (model.getTransactionDetail().getUom().getId().isEmpty()) {
+			if (model.getTransactionDetail().getUom() == null) {
 				addFieldError("transactionDetail.uom.name",
 						"Unit of measurement cannot be empty");
 			}
@@ -127,14 +134,40 @@ public class TransactionAction extends DefaultAction implements
 			model.setItem(itemService.findById(model.getTransactionDetail()
 					.getItem().getId()));
 			model.getTransactionDetail().setInternetPackage(null);
+			model.getTransactionDetail().setUserPackage(null);
 			model.getTransactionDetail().setPrice(model.getItem().getPrice());
-		} else {
+		} else if(model.getChange().equalsIgnoreCase("true")) {
 			model.setInternetPackage(packageManagerService.findById(model
 					.getTransactionDetail().getInternetPackage().getId()));
 			model.getTransactionDetail().setItem(null);
 			model.getTransactionDetail().setUom(null);
+			model.getTransactionDetail().setUserPackage(null);
 			model.getTransactionDetail().setPrice(
 					model.getInternetPackage().getPrice());
+		} else {
+			model.setUserPackage(userPackageService.findById(model
+					.getTransactionDetail().getUserPackage().getId()));
+			model.getTransactionDetail().setInternetPackage(null);
+			model.getTransactionDetail().setItem(null);
+			model.getTransactionDetail().setUom(null);
+			long internetTime = model.getUserPackage().getEndDate().getTime()
+					- model.getUserPackage().getLogInformation()
+							.getCreateDate().getTime();
+			model.getTransactionDetail()
+					.setPrice(
+							((TimeUnit.MILLISECONDS.toMinutes(internetTime) / model
+									.getUserPackage().getInternetPackage()
+									.getTime()) * model.getUserPackage()
+									.getInternetPackage().getPrice()));
+			if (TimeUnit.MILLISECONDS.toMinutes(internetTime)
+					% model.getUserPackage().getInternetPackage().getPrice() != 0) {
+				model.getTransactionDetail().setPrice(
+						model.getTransactionDetail().getPrice()
+								+ model.getUserPackage().getInternetPackage()
+										.getPrice());
+			}
+			model.getUserPackage().setStatus(Status.END);
+			userPackageService.save(model.getUserPackage());
 		}
 
 		try {

@@ -14,25 +14,35 @@
 			}
 			
 			$(function() {
-			$('#package').hide();
-			$('#uom-id').attr('name', 'transactionDetail.uom.id');
-			$('input[name="change"]').change(function() {
-				if ($(this).val() == 'true') {
-					$('#package').hide();
-					$('#uom').fadeIn();
-					$('#uom-id').attr('name', 'transactionDetail.uom.id');
-					$('#item').fadeIn();
-					$('input[name="transactionDetail.quantity"]').parents('.control-group').fadeIn();
-				} else {
-					$('#item').hide();
-					$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
-					$('#package').fadeIn();
-					$('#uom').hide();
-					$('#uom-id').attr('name', '');
-				}
-			});
-			
-			$('input[name="change"]:checked').change();
+				$('#package').hide();
+				$('#uom-id').attr('name', 'transactionDetail.uom.id');
+				$('input[name="change"]').change(function() {
+					if ($(this).val() == 'true') {
+						$('#package').hide();
+						$('#uom').fadeIn();
+						$('#uom-id').attr('name', 'transactionDetail.uom.id');
+						$('#item').fadeIn();
+						$('input[name="transactionDetail.quantity"]').parents('.control-group').fadeIn();
+						$('#postpaid').hide();
+					} else if ($(this).val() == 'false'){
+						$('#item').hide();
+						$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
+						$('#package').fadeIn();
+						$('#uom').hide();
+						$('#uom-id').attr('name', '');
+						$('#postpaid').hide();
+					} else {
+						$('#package').hide();
+						$('#postpaid').fadeIn();
+						$('#item').hide();
+						$('input[name="transactionDetail.quantity"]').parents('.control-group').hide();
+						$('#uom').hide();
+						$('#uom-id').attr('name', '');
+					}
+				});
+				
+				$('input[name="change"]:checked').change();
+				
 			});
 			function populateOptions(){
 				$.getJSON("/pos/conversion/from.json?q="+$('#item-id').val(), function(result) {
@@ -95,7 +105,7 @@
 					</div>
 					</#if>
 					<#if !transactionHeader.cash??>
-					<@s.radio name="change" list={'true' : 'Item', 'false' : 'Internet Package'} listKey="key" listValue="value" value="true" />
+					<@s.radio name="change" list={'true' : 'Item', 'false' : 'Internet Package', 'postpaid' : 'Postpaid'} listKey="key" listValue="value" value="true" />
 					<div class="control-group <#if fieldErrors.containsKey('transactionDetail.item.name')>error</#if>" id="item">
 						<label class="control-label" for="add_transactionDetail_item_id"> <span class="required">*</span> <@s.text name="page.item.title" /></label>
 						<div class="controls">
@@ -113,6 +123,14 @@
 							<@s.hidden name="transactionDetail.internetPackage.id" id="package-id" />
 							<input type="text" id="package-name" readonly="true" class="span4">
 							<button class="btn openpopup" type="button" title="Package" object-name="internetPackages|code,name" field-target="package-id|package-name" href="/master/packages">Choose</button>
+						</div>
+					</div>
+					<div class="control-group " id="postpaid">
+						<label class="control-label" for="add_id">Postpaid<span class="required">*</span></label>
+						<div class="controls">
+							<@s.hidden name="transactionDetail.userPackage.id" id="user-package-id" />
+							<input type="text" id="user-package-name" readonly="true" class="span4">
+							<button class="btn openpopup" type="button" title="Postpaid" object-name="userPackages|username,internetPackage.name" field-target="user-package-id|user-package-name" href="/admin/user/postpaid">Choose</button>
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
@@ -167,8 +185,7 @@
 								<#assign totalQnty = 0 />
 								<@s.url value="/pos/transaction/edit/" var="editUrl" />
 								<#list transactionDetails.entityList as s>
-								<#if s.internetPackage??>
-								<#else>
+								<#if s.item??>
 									<#if s.conversion?? >
 									<#assign price = (s.quantity * s.conversion.multiplyRate!0) * s.price />
 									<#else>
@@ -217,18 +234,24 @@
 								<#assign totalPriceInternet = 0 />
 								<@s.url value="/pos/transaction/edit/" var="editUrl" />
 								<#list transactionDetails.entityList as s>
-								<#if s.internetPackage??>
+								<#if s.internetPackage?? || s.userPackage??>
+								<#assign minuteUsage=(((s.userPackage.endDate?long - s.userPackage.logInformation.createDate?long)*0.001)/60)>
+								<#assign priceTotal = minuteUsage/s.userPackage.internetPackage.time*s.userPackage.internetPackage.price>
 									<tr>
 										<td>${nox}</td>
-										<td>${s.internetPackage.name!}</td>
-										<td style="text-align: right;">${s.internetPackage.price!} <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> </td>
+										<td><#if s.internetPackage??>${s.internetPackage.name!}<#else>${s.userPackage.internetPackage.name!} ${timeFormat(minuteUsage)} @ ${s.userPackage.internetPackage.price} </#if></td>
+										<td style="text-align: right;"><#if s.internetPackage??> ${s.internetPackage.price!} <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> <#elseif s.userPackage??> ${priceTotal} </#if> </td>
 										<#if !transactionHeader.cash??>
 										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"></i></a></td>
 										</#if>
 									</tr>
 									<#assign no = no + 1 />
-									<#if s.internetPackage.paymentMethod != 'POSTPAID' >
-										<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+									<#if s.internetPackage??>
+										<#if s.internetPackage.paymentMethod != 'POSTPAID' >
+											<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+										</#if>
+									<#elseif s.userPackage??>
+										<#assign totalPriceInternet = totalPriceInternet + priceTotal!0 />
 									</#if>
 								</#if>
 								</#list>
@@ -266,7 +289,7 @@
 						<br/>
 						<@s.textfield key="label.admin.tdetail.cash" required="true"  name="transactionHeader.cash" cssClass="span4" />
 						<div class="form-actions">
-							<@s.hidden name="grandtotal" value=totalPriceInternet+totalPrice!0/>
+							<@s.hidden name="grandtotal" value=(totalPriceInternet+totalPrice!0)?string('#')/>
 							<@s.submit key="button.save" cssClass="btn btn-primary" onclick="open_win()" />
 						</div>
 						</@s.form>

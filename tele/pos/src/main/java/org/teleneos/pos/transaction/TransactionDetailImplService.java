@@ -16,6 +16,8 @@ import org.teleneos.pos.inventoryonhand.InventoryOnhandRepository;
 import org.teleneos.pos.item.Item;
 import org.teleneos.pos.item.ItemService;
 import org.teleneos.pos.uom.InvaidUnitOfMeasurementException;
+import org.teleneos.radius.userpackage.UserPackage.Status;
+import org.teleneos.radius.userpackage.UserPackageService;
 
 /**
  * @author Edy Setiawan
@@ -37,6 +39,9 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Inject
 	private InventoryOnhandRepository onhandRepository;
 
+	@Inject
+	private UserPackageService userPackageService;
+	
 	@Override
 	public TransactionDetail findById(String id) {
 		return tDetailRepository.findById(id);
@@ -136,7 +141,12 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Override
 	@Transactional
 	public void remove(TransactionDetail detail) {
-		tDetailRepository.delete(tDetailRepository.load(detail.getId()));
+		TransactionDetail transactionDetail = tDetailRepository.load(detail.getId()); 
+		if (transactionDetail.getUserPackage() != null) {
+			transactionDetail.getUserPackage().setStatus(Status.ACTIVE);
+			userPackageService.save(transactionDetail.getUserPackage());
+		}
+		tDetailRepository.delete(transactionDetail);
 	}
 
 	@Override

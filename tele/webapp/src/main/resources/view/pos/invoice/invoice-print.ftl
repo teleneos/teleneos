@@ -64,17 +64,39 @@
 							<#assign price = s.quantity * s.price />
 							<tr>
 								<td>${no}</td>
-								<td>&nbsp;&nbsp;&nbsp;&nbsp;<#if s.item??>${s.item.name!}</#if><#if s.internetPackage??>${s.internetPackage.code!}</#if></td>
-								<td style="text-align: center;"><#if s.item??>${s.quantity!}<#else>-</#if></td>
-								<td style="text-align: right;">${s.price!} <#if s.internetPackage?? > <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> </#if></td>
-								<td style="text-align: right;"><#if s.item??>${price}<#else><#if s.internetPackage.paymentMethod != 'POSTPAID' >${s.internetPackage.price!0}<#else>-</#if></#if></td>
+								<td>&nbsp;&nbsp;&nbsp;&nbsp;<#if s.item??>${s.item.name!}<#elseif s.internetPackage??>${s.internetPackage.code!}<#else>${s.userPackage.internetPackage.name!}</#if></td>
+								<td style="text-align: center;"><#if s.item??>${s.quantity!}<#elseif s.userPackage??>${timeFormat(minuteUsage)}<#else>-</#if></td>
+								<td style="text-align: right;">
+									<#if s.internetPackage?? > 
+										<#if s.internetPackage.paymentMethod == 'POSTPAID' > 
+											@ ${timeFormat(s.internetPackage.time!0)} 
+										</#if>
+									<#elseif s.item??>
+									${s.price!} 
+									<#else>
+									@${s.userPackage.internetPackage.price}
+									</#if>
+								</td>
+								<td style="text-align: right;">
+								<#if s.item??>
+									${price}
+								<#elseif s.internetPackage??>
+									<#if s.internetPackage.paymentMethod != 'POSTPAID' >
+										${s.internetPackage.price!0}
+									<#else>
+										-
+									</#if>
+								<#else>
+									${priceTotal}
+								</#if>
+								</td>
 							</tr>
 							<#assign no = no + 1 /> 
 							<#if s.internetPackage??>
 								<#if s.internetPackage.paymentMethod != 'POSTPAID' >
 									<#assign totalPrice = totalPrice + s.internetPackage.price!0 />
 								</#if>
-							<#else>
+							<#elseif s.item??>
 								<#if s.conversion?? >
 									<#assign price = (s.quantity * s.conversion.multiplyRate!0) * s.price />
 									<#else>
@@ -82,15 +104,16 @@
 								</#if> 
 								<#assign totalPrice = totalPrice + price /> 
 								<#assign totalQnty = totalQnty + s.quantity />
+							<#else>
+								<#assign totalPrice = totalPrice + priceTotal />
 							</#if> 
 						</#list>
 						<#assign no = no - 1 />
 						<tr>
 							<td></td>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;<strong><@s.text
+							<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<strong><@s.text
 									name="label.admin.tdetail.total" /></strong></td>
-							<td style="text-align: center;"><strong>${totalQnty}</strong>
-							</td>
+						<#--<td style="text-align: center;"><strong>${totalQnty}</strong></td>-->
 							<td style="text-align: right;" colspan="2"><strong>${totalPrice}</strong>
 							</td>
 						</tr>

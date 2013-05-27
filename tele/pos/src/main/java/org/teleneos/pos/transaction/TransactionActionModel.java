@@ -2,9 +2,11 @@ package org.teleneos.pos.transaction;
 
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
+import org.teleneos.pos.conversion.Conversion;
 import org.teleneos.pos.item.Item;
 import org.teleneos.radius.accounting.Radacct;
 import org.teleneos.radius.internetpackage.InternetPackage;
+import org.teleneos.radius.userpackage.UserPackage;
 
 /**
  * @author Edy Setiawan
@@ -16,6 +18,8 @@ public class TransactionActionModel extends DefaultActionModel {
 	private EntityListWrapper<TransactionHeader> transactionHeaders = new EntityListWrapper<TransactionHeader>();
 	private TransactionDetail transactionDetail = new TransactionDetail();
 	private EntityListWrapper<TransactionDetail> transactionDetails = new EntityListWrapper<TransactionDetail>();
+	private EntityListWrapper<Conversion> conversions = new EntityListWrapper<Conversion>();
+	private UserPackage userPackage = new UserPackage();
 	private String id;
 	private Item item = new Item();
 	private EntityListWrapper<Radacct> accts = new EntityListWrapper<Radacct>();
@@ -130,6 +134,22 @@ public class TransactionActionModel extends DefaultActionModel {
 
 	public void setGrandtotal(long grandtotal) {
 		this.grandtotal = grandtotal;
+	}
+
+	public UserPackage getUserPackage() {
+		return userPackage;
+	}
+
+	public void setUserPackage(UserPackage userPackage) {
+		this.userPackage = userPackage;
+	}
+
+	public EntityListWrapper<Conversion> getConversions() {
+		return conversions;
+	}
+
+	public void setConversions(EntityListWrapper<Conversion> conversions) {
+		this.conversions = conversions;
 	}
 
 }

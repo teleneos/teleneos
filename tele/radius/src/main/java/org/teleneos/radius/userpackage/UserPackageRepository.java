@@ -10,6 +10,7 @@ import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.meruvian.yama.persistence.PersistenceRepository;
 import org.springframework.stereotype.Repository;
 import org.teleneos.radius.internetpackage.InternetPackage;
+import org.teleneos.radius.internetpackage.PaymentMethod;
 import org.teleneos.radius.userpackage.UserPackage.Status;
 
 /**
@@ -54,7 +55,12 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 				"p.username LIKE ?1 ORDER BY p.logInformation.updateDate DESC",
 				username + "%");
 	}
-
+	
+	public EntityListWrapper<UserPackage> findPostpaidUser(String keyword, int limit, int page) {
+		return findAll(limit, page, "p", "p.internetPackage.paymentMethod = ?1 AND (p.internetPackage.code LIKE ?2 OR p.internetPackage.name LIKE ?3 OR p.username LIKE ?4) AND p.status IS NOT ?5",
+				PaymentMethod.POSTPAID, keyword+"%", keyword+"%", keyword+"%", Status.END);
+	}
+	
 	public EntityListWrapper<UserPackage> findByPackageCode(String code,
 			int limit, int page) {
 		return findAll(limit, page, "p", "p.internetPackage.code = ?1", code);
