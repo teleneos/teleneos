@@ -3,6 +3,7 @@ $('#popup-dialog').on('show', function() {
 	$('#popup-search').submit(function() {
 		var obj = $(this).attr('object-name').split('|');
 		var target = $(this).attr('field-target').split('|');
+		var fire = $(this).attr('fire');
 		jQuery.ajax({
 			type : 'GET',
 			dataType : 'json',
@@ -74,6 +75,9 @@ $('#popup-dialog').on('show', function() {
 						$('#' + target[0]).val($(this).attr('data-id'));
 						$('#' + target[1]).val($(this).attr('data-name').split(',')[0]);
 					}
+					if(fire!=''){
+						eval(fire);
+					}
 				});
 			},
 			error : function() {
@@ -99,6 +103,7 @@ $('.openpopup').click(function() {
 	$('#popup-search').attr('action', $(this).attr('href'));
 	$('#popup-search').attr('object-name', $(this).attr('object-name'));
 	$('#popup-search').attr('field-target', $(this).attr('field-target'));
+	$('#popup-search').attr('fire', $(this).attr('fire'));
 	$('#popup-header').text($(this).attr('title'));
 	$('#popup-dialog').modal('show');
 	

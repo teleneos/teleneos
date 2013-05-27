@@ -2,14 +2,17 @@ package net.bogor.itu.action.pos;
 
 import javax.inject.Inject;
 
+import net.bogor.itu.entity.pos.Conversion;
+import net.bogor.itu.entity.pos.Item;
 import net.bogor.itu.service.pos.ConversionService;
+import net.bogor.itu.service.pos.ItemService;
 import net.bogor.itu.service.pos.UnitOfMeasureService;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
+import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
-import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.yama.actions.DefaultAction;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -28,6 +31,9 @@ public class ConversionAction extends DefaultAction implements
 	@Inject
 	private ConversionService conversionService;
 
+	@Inject
+	private ItemService itemService;
+	
 	private ActionResult redirectToIndex = new ActionResult("redirect",
 			"/pos/conversion");
 
@@ -44,7 +50,18 @@ public class ConversionAction extends DefaultAction implements
 		model.setUoms(uomService.findByKeyword("", null, null, 0, 0));
 		return DefaultAction.INPUT;
 	}
-
+	
+	@Action(name = "/from", method = HttpMethod.GET)
+	public String target() {
+		Item item = itemService.findById(model.getQ());
+		model.setConversions(conversionService.findTargetConversion(item.getUom().getId()));
+		Conversion e = new Conversion();
+		e.setUomFrom(item.getUom());
+		model.getConversions().getEntityList().add(0, e);
+		return DefaultAction.INPUT;
+	}
+	
+	
 	@Action(name = "/add", method = HttpMethod.POST)
 	public ActionResult add() {
 		if(model.getConversion().getMultiplyRate() < 1){

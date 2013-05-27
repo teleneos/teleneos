@@ -52,4 +52,9 @@ public class ConversionImplService implements ConversionService {
 		return conversionRepository.findConversion(uom1, uom2);
 	}
 
+	@Override
+	public EntityListWrapper<Conversion> findTargetConversion(String from) {
+		return conversionRepository.findTargetConversion(from);
+	}
+
 }
