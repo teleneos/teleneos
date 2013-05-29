@@ -105,6 +105,11 @@
 					<@s.text name="menu.report.accounting" />
 				</a>
 			</li>
+			<li>
+				<a href="/report/statistic/daily">
+					<@s.text name="menu.report.statistic" />
+				</a>
+			</li>
 		</ul>
 	</li>
 	<li class="dropdown">

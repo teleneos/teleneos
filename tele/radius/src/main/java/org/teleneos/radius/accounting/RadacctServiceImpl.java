@@ -1,5 +1,7 @@
 package org.teleneos.radius.accounting;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
@@ -64,4 +66,25 @@ public class RadacctServiceImpl implements RadacctService {
 			int limit, int page) {
 		return radacctRepo.findStatisticByUsername(username, limit, page);
 	}
+
+	@Override
+	public EntityListWrapper<Object[]> daily(String date, int limit, int page) {
+		return radacctRepo.daily(date, limit, page);
+	}
+
+	@Override
+	public EntityListWrapper<Object[]> monthly(String date, int limit, int page) {
+		return radacctRepo.monthly(date, limit, page);
+	}
+	
+	@Override
+	public EntityListWrapper<Object[]> weekly(String date, int limit, int page) {
+		return radacctRepo.weekly(date, limit, page);
+	}
+	
+	@Override
+	public Date getFirstConnection() {
+		return radacctRepo.getFirstConnection();
+	}
+
 }
