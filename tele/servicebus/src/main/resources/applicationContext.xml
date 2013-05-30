@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:spring="http://camel.apache.org/schema/spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.0-M1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<context:component-scan base-package="org.meruvian.yama, org.teleneos">
+		<context:exclude-filter type="regex"
+			expression="org.meruvian.yama.security.*" />
+		<context:exclude-filter type="regex"
+			expression="org.teleneos.radius.RadiusServiceImpl" />
+	</context:component-scan>
+
+	<context:property-placeholder location="classpath:/db.properties" />
+
+	<import resource="applicationContext-camel.xml" />
+	<import resource="applicationContext-amqp.xml" />
+	<import resource="applicationContext-route.xml" />
+	<import resource="applicationContext-persistence.xml" />
+	<import resource="applicationContext-networking.xml" />
+</beans>

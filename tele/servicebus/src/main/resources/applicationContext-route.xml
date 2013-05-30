@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://camel.apache.org/schema/spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="logUserIpAppender" class="org.teleneos.servicebus.squid.LogUserIPAppender" />
+
+	<bean id="zabbixProcessor" class="org.teleneos.servicebus.zabbix.ZabbixApiProcessor" />
+
+	<!-- <bean id="logSchedule" -->
+	<!-- class="org.apache.camel.routepolicy.quartz.CronScheduledRoutePolicy" -->
+	<!-- p:routeStartTime="" p:routeStopTime="" /> -->
+
+	<c:camelContext>
+		<c:propertyPlaceholder id="properties" location="db.properties" />
+
+		<c:endpoint id="squidLog"
+			uri="file:${squid.log.location}?fileName=access.log.1" />
+		<c:endpoint id="amqpSquid"
+			uri="spring-amqp:teleneos:network_log:squid?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkAvailability"
+			uri="spring-amqp:teleneos:network_availability?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkTraffic"
+			uri="spring-amqp:teleneos:network_traffic?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkDisk"
+			uri="spring-amqp:teleneos:network_disk?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkPerformance"
+			uri="spring-amqp:teleneos:network_performance?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkProcessor"
+			uri="spring-amqp:teleneos:network_processor?${mq.network.option}" />
+
+		<!-- Squid Log -->
+		<c:route>
+			<c:from ref="squidLog" />
+			<c:split streaming="true">
+				<c:tokenize token="\n" group="10000" />
+				<c:bean ref="logUserIpAppender" method="appendUser" />
+				<c:setHeader headerName="CamelFileName">
+					<c:simple>${properties:telecentre.public_key}-${date:now:yyyyMMddkkmmssSSS}</c:simple>
+				</c:setHeader>
+				<c:marshal>
+					<c:gzip />
+				</c:marshal>
+				<c:to uri="direct:tcid" />
+				<c:to ref="amqpSquid" />
+			</c:split>
+		</c:route>
+
+		<!-- Zabbix Log -->
+		<c:route id="zabbix-host">
+			<c:from uri="quartz://zabbix/availability?cron=0 0/5 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:bean ref="zabbixProcessor" method="hosts" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpNetworkAvailability" />
+		</c:route>
+
+		<c:route id="zabbix-disk">
+			<c:from uri="quartz://zabbix/disk?cron=0 1/5 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:bean ref="zabbixProcessor" method="disk" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpNetworkDisk" />
+		</c:route>
+
+		<c:route id="zabbix-traffic">
+			<c:from uri="quartz://zabbix/traffic?cron=0 2/5 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:bean ref="zabbixProcessor" method="traffic" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpNetworkTraffic" />
+		</c:route>
+
+		<c:route id="zabbix-performance">
+			<c:from uri="quartz://zabbix/performance?cron=0 3/5 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:bean ref="zabbixProcessor" method="performance" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpNetworkPerformance" />
+		</c:route>
+
+		<c:route id="zabbix-processor">
+			<c:from uri="quartz://zabbix/processor?cron=0 4/5 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:bean ref="zabbixProcessor" method="processor" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpNetworkProcessor" />
+		</c:route>
+
+		<c:route>
+			<c:from uri="direct:tcid" />
+			<c:setHeader headerName="TelecentreId">
+				<c:simple>${properties:telecentre.public_key}</c:simple>
+			</c:setHeader>
+		</c:route>
+
+		<c:route>
+			<c:from uri="direct:compress" />
+			<c:marshal>
+				<c:json library="Jackson" />
+			</c:marshal>
+			<c:marshal>
+				<c:gzip />
+			</c:marshal>
+		</c:route>
+
+		<!-- <c:route> -->
+		<!-- <c:from -->
+		<!-- uri="jpa:org.teleneos.radius.accounting.Radacct?consumeDelete=false" 
+			/> -->
+		<!-- </c:route> -->
+	</c:camelContext>
+</beans>

@@ -15,6 +15,7 @@
 		<hibernate.search.version>4.2.0.Final</hibernate.search.version>
 		<spring.security.version>3.1.3.RELEASE</spring.security.version>
 		<jackson.version>1.9.6</jackson.version>
+		<camel.version>2.11.0</camel.version>
 		<c3p0.version>0.9.1</c3p0.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<freemarker.version>2.3.19</freemarker.version>
@@ -95,5 +96,6 @@
 		<module>yama</module>
 		<module>ticket</module>
 		<module>webapp</module>
+		<module>servicebus</module>
 	</modules>
 </project>

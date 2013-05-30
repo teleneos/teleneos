@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -175,6 +176,15 @@ public class RadacctRepository extends
 		query.setParameter(1, username);
 
 		return (Object[]) query.getSingleResult();
+	}
+
+	public List<Radacct> findLogByTime(long from, long to) {
+		String q = "SELECT r FROM Radacct r WHERE (r.acctstoptime BETWEEN ?1 AND ?2) OR (r.acctstarttime BETWEEN ?1 AND ?2) ORDER BY r.radacctid ASC";
+		TypedQuery<Radacct> query = entityManager.createQuery(q, Radacct.class);
+		query.setParameter(1, new Date(from));
+		query.setParameter(2, new Date(to));
+
+		return query.getResultList();
 	}
 
 	public EntityListWrapper<Object[]> daily(String date, int limit, int page) {

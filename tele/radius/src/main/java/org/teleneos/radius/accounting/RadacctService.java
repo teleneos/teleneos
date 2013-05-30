@@ -1,6 +1,7 @@
 package org.teleneos.radius.accounting;
 
 import java.util.Date;
+import java.util.List;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.teleneos.radius.history.ConnectionHistory;
@@ -44,12 +45,14 @@ public interface RadacctService {
 	EntityListWrapper<Object[]> findStatisticByUsername(String username,
 			int limit, int page);
 
+	List<Radacct> findByRange(long from, long to);
+
 	EntityListWrapper<Object[]> daily(String date, int limit, int page);
 
 	EntityListWrapper<Object[]> monthly(String date, int limit, int page);
-	
+
 	EntityListWrapper<Object[]> weekly(String date, int limit, int page);
-	
+
 	public Date getFirstConnection();
 
 }

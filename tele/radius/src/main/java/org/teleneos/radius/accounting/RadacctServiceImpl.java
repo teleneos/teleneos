@@ -1,6 +1,7 @@
 package org.teleneos.radius.accounting;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -68,6 +69,11 @@ public class RadacctServiceImpl implements RadacctService {
 	}
 
 	@Override
+	public List<Radacct> findByRange(long from, long to) {
+		return radacctRepo.findLogByTime(from, to);
+	}
+
+	@Override
 	public EntityListWrapper<Object[]> daily(String date, int limit, int page) {
 		return radacctRepo.daily(date, limit, page);
 	}
@@ -76,12 +82,12 @@ public class RadacctServiceImpl implements RadacctService {
 	public EntityListWrapper<Object[]> monthly(String date, int limit, int page) {
 		return radacctRepo.monthly(date, limit, page);
 	}
-	
+
 	@Override
 	public EntityListWrapper<Object[]> weekly(String date, int limit, int page) {
 		return radacctRepo.weekly(date, limit, page);
 	}
-	
+
 	@Override
 	public Date getFirstConnection() {
 		return radacctRepo.getFirstConnection();
