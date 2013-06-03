@@ -235,8 +235,10 @@
 								<@s.url value="/pos/transaction/edit/" var="editUrl" />
 								<#list transactionDetails.entityList as s>
 								<#if s.internetPackage?? || s.userPackage??>
-								<#assign minuteUsage=(((s.userPackage.endDate?long - s.userPackage.logInformation.createDate?long)*0.001)/60)>
-								<#assign priceTotal = minuteUsage/s.userPackage.internetPackage.time*s.userPackage.internetPackage.price>
+								<#if s.userPackage??>
+									<#assign minuteUsage=(((s.userPackage.endDate?long - s.userPackage.logInformation.createDate?long)*0.001)/60)>
+									<#assign priceTotal = minuteUsage/s.userPackage.internetPackage.time*s.userPackage.internetPackage.price>
+								</#if>
 									<tr>
 										<td>${nox}</td>
 										<td><#if s.internetPackage??>${s.internetPackage.name!}<#else>${s.userPackage.internetPackage.name!} ${timeFormat(minuteUsage)} @ ${s.userPackage.internetPackage.price} </#if></td>

@@ -3,6 +3,7 @@ package org.teleneos.pos.transaction;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -136,7 +137,7 @@ public class TransactionAction extends DefaultAction implements
 			model.getTransactionDetail().setInternetPackage(null);
 			model.getTransactionDetail().setUserPackage(null);
 			model.getTransactionDetail().setPrice(model.getItem().getPrice());
-		} else if(model.getChange().equalsIgnoreCase("true")) {
+		} else if(model.getChange().equalsIgnoreCase("false")) {
 			model.setInternetPackage(packageManagerService.findById(model
 					.getTransactionDetail().getInternetPackage().getId()));
 			model.getTransactionDetail().setItem(null);
