@@ -51,4 +51,11 @@ public class PremadeAnswerServiceImpl implements PremadeAnswerService {
 		premadeAnswerRepository.delete(answer);
 	}
 
+	@Override
+	public EntityListWrapper<PremadeAnswer> findByFaq(String keyword,
+			String order, String orderBy, int limit, int page) {
+		return premadeAnswerRepository.findByFaq(keyword, order, orderBy,
+				limit, page, "OR");
+	}
+
 }

@@ -30,6 +30,11 @@
 	</li>
 	</#if>
 	</#if>
+	<li>
+		<a href='<@s.url value="/user/faq" />'>
+			<@s.text name="page.faq" />
+		</a>
+	</li>
 </ul>
 
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />

@@ -13,7 +13,8 @@ public class PremadeAnswer extends DefaultPersistence {
 
 	private String title;
 	private String content;
-
+	private boolean faq = false;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -30,4 +31,12 @@ public class PremadeAnswer extends DefaultPersistence {
 		this.content = content;
 	}
 
+	public boolean isFaq() {
+		return faq;
+	}
+
+	public void setFaq(boolean faq) {
+		this.faq = faq;
+	}
+	
 }
