@@ -197,6 +197,12 @@
 		</a>
 		<ul class="dropdown-menu">
 			<li>
+				<a href="/admin/configuration">
+					<i class="icon-wrench"></i>
+					<@s.text name="menu.admin.configuration" />
+				</a>
+			</li>
+			<li>
 				<a href="/security/password">
 					<i class="icon-cog"></i>
 					<@s.text name="menu.profile.changepassword" />

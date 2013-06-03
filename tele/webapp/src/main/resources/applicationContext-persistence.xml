@@ -31,6 +31,7 @@
 			<array>
 				<value>org.meruvian.yama.security.user</value>
 				<value>org.meruvian.yama.persistence</value>
+				<value>org.meruvian.yama.configuration</value>
 				<value>org.teleneos</value>
 			</array>
 		</property>

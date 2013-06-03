@@ -3,9 +3,11 @@
  */
 package org.teleneos.radius.statistic;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -15,6 +17,8 @@ import org.meruvian.yama.actions.DefaultAction;
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ldap.NameAlreadyBoundException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.teleneos.radius.internetpackage.InternetPackageService;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -37,13 +41,16 @@ public class UserAction extends DefaultAction implements
 	private static final long serialVersionUID = 2413426101731088386L;
 
 	private UserActionModel model = new UserActionModel();
-
+	
 	@Inject
 	private UserService userService;
 
 	@Inject
 	private InternetPackageService packageService;
-
+	
+	@Resource(name = "asyncMailSender")
+    private MailSender mailSender;
+	
 	@Action
 	public ActionResult index() {
 		return new ActionResult("redirect", "/admin/user/list");
@@ -79,8 +86,8 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+//			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+//			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
@@ -99,7 +106,13 @@ public class UserAction extends DefaultAction implements
 		model.getUser().getUser().setRole("USER");
 
 		try {
+			model.getUser().getUser().setPassword(RandomStringUtils.randomAlphanumeric(9));
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(model.getUser().getUser().getEmail());
+			message.setSubject("[Notification] Your account just registered in Telecentre System");
+			message.setText("Your password is "+model.getUser().getUser().getPassword()+", please change this password immediately.");
 			userService.save(model.getUser());
+			mailSender.send(message);
 		} catch (DataIntegrityViolationException e) {
 			if (isCreate) {
 				model.getUser().setId(null);
@@ -140,8 +153,8 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/edit/{q}", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
-			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+//			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+//			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),

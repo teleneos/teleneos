@@ -230,6 +230,11 @@
 			<artifactId>tele-yama</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.3</version>
+		</dependency>
 	</dependencies>
 
 	<description>The struts2 modules under the umbrella of Meruvian Yama project. Includes rest handler, annotation support for struts2, and many others.</description>
