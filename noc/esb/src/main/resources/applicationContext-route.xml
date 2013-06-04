@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="accessLogProcessor" class="org.teleneos.servicebus.log.LogProcessor" />
+	<bean id="networkProcessor" class="org.teleneos.servicebus.log.NetworkProcessor" />
+
+	<c:camelContext>
+		<c:propertyPlaceholder id="properties" location="db.properties" />
+
+		<c:endpoint id="amqpSquid"
+			uri="spring-amqp:teleneos:network_log:squid?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkAvailability"
+			uri="spring-amqp:teleneos:network_availability:availability?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkTraffic"
+			uri="spring-amqp:teleneos:network_traffic:traffic?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkDisk"
+			uri="spring-amqp:teleneos:network_disk:disk?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkPerformance"
+			uri="spring-amqp:teleneos:network_performance:performance?${mq.network.option}" />
+		<c:endpoint id="amqpNetworkProcessor"
+			uri="spring-amqp:teleneos:network_processor:processor?${mq.network.option}" />
+		<c:endpoint id="amqpRadiusAcct"
+			uri="spring-amqp:teleneos:radius_acct:acct?${mq.network.option}" />
+		<c:endpoint id="amqpPing"
+			uri="spring-amqp:teleneos:ping:ping?${mq.network.option}" />
+
+		<c:route>
+			<c:from ref="amqpSquid" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:process ref="accessLogProcessor" />
+		</c:route>
+		<c:route>
+			<c:from ref="amqpNetworkAvailability" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.network.host.HostMessageWrapper" />
+			</c:unmarshal>
+			<c:split>
+				<c:simple>${body.result}</c:simple>
+				<c:process ref="networkProcessor" />
+				<c:to uri="jpa:org.teleneos.log.network.host.Host?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpNetworkTraffic" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.network.traffic.TrafficMessageWrapper" />
+			</c:unmarshal>
+			<c:bean ref="networkProcessor" method="traffic" />
+			<c:split>
+				<c:simple>${body}</c:simple>
+				<c:process ref="networkProcessor" />
+				<c:to uri="jpa:org.teleneos.log.network.traffic.Traffic?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpNetworkDisk" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.network.disk.DiskSpaceMessageWrapper" />
+			</c:unmarshal>
+			<c:bean ref="networkProcessor" method="disk" />
+			<c:split>
+				<c:simple>${body}</c:simple>
+				<!-- <c:process ref="networkProcessor" /> -->
+				<c:to uri="jpa:org.teleneos.log.network.disk.DiskSpace?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpNetworkPerformance" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.network.performance.PerformanceMessageWrapper" />
+			</c:unmarshal>
+			<c:split>
+				<c:simple>${body.result}</c:simple>
+				<c:process ref="networkProcessor" />
+				<c:to
+					uri="jpa:org.teleneos.log.network.performance.Performance?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpNetworkProcessor" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.network.cpu.CpuLoadMessageWrapper" />
+			</c:unmarshal>
+			<c:split>
+				<c:simple>${body.result}</c:simple>
+				<c:process ref="networkProcessor" />
+				<c:to uri="jpa:org.teleneos.log.network.cpu.CpuLoad?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpRadiusAcct" />
+			<c:unmarshal>
+				<c:gzip />
+			</c:unmarshal>
+			<c:unmarshal>
+				<c:json library="Jackson"
+					unmarshalTypeName="org.teleneos.log.radius.accounting.RadiusAccountingMessageWrapper" />
+			</c:unmarshal>
+			<c:split>
+				<c:simple>${body}</c:simple>
+				<c:process ref="networkProcessor" />
+				<c:to
+					uri="jpa:org.teleneos.log.radius.accounting.RadiusAccounting?usePersist=true" />
+			</c:split>
+		</c:route>
+		<c:route>
+			<c:from ref="amqpPing" />
+			<c:bean ref="networkProcessor" method="ping" />
+			<c:to uri="jpa:org.teleneos.log.availability.Ping?usePersist=true" />
+		</c:route>
+	</c:camelContext>
+</beans>

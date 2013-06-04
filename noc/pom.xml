@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>id.co.bonet.itu</groupId>
+	<groupId>org.teleneos</groupId>
 	<artifactId>noc</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -13,22 +14,25 @@
 		<hibernate.search.version>4.2.0.Final</hibernate.search.version>
 		<spring.security.version>3.1.3.RELEASE</spring.security.version>
 		<jackson.version>1.9.6</jackson.version>
+		<camel.version>2.11.0</camel.version>
 		<c3p0.version>0.9.1</c3p0.version>
+		<mysql.version>5.1.18</mysql.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<freemarker.version>2.3.19</freemarker.version>
 		<jquery.version>1.9.1</jquery.version>
 		<bootstrap.version>2.3.0</bootstrap.version>
-		<jradius.version>1.0.0</jradius.version>
 		<inca.version>1.0.2</inca.version>
-		<yama.version>1.0.2</yama.version>
+		<yama.version>1.0.3</yama.version>
 	</properties>
 
 	<modules>
 		<module>webapp</module>
 		<module>persistence</module>
-    	<module>jaxrs</module>
-    	<module>esb</module>
-  	</modules>
+		<module>jaxrs</module>
+		<module>esb</module>
+		<module>log</module>
+		<module>yama</module>
+	</modules>
 
 	<build>
 		<plugins>

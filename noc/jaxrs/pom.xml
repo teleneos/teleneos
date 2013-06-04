@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
         <artifactId>noc</artifactId>
-        <groupId>id.co.bonet.itu</groupId>
+        <groupId>org.teleneos</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-	<groupId>id.co.bonet.itu</groupId>
+	<groupId>org.teleneos</groupId>
 	<artifactId>jaxrs</artifactId>
 	<packaging>war</packaging>
 	<version>0.1-SNAPSHOT</version>
@@ -181,7 +181,7 @@
 			<version>2.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>id.co.bonet.itu</groupId>
+			<groupId>org.teleneos</groupId>
 			<artifactId>itu-noc-persistence</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
