@@ -1,6 +1,7 @@
 package org.meruvian.yama.persistence;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
