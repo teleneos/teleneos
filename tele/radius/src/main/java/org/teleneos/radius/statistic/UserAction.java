@@ -80,6 +80,7 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
+		model.getUser().getUser().setPassword(RandomStringUtils.randomAlphanumeric(9));
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
 
@@ -87,7 +88,7 @@ public class UserAction extends DefaultAction implements
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
 //			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
-//			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
@@ -106,7 +107,6 @@ public class UserAction extends DefaultAction implements
 		model.getUser().getUser().setRole("USER");
 
 		try {
-			model.getUser().getUser().setPassword(RandomStringUtils.randomAlphanumeric(9));
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(model.getUser().getUser().getEmail());
 			message.setSubject("[Notification] Your account just registered in Telecentre System");
@@ -154,7 +154,7 @@ public class UserAction extends DefaultAction implements
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
 //			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
-//			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
+			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
 			@RequiredStringValidator(fieldName = "user.address.street1", trim = true, key = "message.admin.user.street1.notnull"),
