@@ -5,8 +5,6 @@ import javax.annotation.PostConstruct;
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.opensymphony.xwork2.inject.Inject;
-
 /**
  * @author Dian Aditya
  * 
