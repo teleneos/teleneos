@@ -57,8 +57,9 @@ public class ZabbixApiProcessor {
 	public List<ZItem> disk(Message message) {
 		List<ZItem> items = new ArrayList<ZItem>();
 		items.add(utilizationService.getFreeDiskSpace());
-		items.add(utilizationService.getUsedDiskSpace());
 		items.add(utilizationService.getTotalDiskSpace());
+		items.add(utilizationService.getFreeSwapSpace());
+		items.add(utilizationService.getTotalSwapSpace());
 
 		return items;
 	}

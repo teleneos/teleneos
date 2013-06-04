@@ -6,12 +6,8 @@
 		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
 	<bean id="logUserIpAppender" class="org.teleneos.servicebus.squid.LogUserIPAppender" />
-
 	<bean id="zabbixProcessor" class="org.teleneos.servicebus.zabbix.ZabbixApiProcessor" />
-
-	<!-- <bean id="logSchedule" -->
-	<!-- class="org.apache.camel.routepolicy.quartz.CronScheduledRoutePolicy" -->
-	<!-- p:routeStartTime="" p:routeStopTime="" /> -->
+	<bean id="accountingProcessor" class="org.teleneos.servicebus.radius.AccountingProcessor" />
 
 	<c:camelContext>
 		<c:propertyPlaceholder id="properties" location="db.properties" />
@@ -21,15 +17,19 @@
 		<c:endpoint id="amqpSquid"
 			uri="spring-amqp:teleneos:network_log:squid?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkAvailability"
-			uri="spring-amqp:teleneos:network_availability?${mq.network.option}" />
+			uri="spring-amqp:teleneos:network_availability:availability?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkTraffic"
-			uri="spring-amqp:teleneos:network_traffic?${mq.network.option}" />
+			uri="spring-amqp:teleneos:network_traffic:traffic?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkDisk"
-			uri="spring-amqp:teleneos:network_disk?${mq.network.option}" />
+			uri="spring-amqp:teleneos:network_disk:disk?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkPerformance"
-			uri="spring-amqp:teleneos:network_performance?${mq.network.option}" />
+			uri="spring-amqp:teleneos:network_performance:performance?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkProcessor"
-			uri="spring-amqp:teleneos:network_processor?${mq.network.option}" />
+			uri="spring-amqp:teleneos:network_processor:processor?${mq.network.option}" />
+		<c:endpoint id="amqpRadiusAcct"
+			uri="spring-amqp:teleneos:radius_acct:acct?${mq.network.option}" />
+		<c:endpoint id="amqpPing"
+			uri="spring-amqp:teleneos:ping:ping?${mq.network.option}" />
 
 		<!-- Squid Log -->
 		<c:route>
@@ -90,6 +90,20 @@
 		</c:route>
 
 		<c:route>
+			<c:from uri="quartz://radius/acct?cron=0 0 0 * * ?" />
+			<c:bean ref="accountingProcessor" method="accounting" />
+			<c:to uri="direct:tcid" />
+			<c:to uri="direct:compress" />
+			<c:to ref="amqpRadiusAcct" />
+		</c:route>
+
+		<c:route>
+			<c:from uri="quartz://ping/ping?cron=0 0/1 * * * ?" />
+			<c:to uri="direct:tcid" />
+			<c:to ref="amqpPing" />
+		</c:route>
+
+		<c:route>
 			<c:from uri="direct:tcid" />
 			<c:setHeader headerName="TelecentreId">
 				<c:simple>${properties:telecentre.public_key}</c:simple>
@@ -105,11 +119,5 @@
 				<c:gzip />
 			</c:marshal>
 		</c:route>
-
-		<!-- <c:route> -->
-		<!-- <c:from -->
-		<!-- uri="jpa:org.teleneos.radius.accounting.Radacct?consumeDelete=false" 
-			/> -->
-		<!-- </c:route> -->
 	</c:camelContext>
 </beans>

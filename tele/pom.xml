@@ -17,6 +17,7 @@
 		<jackson.version>1.9.6</jackson.version>
 		<camel.version>2.11.0</camel.version>
 		<c3p0.version>0.9.1</c3p0.version>
+		<mysql.version>5.1.18</mysql.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<freemarker.version>2.3.19</freemarker.version>
 		<jquery.version>1.9.1</jquery.version>

@@ -31,13 +31,13 @@ public class MonitoringServiceImpl implements MonitoringService {
 	@Override
 	public ZHistoryResponse findIncomingTraffic(int limit) {
 		return historyRepository.findAll(getLastIncomingTraffic().getItemid(),
-				-1, null, null, 60);
+				-1, null, null, limit);
 	}
 
 	@Override
 	public ZHistoryResponse findOutgoingTraffic(int limit) {
 		return historyRepository.findAll(getLastOutgoingTraffic().getItemid(),
-				-1, null, null, 60);
+				-1, null, null, limit);
 	}
 
 	@Override

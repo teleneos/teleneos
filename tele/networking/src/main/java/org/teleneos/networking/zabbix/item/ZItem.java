@@ -5,7 +5,7 @@ package org.teleneos.networking.zabbix.item;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Dian Aditya

@@ -11,7 +11,7 @@
 		<property name="messageConverters">
 			<list>
 				<bean
-					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 				<bean
 					class="org.springframework.http.converter.StringHttpMessageConverter" />
 			</list>
@@ -32,5 +32,5 @@
 
 	<bean id="session" class="org.teleneos.networking.zabbix.auth.SessionToken" />
 
-	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 </beans>

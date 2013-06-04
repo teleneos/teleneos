@@ -7,13 +7,14 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.teleneos.networking.zabbix.auth.SessionToken;
 import org.teleneos.networking.zabbix.auth.UserLoginRepository;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Dian Aditya

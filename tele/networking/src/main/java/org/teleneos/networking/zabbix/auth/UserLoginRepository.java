@@ -5,11 +5,12 @@ package org.teleneos.networking.zabbix.auth;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.teleneos.networking.zabbix.ZabbixAPIRepository;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * @author Dian Aditya
