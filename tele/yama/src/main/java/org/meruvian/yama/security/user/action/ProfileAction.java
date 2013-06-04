@@ -15,6 +15,8 @@
  */
 package org.meruvian.yama.security.user.action;
 
+import javax.inject.Inject;
+
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -26,7 +28,6 @@ import org.meruvian.yama.security.user.User;
 import org.meruvian.yama.security.user.service.UserService;
 
 import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.inject.Inject;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -43,6 +44,7 @@ public class ProfileAction extends DefaultAction implements ModelDriven<User> {
 
 	@Inject
 	private UserService userService;
+	
 	private User user = new User();
 
 	@Action(name = "/edit", method = HttpMethod.GET)

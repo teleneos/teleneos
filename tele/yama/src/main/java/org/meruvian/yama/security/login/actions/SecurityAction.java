@@ -15,6 +15,8 @@
  */
 package org.meruvian.yama.security.login.actions;
 
+import javax.inject.Inject;
+
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
@@ -23,8 +25,6 @@ import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
-
-import com.opensymphony.xwork2.inject.Inject;
 
 /**
  * @author Dian Aditya
