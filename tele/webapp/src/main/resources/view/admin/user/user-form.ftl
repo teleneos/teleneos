@@ -6,7 +6,11 @@
 		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-datepicker.js" />"></script>
 		<script type="text/javascript">
 		$(function(){
-			$('#date').datepicker();
+			$('#date').datepicker({
+				format : 'dd-mm-yyyy',
+				endDate : new Date(),
+				autoclose : true
+			});
 		});
 		</script>
 	</head>
