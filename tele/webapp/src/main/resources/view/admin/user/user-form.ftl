@@ -4,6 +4,11 @@
 		<meta name="header" content="<@s.text name="page.editprofile.header" />">
 		<link rel="stylesheet" type="text/css" href="<@s.url value="/styles/datepicker.css" />" />
 		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-datepicker.js" />"></script>
+		<script type="text/javascript">
+		$(function(){
+			$('#date').datepicker();
+		});
+		</script>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -42,7 +47,7 @@
 					<@s.textfield key="label.user.name.first" name="user.name.first" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.name.last" name="user.name.last" cssClass="span4" />
 
-					<@s.textfield key="label.user.birthdate" name="user.birthDate" cssClass="span4" required="true" readonly="true" />
+					<@s.textfield key="label.user.birthdate" name="user.birthDate" cssClass="span4" required="true" readonly="true" id="date"/>
 					<@s.textfield key="label.user.idcard" name="user.idcard" cssClass="span4" required="true" />
 					<@s.textfield key="label.user.phone" name="user.phone" cssClass="span4" />
 					
