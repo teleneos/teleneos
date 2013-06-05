@@ -14,6 +14,20 @@
 		<pattern>/admin/*</pattern>
 	</decorator>
 	
+	<decorator name="master" page="/view/decorator/master-decorator.ftl">
+	    <pattern>/master/*</pattern>
+	    <pattern>/master</pattern>
+		<pattern>/pos/businesspartner</pattern>
+		<pattern>/pos/uom</pattern>
+		<pattern>/pos/conversion</pattern>
+		<pattern>/pos/itemcategory</pattern>
+		<pattern>/pos/item</pattern>
+		<pattern>/pos/goodreceiving</pattern>
+		<pattern>/master/packages</pattern>
+		<pattern>/ticket/premade</pattern>
+		<pattern>/ticket/category</pattern>
+	</decorator>
+	
 	<decorator name="user" page="/view/decorator/user-decorator.ftl">
 		<pattern>/user/*</pattern>
 		<pattern>/user</pattern>

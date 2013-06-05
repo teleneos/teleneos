@@ -1,6 +1,7 @@
 <div class="span2">
 	<ul class="nav nav-list">
 		<li id="nav-header" class="nav-header"><@s.text name="menu.pos" /></li>
+		<#if currentUser.role != 'ADMINISTRATOR'>
 		<li>
 			<a href="/pos/businesspartner">
 				<@s.text name="menu.pos.businesspartner" />
@@ -26,29 +27,15 @@
 				<@s.text name="menu.pos.item" />
 			</a>
 		</li>
-		<#--<li>
-			<a href="/pos/requisition">
-				<@s.text name="menu.pos.requisition" />
-			</a>
-		</li>
-		<li>
-			<a href="/pos/po">
-				<@s.text name="menu.pos.purchaseorder" />
-			</a>	
-		</li>
-		<li>
-			<a href="/pos/invoice">
-				<@s.text name="menu.pos.invoice" />
-			</a>	
-		</li>-->
-		<li>
-			<a href="/pos/inventoryonhand">
-				<@s.text name="menu.pos.inventoryonhand" />
-			</a>	
-		</li>
 		<li>
 			<a href="/pos/goodreceiving">
 				<@s.text name="menu.pos.goodreceiving" />
+			</a>	
+		</li>
+		<#else>
+		<li>
+			<a href="/pos/inventoryonhand">
+				<@s.text name="menu.pos.inventoryonhand" />
 			</a>	
 		</li>
 		<li>
@@ -56,5 +43,6 @@
 				<@s.text name="menu.pos.sales" />
 			</a>	
 		</li>
+		</#if>
 	</ul>
 </div>

@@ -6,40 +6,15 @@
 		</a>
 	</li>
 </ul>
-
 <#assign user = request.session.getAttribute("YAMA_SECURITY_USER")!'null' />
 <#if user != 'null'>
 <ul class="nav">
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.admin" />">
-			<@s.text name="menu.admin" />
-			<b class="caret"></b>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/admin/user/list">
-					<@s.text name="menu.admin.user" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/user/report">
-					<@s.text name="menu.admin.statistic" />
-				</a>
-			</li>
-			<li>
-				<a href="/admin/user/online">
-					<@s.text name="menu.admin.onlineuser" />
-				</a>
-			</li>
-		</ul>
-	</li>
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.pos" />">
 			<@s.text name="menu.pos" />
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
-			<#--
 			<li>
 				<a href="/pos/businesspartner">
 				<@s.text name="menu.pos.businesspartner" />
@@ -70,20 +45,8 @@
 					<@s.text name="menu.pos.goodreceiving" />
 				</a>	
 			</li>
-			-->
-			<li>
-				<a href="/pos/inventoryonhand">
-					<@s.text name="menu.pos.inventoryonhand" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/transaction">
-					<@s.text name="menu.pos.sales" />
-				</a>	
-			</li>
 		</ul>
 	</li>
-	<#--
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.package" />">
 			<@s.text name="menu.package" />
@@ -97,65 +60,12 @@
 			</li>
 		</ul>
 	</li>
-	-->
-	<li class="dropdown">
-		<a href="/report" data-toggle="dropdown" title="<@s.text name="menu.report" />">
-			<@s.text name="menu.report" />
-			<b class="caret"></b>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/report/store/daily">
-					<@s.text name="menu.report.accounting" />
-				</a>
-			</li>
-			<li>
-				<a href="/report/statistic/daily">
-					<@s.text name="menu.report.statistic" />
-				</a>
-			</li>
-		</ul>
-	</li>
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.network" />">
-			<@s.text name="menu.network" />
-			<b class="caret"></b>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/network/availability">
-					<@s.text name="menu.network.availability" />
-				</a>
-			</li>
-			<li>
-				<a href="/network/monitoring">
-					<@s.text name="menu.network.monitoring" />
-				</a>
-			</li>
-			<li>
-				<a href="/network/performance">
-					<@s.text name="menu.network.performance" />
-				</a>
-			</li>
-			<li>
-				<a href="/network/utilization">
-					<@s.text name="menu.network.utilization" />
-				</a>
-			</li>
-		</ul>
-	</li>
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			Ticketing
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
-		<li>
-			<a href="/ticket">
-				Ticket
-			</a>
-		</li>
-		<#--
 		<li>
 			<a href="/ticket/premade">
 				Premade Answer
@@ -166,7 +76,6 @@
 				Ticket Category
 			</a>
 		</li>
-		-->
 		</ul>
 	</li>
 </ul>

@@ -60,7 +60,9 @@ public class LoginAction extends DefaultAction implements
 			if ("USER".equals(user.getRole())) {
 				return new ActionResult("redirect", "/user");
 			}
-
+			if ("MASTER".equals(user.getRole())) {
+				return new ActionResult("redirect", "/master");
+			}
 			return new ActionResult("freemarker",
 					"/view/admin/backend-index.ftl");
 		}
