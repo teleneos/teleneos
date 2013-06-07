@@ -73,7 +73,7 @@ public class PackageManagerAction extends DefaultAction implements
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "internetPackage.code", trim = true, key = "message.master.package.code.notnull"),
-			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull"), }, conversionErrorFields = {
+			@RequiredStringValidator(fieldName = "internetPackage.name", trim = true, key = "message.master.package.name.notnull")}, conversionErrorFields = {
 			@ConversionErrorFieldValidator(fieldName = "internetPackage.price", key = "message.master.package.price.notvalid"),
 			@ConversionErrorFieldValidator(fieldName = "internetPackage.time", key = "message.master.package.time.notvalid"),
 			@ConversionErrorFieldValidator(fieldName = "internetPackage.quota", key = "message.master.package.quota.notvalid"),
