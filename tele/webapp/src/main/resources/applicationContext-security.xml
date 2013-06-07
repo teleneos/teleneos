@@ -32,12 +32,12 @@
 	</sc:http>
 
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
-		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
+		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
 		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
-		<sc:intercept-url pattern="/master/**" access="hasRole('MASTER')" />
+		<sc:intercept-url pattern="/master/**" access="hasRole('MASTER') or hasRole('ADMINISTRATOR')" />
 		<sc:intercept-url pattern="/ticket/user/**" access="hasRole('USER')" />
 		<sc:intercept-url pattern="/ticket/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
-		<sc:intercept-url pattern="/network/**" access="hasRole('ADMINISTRATOR')" />
+		<sc:intercept-url pattern="/network/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
 		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
 		<sc:intercept-url pattern="/user/signin" access="permitAll" />
 		<sc:intercept-url pattern="/user/signup" access="permitAll" />
