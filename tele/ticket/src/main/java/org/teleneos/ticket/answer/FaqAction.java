@@ -23,7 +23,7 @@ public class FaqAction extends DefaultAction implements
 	
 	@Action
 	public String index() {
-		model.setAnswers(answerService.findByFaq(model.getQ(), null, "ASC", 0, 0));
+		model.setAnswers(answerService.findByFaq(model.getQ(), null, "ASC", model.getMax(), model.getPage() - 1));
 		return INDEX;
 	}
 
