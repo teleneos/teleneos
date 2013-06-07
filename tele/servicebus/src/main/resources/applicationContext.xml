@@ -12,6 +12,8 @@
 		<context:exclude-filter type="regex"
 			expression="org.meruvian.yama.security.*" />
 		<context:exclude-filter type="regex"
+			expression="org.meruvian.yama.mail.*" />
+		<context:exclude-filter type="regex"
 			expression="org.teleneos.radius.RadiusServiceImpl" />
 	</context:component-scan>
 
