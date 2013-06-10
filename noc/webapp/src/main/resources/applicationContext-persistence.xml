@@ -9,10 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Init user on startup -->
-	<bean id="user" class="id.co.bonet.itu.persistence.UserIntializer" />
-
-	<!-- Index database on startup -->
-	<!-- <bean id="dbIndexer" class="id.co.bonet.itu.persistence.FullSearchService" 
+	<!-- <bean id="user" class="org.meruvian.yama.persistence.UserIntializer" 
 		/> -->
 
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
@@ -35,8 +32,7 @@
 			<array>
 				<value>org.meruvian.yama.security.user</value>
 				<value>org.meruvian.yama.persistence</value>
-				<value>id.co.bonet.itu.entity</value>
-				<value>id.co.bonet.itu.noc</value>
+				<value>org.teleneos</value>
 			</array>
 		</property>
 	</bean>

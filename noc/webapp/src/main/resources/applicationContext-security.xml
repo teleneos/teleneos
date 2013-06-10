@@ -7,50 +7,55 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean id="passwordEncoder"
+	<bean id="dbPasswordEncoder"
 		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<constructor-arg value="256" />
 	</bean>
 
-	<bean id="userService" class="org.meruvian.yama.security.UserService" />
+	<bean id="ldapPasswordEncoder"
+		class="org.springframework.security.authentication.encoding.LdapShaPasswordEncoder" />
 
-	<sc:http name="user" pattern="/user/**"
-		authentication-manager-ref="authManager">
-		<sc:remember-me authentication-success-handler-ref="userService" />
-		<sc:form-login login-page="/user/signin"
-			login-processing-url="/user/login" username-parameter="username"
-			password-parameter="password" authentication-failure-url="/user/signin?failure"
-			authentication-success-handler-ref="userService" />
-		<sc:logout logout-url="/logout" logout-success-url="/user/signin"
-			invalidate-session="true" />
-	</sc:http>
+	<bean id="userAuthenticationService" class="org.meruvian.yama.security.UserAuthenticationService" />
+
+	<bean id="userAuthenticationSuccessHandler"
+		class="org.meruvian.yama.security.UserAuthenticationSuccessHandler"></bean>
 
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
-		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR')" />
-		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR')" />
-		<sc:intercept-url pattern="/master/**" access="hasRole('ADMINISTRATOR')" />
-		<sc:intercept-url pattern="/security/**" access="isFullyAuthenticated()" />
-		<sc:intercept-url pattern="/user/signin" access="permitAll" />
-		<sc:intercept-url pattern="/user/signup" access="permitAll" />
-		<sc:intercept-url pattern="/user" access="hasRole('USER')" />
-		<sc:intercept-url pattern="/user/**" access="hasRole('USER')" />
+		<sc:intercept-url pattern="/" access="permitAll" />
+		<sc:intercept-url pattern="/noc/**" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/tele" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/tele/**" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/monitoring" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/monitoring/**" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/**" method="POST"
 			access="isFullyAuthenticated()" />
 
-		<sc:remember-me authentication-success-handler-ref="userService" />
+		<sc:remember-me authentication-success-handler-ref="userAuthenticationSuccessHandler" />
 		<sc:form-login login-page="/" login-processing-url="/login"
 			username-parameter="username" password-parameter="password"
 			authentication-failure-url="/?failure"
-			authentication-success-handler-ref="userService" />
+			authentication-success-handler-ref="userAuthenticationSuccessHandler" />
 		<sc:logout logout-url="/logout" logout-success-url="/"
 			invalidate-session="true" />
 	</sc:http>
 
+	<sc:ldap-server url="${ldap.auth.url}" manager-dn="${ldap.manager.dn}"
+		manager-password="${ldap.manager.password}" />
+
 	<!-- Database authentication -->
 	<sc:authentication-manager id="authManager">
-		<sc:authentication-provider
-			user-service-ref="userService">
-			<sc:password-encoder ref="passwordEncoder" />
-		</sc:authentication-provider>
+		<sc:ldap-authentication-provider
+			user-details-class="inetOrgPerson" user-search-base="${ldap.user.search_base}"
+			user-search-filter="(uid={0})" group-search-base="${ldap.group.search_base}"
+			role-prefix="none">
+			<sc:password-compare>
+				<sc:password-encoder ref="ldapPasswordEncoder" />
+			</sc:password-compare>
+		</sc:ldap-authentication-provider>
+
+		<!-- <sc:authentication-provider -->
+		<!-- user-service-ref="userAuthenticationService"> -->
+		<!-- <sc:password-encoder ref="dbPasswordEncoder" /> -->
+		<!-- </sc:authentication-provider> -->
 	</sc:authentication-manager>
 </beans>

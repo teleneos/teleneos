@@ -11,14 +11,49 @@
 <#if user != 'null'>
 <ul class="nav">
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.telecentre" />">
 			<@s.text name="menu.telecentre" />
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
 			<li>
-				<a href="/telecentre/manage">
+				<a href="/tele">
 					<@s.text name="menu.telecentre.manage" />
+				</a>
+			</li>
+			<#--
+			<li>
+				<a href="/tele/status">
+					<@s.text name="menu.telecentre.status" />
+				</a>
+			</li>
+			-->
+		</ul>
+	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.monitoring" />">
+			<@s.text name="menu.monitoring" />
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/monitoring/availability">
+					<@s.text name="menu.monitoring.availability" />
+				</a>
+			</li>
+			<li>
+				<a href="/monitoring/network">
+					<@s.text name="menu.monitoring.network" />
+				</a>
+			</li>
+			<li>
+				<a href="/monitoring/performance">
+					<@s.text name="menu.monitoring.performance" />
+				</a>
+			</li>
+			<li>
+				<a href="/monitoring/utilization">
+					<@s.text name="menu.monitoring.utilization" />
 				</a>
 			</li>
 		</ul>

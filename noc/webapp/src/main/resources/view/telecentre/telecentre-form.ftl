@@ -5,13 +5,22 @@
 	</head>
 	<body>
 		<div class="row-fluid">
+			<#include "/view/decorator/nav/telecentre-sidenav.ftl" />
 			<div class="span10">
 				<@s.form theme="bootstrap" cssClass="form-horizontal">
-					<@s.hidden name="telecentre.id" />
-					<@s.textfield key="label.master.telecentre.id" name="telecentre.telecentre_id" cssClass="span4" disabled="true" />
-					<@s.textfield key="label.master.telecentre.name" required="true" name="telecentre.name" cssClass="span4" />
-					<@s.textfield key="label.master.telecentre.latitude"  required="true" name="telecentre.latitude" cssClass="span4" />
-					<@s.textfield key="label.master.telecentre.longitude" required="true" name="telecentre.longitude" cssClass="span4" />
+					<#if telecentre.id??>
+					<@s.textfield key="label.telecentre.id" name="telecentre.id" cssClass="span4" readonly="true" />
+					</#if>
+					<@s.textfield key="label.telecentre.name" required="true" name="telecentre.name" cssClass="span4" />
+					<#if telecentre.id??>
+					<@s.textfield key="label.telecentre.password" name="telecentre.password" cssClass="span4" readonly="true" />
+					</#if>
+					<@s.textfield key="label.telecentre.phone" required="true" name="telecentre.phone" cssClass="span4" />
+					<@s.textfield key="label.telecentre.email" required="true" name="telecentre.email" cssClass="span4" />
+					<@s.textfield key="label.telecentre.address" required="true" name="telecentre.address.street1" cssClass="span4" />
+					<@s.textfield key="label.telecentre.zip" required="true" name="telecentre.address.zip" cssClass="span2" />
+					<@s.textfield key="label.telecentre.latitude"  required="false" name="telecentre.lat" cssClass="span4" />
+					<@s.textfield key="label.telecentre.longitude" required="false" name="telecentre.lng" cssClass="span4" />
 					<div class="form-actions">
 						<#if telecentre.id??>
 						<@s.submit key="button.update" cssClass="btn btn-primary" />
@@ -23,6 +32,7 @@
 					</div>
 				</@s.form>
 			</div>
+			<#--
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
@@ -45,6 +55,7 @@
 					</#list>
 				</tbody>
 			</table>
+			-->
 		</div>		
 	</body>
 </html>

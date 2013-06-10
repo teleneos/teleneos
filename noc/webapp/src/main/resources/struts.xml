@@ -4,11 +4,15 @@
     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<constant name="struts.inca.package.locators" value="org.meruvian.yama, net.bogor.itu.action, id.co.bonet.itu.noc.action" />
+	<constant name="struts.inca.package.locators" value="org.meruvian.yama, org.teleneos" />
 	<constant name="struts.inca.default.parent.package" value="yama-default" />
+	<constant name="struts.inca.handleRequestByHeader" value="false" />
 
 	<package name="yama-default" extends="struts-default">
 		<interceptors>
+			<interceptor name="monitoring"
+				class="org.teleneos.noc.monitoring.MonitoringInterceptor" />
+
 			<interceptor-stack name="adminStack">
 				<interceptor-ref name="exception" />
 				<interceptor-ref name="logger" />
@@ -38,6 +42,11 @@
 				<interceptor-ref name="workflow">
 					<param name="excludeMethods">input,back,cancel,browse</param>
 				</interceptor-ref>
+			</interceptor-stack>
+			
+			<interceptor-stack name="monitoringStack">
+				<interceptor-ref name="adminStack" />
+				<interceptor-ref name="monitoring" />
 			</interceptor-stack>
 		</interceptors>
 

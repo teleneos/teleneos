@@ -5,45 +5,80 @@
 	</head>
 	<body>
 		<div class="row-fluid">
+			<#include "/view/decorator/nav/telecentre-sidenav.ftl" />
 			<div class="span10">
+				<div class="row-fluid">
+				<a class="btn btn-primary span3" href="<@s.url value="/tele/add" />">
+					<i class="icon-plus icon-white"></i>
+					<@s.text name="button.tececentre.manage.add" />
+				</a>
+				<form class="form-inline span9" method="get">
+					<div class="input-append pull-right">
+						<input type="text" name="q" value="${q}" />
+						<button class="btn">
+							<i class="icon-search"></i>
+							<@s.text name="button.search" />
+						</button>
+					</div>
+				</form>
+				</div>
 				<table class="table table-striped table-condensed">
 					<thead>
 						<tr>
 							<th>#</th>
-							<th><@s.text name="label.master.telecentre.id" /></th>
-							<th><@s.text name="label.master.telecentre.name" /></th>
-							<th><@s.text name="label.master.telecentre.latitude" /></th>
-							<th><@s.text name="label.master.telecentre.longitude" /></th>
+							<th><@s.text name="label.telecentre.id" /></th>
+							<th><@s.text name="label.telecentre.name" /></th>
+							<th><@s.text name="label.telecentre.address" /></th>
+							<th><@s.text name="label.telecentre.phone" /></th>
+							<th><@s.text name="label.telecentre.email" /></th>
 						</tr>
 					</thead>
 					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<@s.url value="/telecentre/edit/" var="editUrl" />
+						<#assign no = 1 />
+						<@s.url value="/tele/edit/" var="editUrl" />
 						<#list telecentres.entityList as s>
 						<tr>
 							<td>${no}</td>
-							<td><a href="${editUrl}${s.id}">${s.telecentre_id!}</a></td>
+							<td><a href="${editUrl}${s.id}">${s.id!}</a></td>
 							<td>${s.name!}</td>
-							<td><#if s.latitude??>${s.latitude?string("0.0000000000")!}</#if></td>
-							<td><#if s.longitude??>${s.longitude?string("0.0000000000")!}</#if></td>
+							<td>${s.address.street1!}</td>
+							<td>${s.phone!}</td>
+							<td><a href="mailto:${s.email!}">${s.email!}</a></td>
 						</tr>
 						<#assign no = no + 1 />
 						</#list>
 					</tbody>
 				</table>
-				<div id="pagination"></div>
+				<#assign ses = request.session />
+				<#--
+				<#assign next = ses.getAttribute('NEXT_COOKIE')![] />
+				<#assign prev = ses.getAttribute('PREV_COOKIE')![] />
+				-->
+				<#assign next = [] />
+				<#assign prev = [] />
+				
+				<div id="pagination" class="btn-group">
+					<#if (prev?size > 0)>
+					<@s.url var = "prvUrl">
+						<@s.param name="max">${max}</@s.param>
+						<@s.param name="page">-1</@s.param>
+					</@s.url>
+					<a class="btn prev">
+						<i class="icon-backward"></i>&nbsp;
+					</a>
+					</#if>
+					<#if (next?size > 0)>
+					<@s.url var = "nxtUrl">
+						<@s.param name="max">${max}</@s.param>
+						<@s.param name="page">0</@s.param>
+					</@s.url>
+					<a class="btn next" href="${nxtUrl}">
+						&nbsp;<i class="icon-forward"></i>
+					</a>
+					</#if>
+				</div>
 			</div>
 		</div>
-		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
-		<script type="text/javascript">
-		$(function() {
-			$('#pagination').pagination({
-				items: ${telecentres.rowCount?string('#')},
-				itemsOnPage: ${max?string('#')},
-				currentPage: ${(telecentres.currentPage + 1)?string('#')},
-				hrefTextPrefix: '?q=${q}&page='
-			});
-		});
 		</script>
 	</body>
 </html>

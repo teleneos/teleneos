@@ -25,6 +25,20 @@ header h1 {
 	margin-top: 25px;
 }
 
+.static-footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+}
+
+/* IE 6 */
+* html .static-footer {
+   position:absolute;
+   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+}
+
 .modal form {
 	margin: 0;
 }
@@ -40,4 +54,20 @@ header h1 {
 
 .container#content {
 	min-height: 300px;
+}
+
+span.required {
+	color: #da4f49;
+}
+
+label.control-label:after {
+	content : " :";
+}
+
+.flot-x-axis > .flot-tick-label {
+	margin-top:10px;
+	-moz-transform:rotate(-90deg);
+	-o-transform:rotate(-90deg);
+	-webkit-transform:rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
