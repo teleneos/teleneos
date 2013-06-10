@@ -54,5 +54,7 @@ public interface RadacctService {
 	EntityListWrapper<Object[]> weekly(String date, int limit, int page);
 
 	public Date getFirstConnection();
+	
+	public EntityListWrapper<Object[]> groupByPackage();
 
 }

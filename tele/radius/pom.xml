@@ -38,5 +38,10 @@
 			<artifactId>tele-yama</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.teleneos</groupId>
+			<artifactId>tele-broker</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

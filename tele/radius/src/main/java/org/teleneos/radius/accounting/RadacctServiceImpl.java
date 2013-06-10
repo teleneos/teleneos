@@ -93,4 +93,9 @@ public class RadacctServiceImpl implements RadacctService {
 		return radacctRepo.getFirstConnection();
 	}
 
+	@Override
+	public EntityListWrapper<Object[]> groupByPackage() {
+		return radacctRepo.groupByPackage();
+	}
+
 }

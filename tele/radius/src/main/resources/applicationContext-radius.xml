@@ -39,4 +39,6 @@
 	<bean id="accountingHandler" class="org.teleneos.radius.handler.AccountingHandler" />
 
 	<bean id="authorizationHandler" class="org.teleneos.radius.handler.AuthorizationHandler" />
+	
+	<bean id="freemarkerConfiguration" class="freemarker.template.Configuration"/>
 </beans>

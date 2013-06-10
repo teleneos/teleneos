@@ -23,6 +23,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RadacctRepository extends
 		PersistenceRepository<DefaultPersistence> {
+	
+	public EntityListWrapper<Object[]> groupByPackage() {
+		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
+		String ql = "SELECT r, c FROM Radacct r, ConnectionHistory c WHERE r.acctuniqueid = c.radacct AND r.acctstoptime IS NULL";
+		Query query = entityManager.createQuery(ql);
+		list.setEntityList(query.getResultList());
+		return list;
+	}
+	
 	public EntityListWrapper<Object[]> findDetailByUsername(String username,
 			int limit, int page) {
 		EntityListWrapper<Object[]> list = new EntityListWrapper<Object[]>();
