@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<div class="row-fluid">
-			<div class="span12" id="map" style="height: 500px;">
+			<div class="span12 well" id="map" style="height: 500px;">
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -55,9 +55,7 @@
 			}
 			-->
 			
-			map.setView(new L.LatLng(13.78315, 100.54928), 13);
-			map.setZoom(13);
-			
+			<#--
 			<#list telecentres.entityList as t>
 				var tele = new L.marker([<#if t.latitude??>${t.latitude?string("0.0000000000")!}</#if>, <#if t.longitude??>${t.longitude?string("0.0000000000")!}</#if>],{icon : markerGreen});
 				var client = '<p><strong>${t.name!}</strong><p><table class="table table-condensed table-stripped"><tr><th>Client</th><th>IP</th><th>Status</th></tr>';
@@ -73,25 +71,57 @@
 				tele.bindPopup(client);
 				markers.addLayer(tele);
 			</#list>
-			
-			<#--
-			var tele1 = new L.marker([13.78315, 100.54928], {icon : markerGreen});
-			tele1.bindPopup('<p><strong>Tele 1</strong><p><table class="table table-condensed table-stripped"><tr><th>Client</th><th>IP</th><th>Connected</th></tr><tr><td>Comp 1</td><td>10.1.0.4</td><td><i class="icon-ok"></i></td></tr><tr><td>Comp 2</td><td>10.1.0.2</td><td><i class="icon-remove"></td></tr><tr><td>Comp 3</td><td>10.1.0.10</td><td><i class="icon-ok"></td></tr></table>');
-			markers.addLayer(tele1);
-			
-			var tele2 = new L.marker([13.77723, 100.55992], {icon : markerGreen});
-			tele2.bindPopup('Tele2');
-			markers.addLayer(tele2);
-			
-			var tele3 = new L.marker([13.7889, 100.52696], {icon : markerRed});
-			tele3.bindPopup('Tele 3');
-			markers.addLayer(tele3);
-			
-			var tele4 = new L.marker(new L.LatLng(13.79574, 100.55357), {icon : markerRed});
-			tele4.bindPopup('Tele 4');
-			markers.addLayer(tele4);
 			-->
-						
+			
+			$.getJSON('<@s.url value="/monitoring/availability.json" />', function(data) {
+				var centerView;
+			
+				for (d in data.availabilities.entityList) {
+					d = data.availabilities.entityList[d];
+					
+					var pingTime = d[1];
+					var currentTime = +new Date();
+					var tele = d[2];
+					
+					var marker;
+					if ((currentTime - 60000) < pingTime) {
+						marker = new L.marker([tele.lat, tele.lng], {icon : markerGreen});
+					} else {
+						marker = new L.marker([tele.lat, tele.lng], {icon : markerRed});
+					}
+					
+					var container = $('<div />');
+					$('<strong />').text(tele.name).appendTo(container);
+					var a = $('<a/>').attr('href', '<@s.url value="/tele/edit/" />' + tele.id);
+					a.text('(' + tele.id + ')');
+					container.append(' ').append(a);
+					
+					a = $('<a/>').attr('href', 'mailto:' + tele.email);
+					a.text(tele.email);
+					$('<div />').append(a).appendTo(container);
+					
+					var p = $('<p />').appendTo(container);
+					$('<div />').text(tele.address.street1).appendTo(p);
+					$('<div />').text(tele.address.zip).append(' (').append(tele.phone).append(')').appendTo(p);
+					
+					p = $('<p />').appendTo(container);
+					a = $('<a/>').attr('href', '<@s.url value="/monitoring/availability/clients/" />' + tele.id);
+					a.attr('target', '_blank');
+					a.text('view client status');
+					p.append(a);					
+					
+					var htmlString = $('<div/>').append(container.clone()).html();
+					
+					marker.bindPopup(htmlString);
+					
+					markers.addLayer(marker);
+					centerView = [tele.lat, tele.lng];
+				}
+				
+				map.setView(centerView, 13);
+				map.setZoom(13);
+			});
+			
 			map.on('click', function(e) {
 			
 			});

@@ -3,6 +3,7 @@
  */
 package org.teleneos.noc.telecentre;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.meruvian.yama.persistence.DefaultPersistence;
 import org.meruvian.yama.security.user.Address;
 
@@ -67,6 +68,7 @@ public class Telecentre extends DefaultPersistence {
 		this.lng = lng;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

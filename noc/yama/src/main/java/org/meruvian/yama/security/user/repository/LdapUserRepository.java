@@ -78,8 +78,8 @@ public class LdapUserRepository implements UserRepository {
 		filter.and(new EqualsFilter("objectClass", "person"));
 		filter.and(new WhitespaceWildcardsFilter("uid", username));
 
-		List results = ldapTemplate.search("", filter.encode(), controls,
-				new UserContextMapper(), processor);
+		List results = ldapTemplate.search(userSearchBase, filter.encode(),
+				controls, new UserContextMapper(), processor);
 
 		PagedResult pagedResult = new PagedResult(results,
 				processor.getCookie());

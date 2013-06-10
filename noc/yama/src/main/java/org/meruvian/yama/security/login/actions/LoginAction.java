@@ -43,8 +43,7 @@ public class LoginAction extends DefaultAction implements
 		if (user == null) {
 			return new ActionResult("freemarker", "/view/security/login.ftl");
 		} else {
-			return new ActionResult("freemarker",
-					"/view/admin/backend-index.ftl");
+			return new ActionResult("redirect", "/dashboard");
 		}
 	}
 
