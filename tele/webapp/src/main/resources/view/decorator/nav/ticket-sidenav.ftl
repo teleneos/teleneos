@@ -4,9 +4,11 @@
 		<li>
 		<#if currentUser??>
 			<#if currentUser.role != 'ADMINISTRATOR'>
+				<#if currentUser.role != 'MASTER'>
 					<a href="/ticket/user/status">
 						<@s.text name="Status" />
 					</a>
+				<#else>
 			<#else>
 					<a href="/ticket">
 						<@s.text name="Status" />
