@@ -57,7 +57,7 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 	}
 	
 	public EntityListWrapper<UserPackage> findPostpaidUser(String keyword, int limit, int page) {
-		return findAll(limit, page, "p", "p.internetPackage.paymentMethod = ?1 AND (p.internetPackage.code LIKE ?2 OR p.internetPackage.name LIKE ?3 OR p.username LIKE ?4) AND p.status IS NOT ?5",
+		return findAll(limit, page, "p", "p.internetPackage.paymentMethod = ?1 AND (p.internetPackage.code LIKE ?2 OR p.internetPackage.name LIKE ?3 OR p.username LIKE ?4) AND p.status = ?5",
 				PaymentMethod.POSTPAID, keyword+"%", keyword+"%", keyword+"%", Status.END);
 	}
 	
