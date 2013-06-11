@@ -6,39 +6,53 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 public class Main {
-	
-	public static final String RELOAD_HTB = "reload";
-	public static final String DISCONNECT_REQ = "disconnect"; 
-	
+
 	public static void main(String[] args) throws IOException {
-		String clientSentence;
 		ServerSocket welcomeSocket = new ServerSocket(6789);
 		System.out.println("Service Started");
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
 			BufferedReader inFromClient = new BufferedReader(
 					new InputStreamReader(connectionSocket.getInputStream()));
-			clientSentence = inFromClient.readLine();
-			System.out.println("Processing Request " + clientSentence);
-			
+			ObjectMapper mapper = new ObjectMapper();
+			@SuppressWarnings("unchecked")
+			Map<String, String> map = mapper.readValue(inFromClient.readLine(),
+					Map.class);
 			try {
-				ProcessBuilder builder = null;
-				if(clientSentence.startsWith(DISCONNECT_REQ)){
-					String macAddr = clientSentence.substring(DISCONNECT_REQ.length(), clientSentence.length());
-					System.out.println("disconnecting client "+macAddr);
-					builder = new ProcessBuilder("echo meruvian | sudo -S chilli_query logout $1",
-							macAddr);
-				}else if(clientSentence.startsWith(RELOAD_HTB)){
-					System.out.println("reloading htb services");
-					builder = new ProcessBuilder("/sbin/htb eth0 stop & /sbin/htb eth0 start");
+				if (map.get("type").equals("logout")) {
+					StringWriter mac = new StringWriter();
+					Process process = Runtime
+							.getRuntime()
+							.exec(new String[] { "bash", "-c",
+									"sudo -S chilli_query list | grep ' miku ' | awk '{print $1}'" });
+					IOUtils.copy(process.getInputStream(), mac);
+					System.out
+							.println("disconnecting client " + mac.toString());
+					Runtime.getRuntime().exec(
+							new String[] {
+									"bash",
+									"-c",
+									"echo meruvian | sudo -S chilli_query logout "
+											+ mac.toString() });
+				} else if (map.get("type").equals("login")) {
+					String username = map.get("user");
+					System.out.println("authorizing user " + username);
+					Runtime.getRuntime()
+							.exec(new String[] {
+									"bash",
+									"-c",
+									"chilli_query authorize ip "+ map.get("ip") + 
+									" username " + username + 
+									" maxbwdown " + map.get("maxbwdown")+ 
+									" maxbwup " + map.get("maxbwup") 
+									});
 				}
-				Process process = builder.start();
-				StringWriter writer = new StringWriter();
-				IOUtils.copy(process.getInputStream(), writer);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
