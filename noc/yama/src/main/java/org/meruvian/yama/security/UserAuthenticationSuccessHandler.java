@@ -10,13 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.security.user.BackendUser;
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 /**
  * @author Dian Aditya
@@ -27,6 +29,7 @@ public class UserAuthenticationSuccessHandler extends
 
 	@Inject
 	private UserService userService;
+	private RequestCache requestCache = new HttpSessionRequestCache();
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
@@ -58,11 +61,23 @@ public class UserAuthenticationSuccessHandler extends
 		request.getSession().setAttribute(
 				SessionCredentials.YAMA_SECURITY_USER_DETAIL, us);
 
-		if (StringUtils.isBlank(request.getParameter("redirectUri"))) {
-			super.onAuthenticationSuccess(request, response, authentication);
+		SavedRequest savedRequest = requestCache.getRequest(request, response);
+		if (savedRequest != null) {
+			String redirectUrl = savedRequest.getRedirectUrl();
+			if (redirectUrl.endsWith(".json") || redirectUrl.endsWith(".xml")) {
+				redirectUrl = "/";
+			}
+
+			getRedirectStrategy().sendRedirect(request, response, redirectUrl);
 		} else {
-			setTargetUrlParameter("redirectUri");
-			handle(request, response, authentication);
+			getRedirectStrategy().sendRedirect(request, response, "/");
 		}
+	}
+
+	@Override
+	public void setRequestCache(RequestCache requestCache) {
+		super.setRequestCache(requestCache);
+
+		this.requestCache = requestCache;
 	}
 }

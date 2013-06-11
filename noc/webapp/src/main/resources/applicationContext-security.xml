@@ -22,10 +22,11 @@
 
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
 		<sc:intercept-url pattern="/" access="permitAll" />
+		<sc:intercept-url pattern="/noc/dashboard*" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/noc/**" access="hasRole('NOCADMIN')" />
-		<sc:intercept-url pattern="/tele" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/tele*" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/tele/**" access="hasRole('NOCADMIN')" />
-		<sc:intercept-url pattern="/monitoring" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/monitoring*" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/monitoring/**" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/**" method="POST"
 			access="isFullyAuthenticated()" />
