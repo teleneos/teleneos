@@ -132,16 +132,15 @@ public class AccountingHandler extends PacketHandlerBase {
 			LOG.info("Package expired at: " + userPackage.getEndDate());
 
 			// Package expired
-			if (!userPackage.getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID) 
-					&& now.compareTo(userPackage.getEndDate()) > 0) {
+			if (now.compareTo(userPackage.getEndDate()) > 0) {
 				LOG.info("Expired package: " + internetPackage.getName()
 						+ " for user: " + username);
 
 				userPackage.setStatus(Status.END);
 				packageService.save(userPackage);
-
-				radiusService.logout(macAddress);
-
+				if(!userPackage.getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID)){
+					radiusService.logout(macAddress);	
+				}
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 				return false;
 			}
