@@ -21,7 +21,7 @@
 		class="org.meruvian.yama.security.UserAuthenticationSuccessHandler"></bean>
 	
 	<bean id="logoutSuccessHandler"
-		class="org.meruvian.yama.security.LogoutSuccessHandler"></bean>
+		class="org.meruvian.yama.security.YamaLogoutSuccessHandler"></bean>
 
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
 		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
