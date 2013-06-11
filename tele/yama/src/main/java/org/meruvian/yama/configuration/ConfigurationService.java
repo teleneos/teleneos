@@ -14,4 +14,5 @@ public interface ConfigurationService {
 	
 	void remove(Configuration configuration);
 	
+	
 }
