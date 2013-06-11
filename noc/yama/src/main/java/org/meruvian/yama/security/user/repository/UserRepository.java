@@ -15,5 +15,8 @@ public interface UserRepository {
 
 	EntityListWrapper<User> findByUsername(String username, int limit, int page);
 
+	EntityListWrapper<User> findByTelecentre(String telecentre,
+			String username, int limit, int page);
+
 	void persist(User user);
 }

@@ -27,8 +27,6 @@
 
 	<modules>
 		<module>webapp</module>
-		<!-- <module>persistence</module> -->
-		<!-- <module>jaxrs</module> -->
 		<module>esb</module>
 		<module>log</module>
 		<module>yama</module>

@@ -34,4 +34,10 @@ public class DbUserRepository extends PersistenceRepository<User> implements
 		return findAll(limit, page, "u", "u.user.username LIKE ?1", username
 				+ "%");
 	}
+
+	@Override
+	public EntityListWrapper<User> findByTelecentre(String telecentre,
+			String username, int limit, int page) {
+		return null;
+	}
 }

@@ -6,8 +6,10 @@ package org.teleneos.noc.monitoring;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.teleneos.noc.telecentre.TelecentreService;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -31,8 +33,9 @@ public class MonitoringInterceptor extends AbstractInterceptor {
 		ActionContext context = invocation.getInvocationContext();
 		Map<String, Object> session = context.getSession();
 		ValueStack stack = context.getValueStack();
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-		String currentTele = stack.findString("telecentre");
+		String currentTele = request.getParameter("telecentre");
 		if (!StringUtils.isBlank(currentTele)) {
 			session.put(CURRENT_TELE, currentTele);
 		}

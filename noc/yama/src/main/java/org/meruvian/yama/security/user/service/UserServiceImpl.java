@@ -84,6 +84,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public EntityListWrapper<User> findByTelecentre(String telecentre,
+			String username, int limit, int page) {
+		return userRepo.findByTelecentre(telecentre, username, limit, page);
+	}
+
+	@Override
 	public User remove(User user) {
 		return null;
 	}

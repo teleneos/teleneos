@@ -21,13 +21,11 @@
 					<@s.text name="menu.telecentre.manage" />
 				</a>
 			</li>
-			<#--
 			<li>
-				<a href="/tele/status">
-					<@s.text name="menu.telecentre.status" />
+				<a href="/tele/user">
+					<@s.text name="menu.telecentre.user" />
 				</a>
 			</li>
-			-->
 		</ul>
 	</li>
 	<li class="dropdown">

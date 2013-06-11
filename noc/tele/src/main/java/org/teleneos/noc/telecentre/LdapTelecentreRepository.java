@@ -38,6 +38,9 @@ public class LdapTelecentreRepository implements TelecentreRepository {
 	@Value("${ldap.tele.search_base}")
 	private String searchBase;
 
+	@Value("${ldap.teleuser.search_base}")
+	private String userSearchBase;
+
 	@Inject
 	public void setContextSource(LdapContextSource source) {
 		ldapTemplate = new LdapTemplate(source);
@@ -91,10 +94,12 @@ public class LdapTelecentreRepository implements TelecentreRepository {
 
 		DirContextOperations ctx = null;
 		DistinguishedName dn = new DistinguishedName(searchBase);
+		String cn = "";
 
 		if (persist) {
-			dn.add("cn", RandomStringUtils.random(6,
-					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"));
+			cn = RandomStringUtils.random(6,
+					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+			dn.add("cn", cn);
 			ctx = new DirContextAdapter(dn);
 		} else {
 			dn.add("cn", telecentre.getId());
@@ -115,9 +120,22 @@ public class LdapTelecentreRepository implements TelecentreRepository {
 
 		if (persist) {
 			ldapTemplate.bind(ctx);
+
+			persistTeleGroup(cn);
 		} else {
 			ldapTemplate.modifyAttributes(ctx);
 		}
+	}
+
+	private void persistTeleGroup(String cn) {
+		DistinguishedName dn = new DistinguishedName(userSearchBase);
+		dn.add("cn", cn);
+
+		DirContextAdapter ctx = new DirContextAdapter();
+		ctx.setAttributeValues("objectClass",
+				new Object[] { "groupOfUniqueNames" });
+
+		ldapTemplate.bind(ctx);
 	}
 
 	private class TelecentreContextMapper implements ContextMapper {

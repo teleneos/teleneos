@@ -17,6 +17,9 @@ public interface UserService {
 
 	EntityListWrapper<User> findByUsername(String username, int limit, int page);
 
+	EntityListWrapper<User> findByTelecentre(String telecentre,
+			String username, int limit, int page);
+
 	User remove(User user);
 
 	User changePassword(String username, String newpass);

@@ -11,8 +11,10 @@ import javax.inject.Inject;
 import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
+import org.meruvian.yama.persistence.utils.PagingUtils;
 import org.meruvian.yama.security.user.Address;
 import org.meruvian.yama.security.user.BackendUser;
 import org.meruvian.yama.security.user.Name;
@@ -45,6 +47,9 @@ public class LdapUserRepository implements UserRepository {
 
 	@Value("${ldap.group.search_base}")
 	private String groupSearchBase;
+
+	@Value("${ldap.teleuser.search_base}")
+	private String teleuserSearchBase;
 
 	private LdapContextSource source;
 
@@ -88,6 +93,47 @@ public class LdapUserRepository implements UserRepository {
 		list.setEntityList(pagedResult.getResultList());
 
 		return list;
+	}
+
+	@Override
+	public EntityListWrapper<User> findByTelecentre(String telecentre,
+			String username, int limit, int page) {
+		DistinguishedName dn = new DistinguishedName(teleuserSearchBase);
+		dn.add("cn", telecentre);
+
+		DirContextOperations ctx = ldapTemplate.lookupContext(dn);
+		String[] members = ctx.getStringAttributes("uniqueMember");
+		int count = members.length;
+		int start = limit * page;
+		int stop = start + limit;
+
+		EntityListWrapper<User> users = new EntityListWrapper<User>();
+		users.setLimit(limit);
+		users.setCurrentPage(page);
+		users.setRowCount(count);
+		users.setTotalPage(PagingUtils.getTotalPage(count, limit));
+
+		if (start > count) {
+			return users;
+		}
+
+		if (limit < 1 || stop > count) {
+			stop = count - 1;
+		}
+
+		for (int i = start; i < stop; i++) {
+			String member = members[i];
+			String[] ms = StringUtils.split(member, ',');
+
+			DistinguishedName userDn = new DistinguishedName(StringUtils.join(
+					ArrayUtils.subarray(ms, 0, 2), ','));
+
+			User user = (User) ldapTemplate.lookup(userDn,
+					new UserContextMapper());
+			users.getEntityList().add(user);
+		}
+
+		return users;
 	}
 
 	@Override
@@ -220,5 +266,4 @@ public class LdapUserRepository implements UserRepository {
 			return user;
 		}
 	}
-
 }
