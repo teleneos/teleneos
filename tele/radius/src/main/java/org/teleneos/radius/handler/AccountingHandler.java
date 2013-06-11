@@ -132,7 +132,8 @@ public class AccountingHandler extends PacketHandlerBase {
 			LOG.info("Package expired at: " + userPackage.getEndDate());
 
 			// Package expired
-			if (now.compareTo(userPackage.getEndDate()) > 0) {
+			if (!userPackage.getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID) 
+					&& now.compareTo(userPackage.getEndDate()) > 0) {
 				LOG.info("Expired package: " + internetPackage.getName()
 						+ " for user: " + username);
 
