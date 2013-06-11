@@ -24,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.teleneos.radius.bandwidth.BandwidthService;
 import org.teleneos.radius.userpackage.UserPackage;
 import org.teleneos.radius.userpackage.UserPackageService;
 
@@ -45,10 +44,7 @@ public class AuthorizationHandler extends PacketHandlerBase {
 
 	@Inject
 	private UserPackageService packageService;
-	
-	@Inject
-	private BandwidthService bandwidthService;
-	
+
 	@Override
 	public boolean handle(JRadiusRequest request) throws Exception {
 		AttributeList ci = request.getConfigItems();
@@ -83,7 +79,6 @@ public class AuthorizationHandler extends PacketHandlerBase {
 				LOG.info("No active package for user: " + user.getUsername());
 			} else {
 				ci.add(new Attr_AuthType("Accept"), true);
-				bandwidthService.reloadConfiguration();
 				LOG.info("Authorization success for user: "
 						+ user.getUsername());
 			}
@@ -92,7 +87,7 @@ public class AuthorizationHandler extends PacketHandlerBase {
 		} catch (NoResultException e) {
 			ci.add(new Attr_AuthType("Reject"), true);
 		}
-		
+
 		request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 		return false;
 	}

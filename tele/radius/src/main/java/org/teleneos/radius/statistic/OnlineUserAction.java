@@ -9,9 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.yama.actions.DefaultAction;
+import org.meruvian.yama.security.RadiusService;
 import org.meruvian.yama.security.user.User;
 import org.meruvian.yama.security.user.service.UserService;
-import org.teleneos.radius.RadiusSerivce;
 import org.teleneos.radius.accounting.RadacctService;
 import org.teleneos.radius.userpackage.UserPackageService;
 
@@ -33,7 +33,7 @@ public class OnlineUserAction extends DefaultAction implements
 	private UserService userService;
 
 	@Inject
-	private RadiusSerivce radiusSerivce;
+	private RadiusService radiusSerivce;
 
 	@Inject
 	private UserPackageService uPackageService;

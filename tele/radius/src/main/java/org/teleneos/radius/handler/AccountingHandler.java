@@ -18,7 +18,7 @@ import net.jradius.server.JRadiusServer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.teleneos.radius.RadiusSerivce;
+import org.meruvian.yama.security.RadiusService;
 import org.teleneos.radius.history.ConnectionHistory;
 import org.teleneos.radius.history.ConnectionHistoryService;
 import org.teleneos.radius.internetpackage.InternetPackage;
@@ -35,7 +35,7 @@ public class AccountingHandler extends PacketHandlerBase {
 	private static final Log LOG = LogFactory.getLog(AccountingHandler.class);
 
 	@Inject
-	private RadiusSerivce radiusService;
+	private RadiusService radiusService;
 
 	@Inject
 	private ConnectionHistoryService historyService;
@@ -64,7 +64,7 @@ public class AccountingHandler extends PacketHandlerBase {
 			// User doesn't subscribe any active package
 			if (userPackage == null) {
 				LOG.info("No active package for user:" + username);
-				radiusService.logout(macAddress);
+				radiusService.logout(username);
 
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 				return false;
@@ -139,7 +139,7 @@ public class AccountingHandler extends PacketHandlerBase {
 				userPackage.setStatus(Status.END);
 				packageService.save(userPackage);
 				if(!userPackage.getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID)){
-					radiusService.logout(macAddress);	
+					radiusService.logout(username);	
 				}
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 				return false;
@@ -153,7 +153,7 @@ public class AccountingHandler extends PacketHandlerBase {
 				userPackage.setStatus(Status.END);
 				packageService.save(userPackage);
 
-				radiusService.logout(macAddress);
+				radiusService.logout(username);
 
 				request.setReturnValue(JRadiusServer.RLM_MODULE_UPDATED);
 				return false;
@@ -183,7 +183,7 @@ public class AccountingHandler extends PacketHandlerBase {
 					userPackage.setStatus(Status.END);
 					packageService.save(userPackage);
 
-					radiusService.logout(macAddress);
+					radiusService.logout(username);
 				}
 			}
 		} catch (Exception e) {

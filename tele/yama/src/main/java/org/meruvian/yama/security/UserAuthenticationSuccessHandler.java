@@ -10,13 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.meruvian.yama.security.user.BackendUser;
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 /**
  * @author Dian Aditya
@@ -27,7 +29,12 @@ public class UserAuthenticationSuccessHandler extends
 
 	@Inject
 	private UserService userService;
-
+	
+	private RequestCache requestCache = new HttpSessionRequestCache();
+	
+	@Inject
+	private RadiusService radiusService;
+	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication)
@@ -57,12 +64,45 @@ public class UserAuthenticationSuccessHandler extends
 				SessionCredentials.YAMA_SECURITY_USER, user);
 		request.getSession().setAttribute(
 				SessionCredentials.YAMA_SECURITY_USER_DETAIL, us);
-
-		if (StringUtils.isBlank(request.getParameter("redirectUri"))) {
-			super.onAuthenticationSuccess(request, response, authentication);
+		
+		if (user.getRole() != "ADMINISTRATOR") {
+			radiusService.login(user.getUsername(), getIpAddr(request));
+		} 
+		
+		SavedRequest savedRequest = requestCache.getRequest(request, response);
+		if (savedRequest != null) {
+			String redirectUrl = savedRequest.getRedirectUrl();
+			if (redirectUrl.endsWith(".json") || redirectUrl.endsWith(".xml")) {
+				redirectUrl = "/";
+			}
+			getRedirectStrategy().sendRedirect(request, response, redirectUrl);
 		} else {
-			setTargetUrlParameter("redirectUri");
-			handle(request, response, authentication);
+			getRedirectStrategy().sendRedirect(request, response, "/");
 		}
+	}
+
+	@Override
+	public void setRequestCache(RequestCache requestCache) {
+		super.setRequestCache(requestCache);
+		this.requestCache = requestCache;
+	}
+	
+	public static String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("X-Real-IP");
+		if (null != ip && !"".equals(ip.trim())
+				&& !"unknown".equalsIgnoreCase(ip)) {
+			return ip;
+		}
+		ip = request.getHeader("X-Forwarded-For");
+		if (null != ip && !"".equals(ip.trim())
+				&& !"unknown".equalsIgnoreCase(ip)) {
+			int index = ip.indexOf(',');
+			if (index != -1) {
+				return ip.substring(0, index);
+			} else {
+				return ip;
+			}
+		}
+		return request.getRemoteAddr();
 	}
 }

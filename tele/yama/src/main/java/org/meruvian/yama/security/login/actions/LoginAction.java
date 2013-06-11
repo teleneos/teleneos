@@ -15,8 +15,12 @@
  */
 package org.meruvian.yama.security.login.actions;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.JOptionPane;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -35,25 +39,14 @@ import com.opensymphony.xwork2.ModelDriven;
 @Action
 public class LoginAction extends DefaultAction implements
 		ModelDriven<Map<String, Object>> {
+	
+	private static final long serialVersionUID = 1048880830327706161L;
+
 	private Map<String, Object> model = new HashMap<String, Object>();
-
-	@Value("${chilli.controller.host}")
-	private String host;
-
-	@Value("${chilli.controller.port}")
-	private String port;
-
-	@Value("${chilli.controller.uamservice.url}")
-	private String uamService;
 
 	@Action(method = HttpMethod.GET)
 	public ActionResult loginform() throws Exception {
 		BackendUser user = SessionCredentials.currentUser();
-
-		model.put("host", host);
-		model.put("port", port);
-		model.put("uamService", uamService);
-
 		if (user == null) {
 			return new ActionResult("freemarker", "/view/security/login.ftl");
 		} else {
@@ -71,5 +64,5 @@ public class LoginAction extends DefaultAction implements
 	@Override
 	public Map<String, Object> getModel() {
 		return model;
-	}
+	}	
 }

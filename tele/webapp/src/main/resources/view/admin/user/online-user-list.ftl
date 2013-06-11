@@ -62,7 +62,7 @@
 							<#assign ip = history.userPackage.internetPackage />
 							<td title="${ip.name!}"><a href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
 							<td>
-								<a class="confirm" data-message="Disconnect ${a.username!}?" href="<@s.url value="/admin/user/disconnect/${a.callingstationid!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
+								<a class="confirm" data-message="Disconnect ${a.username!}?" href="<@s.url value="/admin/user/disconnect/${a.username!}" />" title="<@s.text name="tooltip.onlineuser.disconnect"><@s.param>${a.username!}</@s.param></@s.text>">
 									<i class="icon-off"></i>
 								</a>
 							</td>

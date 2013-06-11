@@ -19,6 +19,9 @@
 
 	<bean id="userAuthenticationSuccessHandler"
 		class="org.meruvian.yama.security.UserAuthenticationSuccessHandler"></bean>
+	
+	<bean id="logoutSuccessHandler"
+		class="org.meruvian.yama.security.LogoutSuccessHandler"></bean>
 
 	<sc:http name="user" pattern="/user/**"
 		authentication-manager-ref="authManager">
@@ -28,7 +31,7 @@
 			password-parameter="password" authentication-failure-url="/user/signin?failure"
 			authentication-success-handler-ref="userAuthenticationSuccessHandler" />
 		<sc:logout logout-url="/logout" logout-success-url="/user/signin"
-			invalidate-session="true" />
+			invalidate-session="true" success-handler-ref="logoutSuccessHandler" />
 	</sc:http>
 
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
