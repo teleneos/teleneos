@@ -77,7 +77,7 @@
 			<c:bean ref="networkProcessor" method="disk" />
 			<c:split>
 				<c:simple>${body}</c:simple>
-				<!-- <c:process ref="networkProcessor" /> -->
+				<c:process ref="networkProcessor" />
 				<c:to uri="jpa:org.teleneos.log.network.disk.DiskSpace?usePersist=true" />
 			</c:split>
 		</c:route>
