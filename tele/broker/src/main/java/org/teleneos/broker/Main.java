@@ -30,7 +30,7 @@ public class Main {
 					Process process = Runtime
 							.getRuntime()
 							.exec(new String[] { "bash", "-c",
-									"sudo -S chilli_query list | grep ' miku ' | awk '{print $1}'" });
+									"sudo -S chilli_query list | grep ' "+map.get("user")+" ' | awk '{print $1}'" });
 					IOUtils.copy(process.getInputStream(), mac);
 					System.out
 							.println("disconnecting client " + mac.toString());
