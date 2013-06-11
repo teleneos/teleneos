@@ -317,7 +317,7 @@ public class RadacctRepository extends
 		try {
 			return (Date) query.getSingleResult();
 		} catch (NoResultException e) {
-			return null;
+			return new Date();
 		}
 	}
 }
