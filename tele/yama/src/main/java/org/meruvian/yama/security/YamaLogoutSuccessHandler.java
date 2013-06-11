@@ -20,7 +20,8 @@ public class YamaLogoutSuccessHandler implements LogoutSuccessHandler {
 	public void onLogoutSuccess(HttpServletRequest req,
 			HttpServletResponse res, Authentication auth) throws IOException,
 			ServletException {
-		radiusService.logout(((User)auth.getPrincipal()).getUsername());
+		radiusService.logout(((User) auth.getPrincipal()).getUsername());
+		res.sendRedirect("/");
 	}
 
 }

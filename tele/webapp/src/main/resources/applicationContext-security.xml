@@ -23,17 +23,6 @@
 	<bean id="logoutSuccessHandler"
 		class="org.meruvian.yama.security.LogoutSuccessHandler"></bean>
 
-	<sc:http name="user" pattern="/user/**"
-		authentication-manager-ref="authManager">
-		<sc:remember-me authentication-success-handler-ref="userAuthenticationSuccessHandler" />
-		<sc:form-login login-page="/user/signin"
-			login-processing-url="/user/login" username-parameter="username"
-			password-parameter="password" authentication-failure-url="/user/signin?failure"
-			authentication-success-handler-ref="userAuthenticationSuccessHandler" />
-		<sc:logout logout-url="/logout" logout-success-url="/user/signin"
-			invalidate-session="true" success-handler-ref="logoutSuccessHandler" />
-	</sc:http>
-
 	<sc:http use-expressions="true" authentication-manager-ref="authManager">
 		<sc:intercept-url pattern="/admin/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
 		<sc:intercept-url pattern="/pos/**" access="hasRole('ADMINISTRATOR') or hasRole('MASTER')" />
@@ -54,8 +43,7 @@
 			username-parameter="username" password-parameter="password"
 			authentication-failure-url="/?failure"
 			authentication-success-handler-ref="userAuthenticationSuccessHandler" />
-		<sc:logout logout-url="/logout" logout-success-url="/"
-			invalidate-session="true" />
+		<sc:logout logout-url="/logout" invalidate-session="true" success-handler-ref="logoutSuccessHandler"/>
 	</sc:http>
 
 	<sc:ldap-server url="${ldap.auth.url}" manager-dn="${ldap.manager.dn}"
