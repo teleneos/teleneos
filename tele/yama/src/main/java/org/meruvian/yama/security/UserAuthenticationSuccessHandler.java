@@ -64,8 +64,7 @@ public class UserAuthenticationSuccessHandler extends
 				SessionCredentials.YAMA_SECURITY_USER, user);
 		request.getSession().setAttribute(
 				SessionCredentials.YAMA_SECURITY_USER_DETAIL, us);
-		
-		if (user.getRole() != "ADMINISTRATOR") {
+		if (user.getRole().equals("USER")) {
 			radiusService.login(user.getUsername(), getIpAddr(request));
 		} 
 		

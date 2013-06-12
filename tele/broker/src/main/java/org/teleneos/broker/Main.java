@@ -15,7 +15,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		ServerSocket welcomeSocket = new ServerSocket(6789);
-		System.out.println("Service Started");
+		System.out.println("=================Service Started================");
 		while (true) {
 			Socket connectionSocket = welcomeSocket.accept();
 			BufferedReader inFromClient = new BufferedReader(
@@ -30,20 +30,20 @@ public class Main {
 					Process process = Runtime
 							.getRuntime()
 							.exec(new String[] { "bash", "-c",
-									"sudo -S chilli_query list | grep ' "+map.get("user")+" ' | awk '{print $1}'" });
+									"chilli_query list | grep ' "+map.get("user")+" ' | awk '{print $1}'" });
 					IOUtils.copy(process.getInputStream(), mac);
-					System.out
-							.println("disconnecting client " + mac.toString());
+					System.out.println("disconnecting client ("+map.get("user")+") " + mac.toString().trim());
 					Runtime.getRuntime().exec(
 							new String[] {
 									"bash",
 									"-c",
-									"echo meruvian | sudo -S chilli_query logout "
+									"chilli_query logout "
 											+ mac.toString() });
-				} else if (map.get("type").equals("login")) {
+					inFromClient.close();
+				} 
+				if (map.get("type").equals("login")) {
 					String username = map.get("user");
-					System.out.println("authorizing user " + username);
-					Runtime.getRuntime()
+					Process process = Runtime.getRuntime()
 							.exec(new String[] {
 									"bash",
 									"-c",
@@ -52,6 +52,10 @@ public class Main {
 									" maxbwdown " + map.get("maxbwdown")+ 
 									" maxbwup " + map.get("maxbwup") 
 									});
+					StringWriter writer = new StringWriter();
+					IOUtils.copy(process.getInputStream(), writer);
+					System.err.println("authorizing user " +username+"("+map.get("ip")+"), Speed "+(Integer.parseInt(map.get("maxbwdown"))/1024/8)+" kbps : "+writer.toString());
+					inFromClient.close();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
