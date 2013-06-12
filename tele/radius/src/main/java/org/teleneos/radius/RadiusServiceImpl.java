@@ -61,7 +61,7 @@ public class RadiusServiceImpl implements RadiusService {
 		map.put("maxbwdown", String.valueOf(userPackage.getInternetPackage()
 				.getSpeed() * 1024 * 8));
 		map.put("maxbwup",
-				String.valueOf(userPackage.getInternetPackage().getSpeed() / 2));
+				String.valueOf((userPackage.getInternetPackage().getSpeed() * 1024 * 8) / 2));
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(outToServer, map);
 		clientSocket.close();
