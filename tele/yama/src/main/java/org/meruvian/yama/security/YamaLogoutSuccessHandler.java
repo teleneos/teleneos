@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
@@ -21,18 +20,16 @@ public class YamaLogoutSuccessHandler implements LogoutSuccessHandler {
 	@Inject
 	private RadiusService radiusService;
 
-	@Value("${auth.provider}")
-	private String authProvider;
-
 	@Override
 	public void onLogoutSuccess(HttpServletRequest req,
 			HttpServletResponse res, Authentication auth) throws IOException,
 			ServletException {
 		LOG.info("onLogoutSuccess");
-		if (authProvider.equals("ldap")) {
+		Object principal = auth.getPrincipal();
+		if (principal instanceof InetOrgPerson) {
 			radiusService.logout(((InetOrgPerson) auth.getPrincipal())
 					.getUsername());
-		} else {
+		} else if (principal instanceof User) {
 			radiusService.logout(((User) auth.getPrincipal()).getUsername());
 		}
 		res.sendRedirect("/");
