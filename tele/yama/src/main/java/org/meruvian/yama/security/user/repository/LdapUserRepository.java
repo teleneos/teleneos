@@ -30,6 +30,8 @@ import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.stereotype.Repository;
+import org.teleneos.noc.telecentre.Telecentre;
+import org.teleneos.noc.telecentre.TelecentreService;
 
 /**
  * @author Dian Aditya
@@ -43,10 +45,19 @@ public class LdapUserRepository implements UserRepository {
 	@Value("${ldap.user.search_base}")
 	private String userSearchBase;
 
+	@Value("${ldap.teleuser.search_base}")
+	private String searchBase;
+
 	@Value("${ldap.group.search_base}")
 	private String groupSearchBase;
 
+	@Value("${telecentre.public_key}")
+	private String telecentrePublic;
+
 	private LdapContextSource source;
+
+	@Inject
+	private TelecentreService telecentreService;
 
 	private static final SimpleDateFormat DATE = new SimpleDateFormat(
 			"dd-MM-yyyy");
@@ -140,6 +151,7 @@ public class LdapUserRepository implements UserRepository {
 			ldapTemplate.bind(ctx);
 
 			try {
+
 				dn = new DistinguishedName(groupSearchBase);
 				dn.add("cn", "User");
 
@@ -149,6 +161,17 @@ public class LdapUserRepository implements UserRepository {
 				groupDn.addAll(ctx.getDn());
 				op.addAttributeValue("uniqueMember", groupDn.encode());
 				ldapTemplate.modifyAttributes(op);
+
+				dn = new DistinguishedName(searchBase);
+				dn.add("cn", telecentrePublic);
+
+				op = ldapTemplate.lookupContext(dn);
+				groupDn = new DistinguishedName(
+						source.getBaseLdapPathAsString());
+				groupDn.addAll(ctx.getDn());
+				op.addAttributeValue("uniqueMember", groupDn.encode());
+				ldapTemplate.modifyAttributes(op);
+
 			} catch (InvalidNameException e) {
 				throw new RuntimeException(e);
 			}
