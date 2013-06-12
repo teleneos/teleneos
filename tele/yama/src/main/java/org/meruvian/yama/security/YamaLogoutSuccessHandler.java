@@ -16,8 +16,6 @@ import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 public class YamaLogoutSuccessHandler implements LogoutSuccessHandler {
-	private static final Log LOG = LogFactory
-			.getLog(YamaLogoutSuccessHandler.class);
 	@Inject
 	private RadiusService radiusService;
 
@@ -25,16 +23,17 @@ public class YamaLogoutSuccessHandler implements LogoutSuccessHandler {
 	public void onLogoutSuccess(HttpServletRequest req,
 			HttpServletResponse res, Authentication auth) throws IOException,
 			ServletException {
-		LOG.info("onLogoutSuccess");
-		Object principal = auth.getPrincipal();
-		if (new ArrayList<Object>(auth.getAuthorities()).get(0).equals("USER")) {
-			if (principal instanceof InetOrgPerson) {
-				InetOrgPerson user = (InetOrgPerson) principal;
-				radiusService.logout(user.getUsername());
-			}
-			if (principal instanceof User) {
-				radiusService
-						.logout(((User) principal).getUsername());
+		if (auth != null) {
+			Object principal = auth.getPrincipal();
+			if (new ArrayList<Object>(auth.getAuthorities()).get(0).toString().equals("USER")) {
+				if (principal instanceof InetOrgPerson) {
+					InetOrgPerson user = (InetOrgPerson) principal;
+					radiusService.logout(user.getUsername());
+				}
+				if (principal instanceof User) {
+					radiusService
+							.logout(((User) principal).getUsername());
+				}
 			}
 		}
 		res.sendRedirect("/");
