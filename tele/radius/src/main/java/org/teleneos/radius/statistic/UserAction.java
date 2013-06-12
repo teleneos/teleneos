@@ -3,8 +3,11 @@
  */
 package org.teleneos.radius.statistic;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,6 +17,8 @@ import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.meruvian.yama.security.user.User;
+import org.meruvian.yama.security.user.repository.UserRepository;
 import org.meruvian.yama.security.user.service.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ldap.NameAlreadyBoundException;
@@ -41,16 +46,16 @@ public class UserAction extends DefaultAction implements
 	private static final long serialVersionUID = 2413426101731088386L;
 
 	private UserActionModel model = new UserActionModel();
-	
+
 	@Inject
 	private UserService userService;
 
 	@Inject
 	private InternetPackageService packageService;
-	
+
 	@Resource(name = "asyncMailSender")
-    private MailSender mailSender;
-	
+	private MailSender mailSender;
+
 	@Action
 	public ActionResult index() {
 		return new ActionResult("redirect", "/admin/user/list");
@@ -80,14 +85,16 @@ public class UserAction extends DefaultAction implements
 
 	@Action(name = "/add", method = HttpMethod.GET)
 	public ActionResult userForm() {
-		model.getUser().getUser().setPassword(RandomStringUtils.randomAlphanumeric(9));
+		model.getUser().getUser()
+				.setPassword(RandomStringUtils.randomAlphanumeric(9));
 		return new ActionResult("freemarker", "/view/admin/user/user-form.ftl");
 	}
 
 	@Action(name = "/add", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-//			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+			// @RequiredStringValidator(fieldName = "pass", trim = true, key =
+			// "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),
@@ -106,12 +113,21 @@ public class UserAction extends DefaultAction implements
 
 		model.getUser().getUser().setRole("USER");
 
+		List<User> u = userService.findByEmail(
+				model.getUser().getUser().getEmail()).getEntityList();
+
+		if (u.size() > 0)
+			addFieldError("user.user.email",
+					getText("message.admin.user.email.inuse"));
+
 		try {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(model.getUser().getUser().getEmail());
 			message.setSubject("[Notification] Your account just registered in Telecentre System");
-			message.setText("Your password is "+model.getUser().getUser().getPassword()+", please change this password immediately.");
-			userService.save(model.getUser());
+			message.setText("Your password is "
+					+ model.getUser().getUser().getPassword()
+					+ ", please change this password immediately.");
+			 userService.save(model.getUser());
 			mailSender.send(message);
 		} catch (DataIntegrityViolationException e) {
 			if (isCreate) {
@@ -130,10 +146,19 @@ public class UserAction extends DefaultAction implements
 			return new ActionResult("freemarker",
 					"/view/admin/user/user-form.ftl");
 		} catch (NameAlreadyBoundException e) {
-			model.getUser().getUser().setPassword(null);
+			model.getUser().getUser()
+					.setPassword(RandomStringUtils.randomAlphanumeric(9));
 
 			addFieldError("user.user.username",
 					getText("message.admin.user.username.inuse"));
+
+			return new ActionResult("freemarker",
+					"/view/admin/user/user-form.ftl");
+		}
+
+		if (hasFieldErrors()) {
+			model.getUser().getUser()
+					.setPassword(RandomStringUtils.randomAlphanumeric(9));
 
 			return new ActionResult("freemarker",
 					"/view/admin/user/user-form.ftl");
@@ -153,7 +178,8 @@ public class UserAction extends DefaultAction implements
 	@Action(name = "/edit/{q}", method = HttpMethod.POST)
 	@Validations(requiredStrings = {
 			@RequiredStringValidator(fieldName = "user.user.username", trim = true, key = "message.admin.user.username.notnull"),
-//			@RequiredStringValidator(fieldName = "pass", trim = true, key = "message.admin.user.password.notnull"),
+			// @RequiredStringValidator(fieldName = "pass", trim = true, key =
+			// "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.user.password", trim = true, key = "message.admin.user.password.notnull"),
 			@RequiredStringValidator(fieldName = "user.name.first", trim = true, key = "message.admin.user.firstname.notnull"),
 			@RequiredStringValidator(fieldName = "user.idcard", trim = true, key = "message.admin.user.idcard.notnull"),

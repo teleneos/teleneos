@@ -129,4 +129,9 @@ public class UserServiceImpl implements UserService {
 		encoder = context.getBean(authProvider + peClass.getSimpleName(),
 				peClass);
 	}
+
+	@Override
+	public EntityListWrapper<User> findByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
 }

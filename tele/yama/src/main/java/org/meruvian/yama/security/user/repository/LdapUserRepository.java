@@ -30,7 +30,6 @@ import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.stereotype.Repository;
-import org.teleneos.noc.telecentre.Telecentre;
 import org.teleneos.noc.telecentre.TelecentreService;
 
 /**
@@ -92,6 +91,30 @@ public class LdapUserRepository implements UserRepository {
 		List results = ldapTemplate.search(userSearchBase, filter.encode(),
 				controls, new UserContextMapper(), processor);
 
+		PagedResult pagedResult = new PagedResult(results,
+				processor.getCookie());
+
+		EntityListWrapper<User> list = new EntityListWrapper<User>();
+		list.setEntityList(pagedResult.getResultList());
+
+		return list;
+	}
+
+	@Override
+	public EntityListWrapper<User> findByEmail(String email) {
+		PagedResultsDirContextProcessor processor = new PagedResultsDirContextProcessor(
+				100);
+
+		SearchControls controls = new SearchControls();
+		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+		AndFilter filter = new AndFilter();
+		filter.and(new EqualsFilter("objectClass", "person"));
+		filter.and(new WhitespaceWildcardsFilter("mail", email));
+
+		List results = ldapTemplate.search(userSearchBase, filter.encode(),
+				controls, new UserContextMapper(), processor);
+		
 		PagedResult pagedResult = new PagedResult(results,
 				processor.getCookie());
 

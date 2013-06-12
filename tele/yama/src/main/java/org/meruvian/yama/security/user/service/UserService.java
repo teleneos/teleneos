@@ -16,6 +16,8 @@ public interface UserService {
 	User findByUsername(String username);
 
 	EntityListWrapper<User> findByUsername(String username, int limit, int page);
+	
+	EntityListWrapper<User> findByEmail(String email);
 
 	User remove(User user);
 
