@@ -1,6 +1,7 @@
 package org.meruvian.yama.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -26,11 +27,15 @@ public class YamaLogoutSuccessHandler implements LogoutSuccessHandler {
 			ServletException {
 		LOG.info("onLogoutSuccess");
 		Object principal = auth.getPrincipal();
-		if (principal instanceof InetOrgPerson) {
-			radiusService.logout(((InetOrgPerson) auth.getPrincipal())
-					.getUsername());
-		} else if (principal instanceof User) {
-			radiusService.logout(((User) auth.getPrincipal()).getUsername());
+		if (new ArrayList<Object>(auth.getAuthorities()).get(0).equals("USER")) {
+			if (principal instanceof InetOrgPerson) {
+				InetOrgPerson user = (InetOrgPerson) principal;
+				radiusService.logout(user.getUsername());
+			}
+			if (principal instanceof User) {
+				radiusService
+						.logout(((User) principal).getUsername());
+			}
 		}
 		res.sendRedirect("/");
 	}
