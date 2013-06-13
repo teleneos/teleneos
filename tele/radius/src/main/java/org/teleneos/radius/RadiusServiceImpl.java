@@ -50,20 +50,24 @@ public class RadiusServiceImpl implements RadiusService {
 	@Override
 	public void login(String user, String ip)
 			throws IOException {
-		Socket clientSocket = new Socket(remoteInetAddress, remoteSocketPort);
-		DataOutputStream outToServer = new DataOutputStream(
-				clientSocket.getOutputStream());
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("type", "login");
-		map.put("user", user);
-		map.put("ip", ip);
 		UserPackage userPackage = userPackageService.findActivePackage(user);
-		map.put("maxbwdown", String.valueOf(userPackage.getInternetPackage()
-				.getSpeed() * 1024 * 8));
-		map.put("maxbwup",
-				String.valueOf((userPackage.getInternetPackage().getSpeed() * 1024 * 8) / 2));
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(outToServer, map);
-		clientSocket.close();
+		if (userPackage != null) {
+			Socket clientSocket = new Socket(remoteInetAddress,
+					remoteSocketPort);
+			DataOutputStream outToServer = new DataOutputStream(
+					clientSocket.getOutputStream());
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("type", "login");
+			map.put("user", user);
+			map.put("ip", ip);
+
+			map.put("maxbwdown", String.valueOf(userPackage
+					.getInternetPackage().getSpeed() * 1024 * 8));
+			map.put("maxbwup", String.valueOf((userPackage.getInternetPackage()
+					.getSpeed() * 1024 * 8) / 2));
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(outToServer, map);
+			clientSocket.close();
+		}
 	}
 }
