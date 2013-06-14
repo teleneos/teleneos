@@ -11,6 +11,7 @@
 			classpath:/applicationContext.xml
 			classpath:/applicationContext-persistence.xml
 			classpath:/applicationContext-security.xml
+			classpath:/applicationContext-search.xml
 		</param-value>
 	</context-param>
 

@@ -28,6 +28,8 @@
 		<sc:intercept-url pattern="/tele/**" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/monitoring*" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/monitoring/**" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/log*" access="hasRole('NOCADMIN')" />
+		<sc:intercept-url pattern="/log/**" access="hasRole('NOCADMIN')" />
 		<sc:intercept-url pattern="/**" method="POST"
 			access="isFullyAuthenticated()" />
 

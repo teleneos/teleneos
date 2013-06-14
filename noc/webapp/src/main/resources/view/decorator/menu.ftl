@@ -56,6 +56,24 @@
 			</li>
 		</ul>
 	</li>
+	<li class="dropdown">
+		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.log" />">
+			<@s.text name="menu.log" />
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li>
+				<a href="/log/online">
+					<@s.text name="menu.log.online" />
+				</a>
+			</li>
+			<li>
+				<a href="/log/access">
+					<@s.text name="menu.log.access" />
+				</a>
+			</li>
+		</ul>
+	</li>
 </ul>
 <ul class="nav pull-right">
 	<li class="divider-vertical"></li>

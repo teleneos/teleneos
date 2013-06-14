@@ -23,6 +23,7 @@ public class DefaultActionModel {
 	private int max = 10;
 	private int page = 1;
 	private String q = "";
+	private String order;
 
 	public int getMax() {
 		return max;
@@ -46,5 +47,13 @@ public class DefaultActionModel {
 
 	public void setQ(String q) {
 		this.q = q;
+	}
+
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
 	}
 }

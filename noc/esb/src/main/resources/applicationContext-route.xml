@@ -26,14 +26,20 @@
 			uri="spring-amqp:teleneos:radius_acct:acct?${mq.network.option}" />
 		<c:endpoint id="amqpPing"
 			uri="spring-amqp:teleneos:ping:ping?${mq.network.option}" />
+		<c:endpoint id="solrLog"
+			uri="solr://${solr.host}:${solr.port}/solr?streamingThreadCount=5&amp;maxRetries=3" />
 
 		<c:route>
 			<c:from ref="amqpSquid" />
 			<c:unmarshal>
 				<c:gzip />
 			</c:unmarshal>
-			<c:process ref="accessLogProcessor" />
+			<c:multicast>
+				<c:process ref="accessLogProcessor" />
+				<c:to uri="direct:index" />
+			</c:multicast>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpNetworkAvailability" />
 			<c:unmarshal>
@@ -49,6 +55,7 @@
 				<c:to uri="jpa:org.teleneos.log.network.host.Host?usePersist=true" />
 			</c:split>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpNetworkTraffic" />
 			<c:unmarshal>
@@ -65,6 +72,7 @@
 				<c:to uri="jpa:org.teleneos.log.network.traffic.Traffic?usePersist=true" />
 			</c:split>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpNetworkDisk" />
 			<c:unmarshal>
@@ -81,6 +89,7 @@
 				<c:to uri="jpa:org.teleneos.log.network.disk.DiskSpace?usePersist=true" />
 			</c:split>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpNetworkPerformance" />
 			<c:unmarshal>
@@ -97,6 +106,7 @@
 					uri="jpa:org.teleneos.log.network.performance.Performance?usePersist=true" />
 			</c:split>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpNetworkProcessor" />
 			<c:unmarshal>
@@ -112,6 +122,7 @@
 				<c:to uri="jpa:org.teleneos.log.network.cpu.CpuLoad?usePersist=true" />
 			</c:split>
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpRadiusAcct" />
 			<c:unmarshal>
@@ -119,19 +130,49 @@
 			</c:unmarshal>
 			<c:unmarshal>
 				<c:json library="Jackson"
-					unmarshalTypeName="org.teleneos.log.radius.accounting.RadiusAccountingMessageWrapper" />
+					unmarshalTypeName="org.teleneos.log.radius.accounting.RadiusAccounting" />
 			</c:unmarshal>
-			<c:split>
-				<c:simple>${body}</c:simple>
-				<c:process ref="networkProcessor" />
-				<c:to
-					uri="jpa:org.teleneos.log.radius.accounting.RadiusAccounting?usePersist=true" />
-			</c:split>
+			<c:process ref="networkProcessor" />
+			<c:to
+				uri="jpa:org.teleneos.log.radius.accounting.RadiusAccounting?usePersist=true" />
 		</c:route>
+
 		<c:route>
 			<c:from ref="amqpPing" />
 			<c:bean ref="networkProcessor" method="ping" />
 			<c:to uri="jpa:org.teleneos.log.availability.Ping?usePersist=true" />
+		</c:route>
+
+		<c:route>
+			<c:from uri="direct:index" />
+			<c:setHeader headerName="SolrOperation">
+				<c:constant>INSERT</c:constant>
+			</c:setHeader>
+			<c:split streaming="true">
+				<c:tokenize token="\n" group="1000" />
+				<c:split streaming="true">
+					<c:tokenize token="\n" />
+					<c:bean ref="accessLogProcessor" method="index" />
+					<c:when>
+						<c:simple>${body} != null</c:simple>
+						<c:to ref="solrLog" />
+					</c:when>
+				</c:split>
+				<c:setHeader headerName="SolrOperation">
+					<c:constant>COMMIT</c:constant>
+				</c:setHeader>
+				<c:setBody>
+					<c:simple></c:simple>
+				</c:setBody>
+				<c:to ref="solrLog" />
+			</c:split>
+			<c:setHeader headerName="SolrOperation">
+				<c:constant>OPTIMIZE</c:constant>
+			</c:setHeader>
+			<c:setBody>
+				<c:simple></c:simple>
+			</c:setBody>
+			<c:to ref="solrLog" />
 		</c:route>
 	</c:camelContext>
 </beans>

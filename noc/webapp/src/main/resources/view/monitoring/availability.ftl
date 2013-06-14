@@ -23,7 +23,7 @@
 							<td>${no}</td>
 							<td><a href="<@s.url value="/tele/edit/${h[0]!}" />">${h[0]!}</a></td>
 							<td>${h[1]?string('dd-MM-yyyy HH:mm')}</td>
-							<#if (model.getDate(-1).compareTo(h[1]) > 0)>
+							<#if (model.getDate(-2).compareTo(h[1]) > 0)>
 							<td>
 								<a href="<@s.url value="/monitoring/availability/clients/${h[0]}" />">
 									<img title="Offline" src="<@s.url value="/images/map/marker-comp-red.png" />" width="20" />

@@ -33,14 +33,14 @@ public class TeleUserAction extends DefaultAction implements
 		String telecentre = (String) session
 				.get(MonitoringInterceptor.CURRENT_TELE);
 		if (telecentre != null) {
-			try{
+			try {
 				model.setUsers(userService.findByTelecentre(telecentre, "", 0,
 						0));
 			} catch (Exception e) {
 				// do nothing
 			}
 		}
-		
+
 		return new ActionResult("freemarker", "/view/telecentre/user-list.ftl");
 	}
 

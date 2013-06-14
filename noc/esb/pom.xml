@@ -116,7 +116,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-elasticsearch</artifactId>
+			<artifactId>camel-solr</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
 		<dependency>

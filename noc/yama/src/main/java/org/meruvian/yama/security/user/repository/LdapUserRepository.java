@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.utils.PagingUtils;
@@ -30,6 +29,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.filter.OrFilter;
 import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +50,9 @@ public class LdapUserRepository implements UserRepository {
 
 	@Value("${ldap.teleuser.search_base}")
 	private String teleuserSearchBase;
+
+	@Value("${ldap.member.search_base}")
+	private String memberSearchBase;
 
 	private LdapContextSource source;
 
@@ -121,17 +124,28 @@ public class LdapUserRepository implements UserRepository {
 			stop = count - 1;
 		}
 
+		OrFilter orFilter = new OrFilter();
+
 		for (int i = start; i < stop; i++) {
 			String member = members[i];
-			String[] ms = StringUtils.split(member, ',');
+			// String[] ms = StringUtils.split(member, ',');
+			String uid = StringUtils.substringBetween(member, "uid=", ",");
 
-			DistinguishedName userDn = new DistinguishedName(StringUtils.join(
-					ArrayUtils.subarray(ms, 0, 2), ','));
+			// DistinguishedName userDn = new
+			// DistinguishedName(StringUtils.join(
+			// ArrayUtils.subarray(ms, 0, 2), ','));
 
-			User user = (User) ldapTemplate.lookup(userDn,
-					new UserContextMapper());
-			users.getEntityList().add(user);
+			EqualsFilter filter = new EqualsFilter("uid", uid);
+			orFilter.or(filter);
+
+			// User user = (User) ldapTemplate.lookup(userDn,
+			// new UserContextMapper());
+			// users.getEntityList().add(user);
 		}
+
+		List<User> results = ldapTemplate.search(memberSearchBase,
+				orFilter.encode(), new UserContextMapper());
+		users.setEntityList(results);
 
 		return users;
 	}

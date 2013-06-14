@@ -1,4 +1,4 @@
-		<footer class="footer modal-footer">
+		<footer class="static-footer footer modal-footer">
 			<div class="container">
 				<@s.text name="page.footer" />
 			</div>
