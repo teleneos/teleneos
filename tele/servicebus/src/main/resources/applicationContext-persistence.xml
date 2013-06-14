@@ -37,5 +37,9 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
 		p:entityManagerFactory-ref="entityManagerFactory" />
 
+	<bean id="jpaComponent" class="org.apache.camel.component.jpa.JpaComponent"
+		p:entityManagerFactory-ref="entityManagerFactory"
+		p:transactionManager-ref="transactionManager" />
+
 	<tx:annotation-driven />
 </beans>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.teleneos</groupId>
 	<artifactId>tele</artifactId>
@@ -14,6 +15,7 @@
 		<hibernate.search.version>4.2.0.Final</hibernate.search.version>
 		<spring.security.version>3.1.3.RELEASE</spring.security.version>
 		<jackson.version>1.9.6</jackson.version>
+		<jackson2.version>2.1.4</jackson2.version>
 		<camel.version>2.11.0</camel.version>
 		<c3p0.version>0.9.1</c3p0.version>
 		<mysql.version>5.1.18</mysql.version>
@@ -97,6 +99,6 @@
 		<module>ticket</module>
 		<module>webapp</module>
 		<module>servicebus</module>
-    <module>broker</module>
-  </modules>
+		<module>broker</module>
+	</modules>
 </project>

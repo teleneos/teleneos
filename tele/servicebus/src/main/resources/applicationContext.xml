@@ -15,6 +15,8 @@
 			expression="org.meruvian.yama.mail.*" />
 		<context:exclude-filter type="regex"
 			expression="org.teleneos.radius.RadiusServiceImpl" />
+		<context:exclude-filter type="regex"
+			expression="org.teleneos.noc.*" />
 	</context:component-scan>
 
 	<context:property-placeholder location="classpath:/db.properties" />

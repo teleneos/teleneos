@@ -13,7 +13,9 @@
 		<c:propertyPlaceholder id="properties" location="db.properties" />
 
 		<c:endpoint id="squidLog"
-			uri="file:${squid.log.location}?fileName=access.log.1" />
+			uri="file:${squid.log.dir}?fileName=${squid.log.filename}&amp;delete=true" />
+		<c:endpoint id="squidBckupLog" uri="file:${squid.log.backup.dir}" />
+
 		<c:endpoint id="amqpSquid"
 			uri="spring-amqp:teleneos:network_log:squid?${mq.network.option}" />
 		<c:endpoint id="amqpNetworkAvailability"
@@ -31,10 +33,13 @@
 		<c:endpoint id="amqpPing"
 			uri="spring-amqp:teleneos:ping:ping?${mq.network.option}" />
 
+		<c:endpoint id="jpaRadiusAcct"
+			uri="jpa:org.teleneos.radius.accounting.Radacct?${acct.option}&amp;consumer.query=SELECT+r+FROM+Radacct+r+WHERE+(r.syncVersion+&lt;=+0+OR+r.syncVersion+IS+NULL)+AND+r.acctstoptime+IS+NOT+NULL" />
+
 		<!-- Squid Log -->
 		<c:route>
 			<c:from ref="squidLog" />
-			<c:split streaming="true">
+			<c:split streaming="true" parallelProcessing="true">
 				<c:tokenize token="\n" group="10000" />
 				<c:bean ref="logUserIpAppender" method="appendUser" />
 				<c:setHeader headerName="CamelFileName">
@@ -44,8 +49,24 @@
 					<c:gzip />
 				</c:marshal>
 				<c:to uri="direct:tcid" />
-				<c:to ref="amqpSquid" />
+				<c:multicast>
+					<c:to uri="direct:sendlog" />
+					<c:to uri="direct:backuplog" />
+				</c:multicast>
 			</c:split>
+		</c:route>
+
+		<c:route>
+			<c:from uri="direct:sendlog" />
+			<c:to ref="amqpSquid" />
+		</c:route>
+
+		<c:route>
+			<c:from uri="direct:backuplog" />
+			<c:setHeader headerName="CamelFileName">
+				<c:simple>${in.header.CamelFileName}.gz</c:simple>
+			</c:setHeader>
+			<c:to ref="squidBckupLog" />
 		</c:route>
 
 		<!-- Zabbix Log -->
@@ -90,8 +111,8 @@
 		</c:route>
 
 		<c:route>
-			<c:from uri="quartz://radius/acct?cron=0 0 0 * * ?" />
-			<c:bean ref="accountingProcessor" method="accounting" />
+			<c:from ref="jpaRadiusAcct" />
+			<c:process ref="accountingProcessor" />
 			<c:to uri="direct:tcid" />
 			<c:to uri="direct:compress" />
 			<c:to ref="amqpRadiusAcct" />

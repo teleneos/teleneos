@@ -34,6 +34,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson2.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.teleneos</groupId>
 			<artifactId>tele-yama</artifactId>
 			<version>${project.version}</version>
