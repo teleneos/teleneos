@@ -8,7 +8,7 @@
 					<a href="/ticket/user/status">
 						<@s.text name="Status" />
 					</a>
-				<#else>
+				</#if>
 			<#else>
 					<a href="/ticket">
 						<@s.text name="Status" />
