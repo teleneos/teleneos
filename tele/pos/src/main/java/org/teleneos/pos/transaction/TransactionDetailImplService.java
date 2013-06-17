@@ -169,4 +169,10 @@ public class TransactionDetailImplService implements TransactionDetailService {
 		return tDetailRepository.weekly(date);
 	}
 
+	@Override
+	public EntityListWrapper<TransactionDetail> generatePostpaidReport(
+			String q, int max, int page) {
+		return tDetailRepository. generatePostpaidReport(q, max, page);
+	}
+
 }

@@ -34,6 +34,7 @@ public class TransactionDetail extends DefaultPersistence {
 	private UserPackage userPackage;
 	private UnitOfMeasure uom;
 	private Conversion conversion;
+	private boolean postpaidStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
@@ -116,6 +117,14 @@ public class TransactionDetail extends DefaultPersistence {
 
 	public void setConversion(Conversion conversion) {
 		this.conversion = conversion;
+	}
+
+	public boolean isPostpaidStatus() {
+		return postpaidStatus;
+	}
+
+	public void setPostpaidStatus(boolean postpaidStatus) {
+		this.postpaidStatus = postpaidStatus;
 	}
 
 }

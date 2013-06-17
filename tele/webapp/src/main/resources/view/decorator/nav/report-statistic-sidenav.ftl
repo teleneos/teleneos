@@ -16,5 +16,10 @@
 				<@s.text name="menu.report.monthly" />
 			</a>
 		</li>
+		<li>
+			<a href="/report/postpaid">
+				<@s.text name="menu.report.postpaid" />
+			</a>
+		</li>
 	</ul>
 </div>

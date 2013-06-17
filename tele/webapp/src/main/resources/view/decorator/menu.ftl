@@ -114,6 +114,11 @@
 					<@s.text name="menu.report.statistic" />
 				</a>
 			</li>
+			<li>
+				<a href="/report/postpaid">
+					<@s.text name="menu.report.postpaid" />
+				</a>
+			</li>
 		</ul>
 	</li>
 	<li class="dropdown">

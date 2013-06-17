@@ -33,4 +33,7 @@ public interface TransactionDetailService {
 	Date getFirstTransaction();
 
 	EntityListWrapper<Object[]> weekly(String date);
+
+	EntityListWrapper<TransactionDetail> generatePostpaidReport(String q,
+			int max, int page);
 }

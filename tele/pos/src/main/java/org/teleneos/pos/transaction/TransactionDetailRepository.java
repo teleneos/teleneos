@@ -8,10 +8,14 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.PersistenceRepository;
+import org.meruvian.yama.persistence.utils.PagingUtils;
 import org.springframework.stereotype.Repository;
+import org.teleneos.radius.internetpackage.PaymentMethod;
 
 /**
  * @author Edy Setiawan
@@ -128,6 +132,61 @@ public class TransactionDetailRepository extends
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	public EntityListWrapper<TransactionDetail> generatePostpaidReport(
+			String q, int max, int page) {
+		EntityListWrapper<TransactionDetail> list = new EntityListWrapper<TransactionDetail>();
+		list.setLimit(max);
+		list.setCurrentPage(page);
+		StringBuilder sb = new StringBuilder("SELECT td FROM TransactionDetail td WHERE td.internetPackage.paymentMethod = ? AND ");
+		boolean isPaid = q.equalsIgnoreCase("paid");
+		boolean isUnpaid = q.equalsIgnoreCase("unpaid");
+		Query query = null;
+		int crit = 0;
+		if (isPaid || isUnpaid) {
+			sb.append("td.transactionHeader.postpaidStatus = ? ");
+			query = entityManager.createQuery(sb.toString())
+					.setParameter(1, PaymentMethod.POSTPAID)
+					.setParameter(2, isPaid);
+			crit = 0;
+		} else if (q.matches("[0-9]+")) {
+			sb.append("td.transactionHeader.counter = ? ");
+			query = entityManager.createQuery(sb.toString())
+					.setParameter(1, PaymentMethod.POSTPAID)
+					.setParameter(2, Long.parseLong(q));
+			crit = 1;
+		} else {
+			sb.append("( td.internetPackage.name LIKE ? OR td.transactionHeader.username LIKE ? )");
+			query = entityManager.createQuery(sb.toString())
+					.setParameter(1, PaymentMethod.POSTPAID)
+					.setParameter(2, "%"+q+"%")
+					.setParameter(3, "%"+q+"%");
+			crit = 2;
+		}
+		
+		if (max > 0) {
+			query.setMaxResults(max);
+		}
+		
+		query.setFirstResult(page * max);
+		list.setEntityList(query.getResultList());
+		
+		sb = sb.replace(0, 15, "SELECT COUNT(td) FROM ");
+		TypedQuery<Long> lquery = entityManager.createQuery(sb.toString(), Long.class);
+		switch (crit) {
+		case 0:
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, isPaid);
+			break;
+		case 1:
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, Long.parseLong(q));
+			break;
+		case 2:
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, "%"+q+"%").setParameter(3, "%"+q+"%");
+		}
+		list.setRowCount(lquery.getSingleResult());
+		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), max));
+		return list;
 	}
 
 }
