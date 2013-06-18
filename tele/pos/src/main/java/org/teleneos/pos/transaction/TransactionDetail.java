@@ -34,7 +34,7 @@ public class TransactionDetail extends DefaultPersistence {
 	private UserPackage userPackage;
 	private UnitOfMeasure uom;
 	private Conversion conversion;
-	private boolean postpaidStatus;
+	private boolean postpaidStatus = false;
 
 	@ManyToOne
 	@JoinColumn(name = "item_id")
