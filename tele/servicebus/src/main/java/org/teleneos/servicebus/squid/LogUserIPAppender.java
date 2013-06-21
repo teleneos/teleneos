@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,7 +70,9 @@ public class LogUserIPAppender {
 
 	private String[] compareUserLog(String[] logs, Radacct radacct) {
 		long start = radacct.getAcctstarttime().getTime();
-		long stop = radacct.getAcctstoptime().getTime();
+		Date stopDate = radacct.getAcctstoptime();
+		long stop = stopDate == null ? System.currentTimeMillis() : stopDate
+				.getTime();
 		String ip = radacct.getFramedipaddress();
 		String user = radacct.getUsername();
 
