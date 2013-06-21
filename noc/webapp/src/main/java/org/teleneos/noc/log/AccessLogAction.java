@@ -9,6 +9,8 @@ import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
 import org.meruvian.inca.struts2.rest.annotation.InterceptorRef;
 import org.meruvian.inca.struts2.rest.annotation.Interceptors;
+import org.meruvian.inca.struts2.rest.annotation.Result;
+import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
 import org.teleneos.log.access.AccessLogService;
 import org.teleneos.noc.monitoring.MonitoringInterceptor;
@@ -28,6 +30,7 @@ public class AccessLogAction extends DefaultAction implements
 	private LogActionModel model = new LogActionModel();
 
 	@Action
+	@Results({ @Result(name = INPUT, type = "freemarker", location = "/view/log/access.ftl") })
 	@Interceptors({ @InterceptorRef(name = "monitoringStack") })
 	public ActionResult index() throws Exception {
 		model.setTelecentre((String) session
@@ -38,12 +41,6 @@ public class AccessLogAction extends DefaultAction implements
 				model.getOrder(), model.getMax(), model.getPage() - 1));
 
 		return new ActionResult("freemarker", "/view/log/access.ftl");
-	}
-
-	@Action(name = "/data")
-	public ActionResult data() throws Exception {
-
-		return new ActionResult("/blank.html");
 	}
 
 	@Override
