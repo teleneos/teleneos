@@ -21,7 +21,24 @@ $('#popup-dialog').on('show', function() {
 					
 					for (d in data1) {
 						d = data1[d];
-						
+						if($.isNumeric(d) && new String(d).length==13){
+							 var date=new Date(d);
+							 var month=new Array();
+							 month[0]="January";
+							 month[1]="February";
+							 month[2]="March";
+							 month[3]="April";
+							 month[4]="May";
+							 month[5]="June";
+							 month[6]="July";
+							 month[7]="August";
+							 month[8]="September";
+							 month[9]="October";
+							 month[10]="November";
+							 month[11]="December";
+							 var n = month[date.getMonth()]; 
+							 d = date.getDate()+" "+n+" "+date.getFullYear();
+						}
 						var td1 = $('<td></td>').text(d);
 						tr.append(td1);
 					}

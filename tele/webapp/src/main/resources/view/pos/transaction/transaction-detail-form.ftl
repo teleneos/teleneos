@@ -128,9 +128,9 @@
 					<div class="control-group " id="postpaid">
 						<label class="control-label" for="add_id">Postpaid<span class="required">*</span></label>
 						<div class="controls">
-							<@s.hidden name="transactionDetail.userPackage.id" id="user-package-id" />
+							<@s.hidden name="transactionDetail.id" id="user-package-id" />
 							<input type="text" id="user-package-name" readonly="true" class="span4">
-							<button class="btn openpopup" type="button" title="Postpaid" object-name="userPackages|username,internetPackage.name" field-target="user-package-id|user-package-name" href="/admin/user/postpaid">Choose</button>
+							<button class="btn openpopup" type="button" title="Postpaid" object-name="transactionDetails|internetPackage.name,logInformation.createDate" field-target="user-package-id|user-package-name" href="/pos/transaction/postpaid.json?transactionHeader.username=${transactionHeader.username!}&">Choose</button>
 						</div>
 					</div>
 					<@s.textfield key="label.admin.tdetail.quantity" required="true"  name="transactionDetail.quantity" cssClass="span4" />
@@ -230,19 +230,55 @@
 								</tr>
 							</thead>
 							<tbody>
+								
 								<#assign nox = 1 + ((page - 1) * max) />
 								<#assign totalPriceInternet = 0 />
 								<@s.url value="/pos/transaction/edit/" var="editUrl" />
 								<#list transactionDetails.entityList as s>
-								<#if s.internetPackage?? || s.userPackage??>
-								<#if s.userPackage??>
-									<#assign minuteUsage=(((s.userPackage.endDate?long - s.userPackage.logInformation.createDate?long)*0.001)/60)>
-									<#assign priceTotal = minuteUsage/s.userPackage.internetPackage.time*s.userPackage.internetPackage.price>
-								</#if>
+								<#if s.internetPackage??>
+									<#--
+									<#if s.internetPackage.paymentMethod == 'POSTPAID'>
+										<#if s.postpaidType.ordinal()==1>
+											<#assign minuteUsage=(((currentDate?long - s.logInformation.createDate?long)*0.001)/60)>
+											<#assign priceTotal = minuteUsage/s.internetPackage.time*s.internetPackage.price>
+										</#if>
+									</#if>
+									-->
 									<tr>
 										<td>${nox}</td>
-										<td><#if s.internetPackage??>${s.internetPackage.name!}<#else>${s.userPackage.internetPackage.name!} ${timeFormat(minuteUsage)} @ ${s.userPackage.internetPackage.price} </#if></td>
-										<td style="text-align: right;"><#if s.internetPackage??> ${s.internetPackage.price!} <#if s.internetPackage.paymentMethod == 'POSTPAID' > @ ${timeFormat(s.internetPackage.time!0)} </#if> <#elseif s.userPackage??> ${priceTotal} </#if> </td>
+										<td>
+											<#if s.internetPackage??>
+												<#if s.internetPackage.paymentMethod == 'PREPAID'> 
+													${s.internetPackage.name!}
+												<#elseif s.internetPackage.paymentMethod == 'POSTPAID'>
+													<#if s.registration>
+														Registration Package ${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}
+													<#else>
+														${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}, Period ${s.postpaidPeriod} (${s.postpaidStart} - ${s.postpaidEnd})
+													</#if>
+												</#if>
+											</#if>
+										</td>
+										<td style="text-align: right;">
+										<#if s.internetPackage??>
+											<#if s.internetPackage.paymentMethod == 'POSTPAID' && s.registration>
+												0
+											<#else>
+												${s.internetPackage.price!}
+											</#if>
+											<#--
+											<#if s.internetPackage.paymentMethod == 'PREPAID'> 
+												${s.internetPackage.price!}
+											<#elseif s.internetPackage.paymentMethod == 'POSTPAID'>
+												<#if s.postpaidType.ordinal()==1>
+													${priceTotal}
+												<#elseif s.postpaidType.ordinal()==0>
+													0
+												</#if>
+											</#if>
+											-->
+										</#if> 
+										</td>
 										<#if !transactionHeader.cash??>
 										<td style="text-align: right;"><a href="/pos/transaction/remove/${transactionHeader.id}?transactionDetail.id=${s.id}"><i class="icon-remove"></i></a></td>
 										</#if>
@@ -251,9 +287,12 @@
 									<#if s.internetPackage??>
 										<#if s.internetPackage.paymentMethod != 'POSTPAID' >
 											<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+										<#else>
+											<#if !s.registration>
+												<#-- <#assign totalPriceInternet = totalPriceInternet + priceTotal!0 /> -->
+												<#assign totalPriceInternet = totalPriceInternet + s.internetPackage.price!0 />
+											</#if>
 										</#if>
-									<#elseif s.userPackage??>
-										<#assign totalPriceInternet = totalPriceInternet + priceTotal!0 />
 									</#if>
 								</#if>
 								</#list>

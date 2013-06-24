@@ -36,4 +36,6 @@ public interface TransactionDetailService {
 
 	EntityListWrapper<TransactionDetail> generatePostpaidReport(String q,
 			int max, int page);
+	
+	EntityListWrapper<TransactionDetail> findPostpaidUser(String keyword, String username, int limit, int page);
 }

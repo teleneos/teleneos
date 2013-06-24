@@ -85,7 +85,7 @@ public class TransactionDetailImplService implements TransactionDetailService {
 				} else {
 					throw new InvaidUnitOfMeasurementException();
 				}
-			}
+			}		
 			tDetailRepository.persist(transactionDetail);
 		} else {
 			TransactionDetail td = tDetailRepository.load(transactionDetail
@@ -94,7 +94,6 @@ public class TransactionDetailImplService implements TransactionDetailService {
 			td.setQuantity(transactionDetail.getQuantity());
 			td.setTransactionHeader(transactionDetail.getTransactionHeader());
 			td.setInternetPackage(transactionDetail.getInternetPackage());
-
 			transactionDetail = td;
 		}
 		return transactionDetail;
@@ -112,8 +111,6 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Override
 	public EntityListWrapper<TransactionDetail> findByKeyword(String keyword,
 			int limit, int page) {
-		if (StringUtils.isBlank(keyword))
-			return tDetailRepository.findAll(limit, page);
 		return tDetailRepository.findByKeyword(keyword, limit, page);
 	}
 
@@ -174,5 +171,10 @@ public class TransactionDetailImplService implements TransactionDetailService {
 			String q, int max, int page) {
 		return tDetailRepository. generatePostpaidReport(q, max, page);
 	}
-
+	
+	@Override
+	public EntityListWrapper<TransactionDetail> findPostpaidUser(
+			String keyword, String username, int limit, int page) {
+		return tDetailRepository.findPostpaidUser(keyword, username, limit, page);
+	}
 }

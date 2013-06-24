@@ -1,9 +1,8 @@
 package org.teleneos.pos.transaction;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
 
 import javax.inject.Inject;
-import javax.swing.JOptionPane;
 
 import org.meruvian.inca.struts2.rest.ActionResult;
 import org.meruvian.inca.struts2.rest.annotation.Action;
@@ -11,13 +10,13 @@ import org.meruvian.inca.struts2.rest.annotation.Action.HttpMethod;
 import org.meruvian.inca.struts2.rest.annotation.Result;
 import org.meruvian.inca.struts2.rest.annotation.Results;
 import org.meruvian.yama.actions.DefaultAction;
+import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.teleneos.pos.item.ItemService;
 import org.teleneos.pos.transaction.TransactionDetailImplService.StockNotFoundException;
 import org.teleneos.pos.uom.InvaidUnitOfMeasurementException;
 import org.teleneos.radius.accounting.RadacctService;
 import org.teleneos.radius.internetpackage.PackageManagerService;
-import org.teleneos.radius.userpackage.UserPackage.Status;
-import org.teleneos.radius.userpackage.UserPackageService;
+import org.teleneos.radius.internetpackage.PaymentMethod;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -51,9 +50,6 @@ public class TransactionAction extends DefaultAction implements
 	@Inject
 	private PackageManagerService packageManagerService;
 
-	@Inject
-	private UserPackageService userPackageService;
-	
 	@Action
 	public ActionResult transactionList() {
 		model.setTransactionHeaders(tHeaderService.findByKeyword(model.getQ(),
@@ -143,32 +139,51 @@ public class TransactionAction extends DefaultAction implements
 			model.getTransactionDetail().setItem(null);
 			model.getTransactionDetail().setUom(null);
 			model.getTransactionDetail().setUserPackage(null);
-			model.getTransactionDetail().setPrice(
-					model.getInternetPackage().getPrice());
+			model.getTransactionDetail().setPrice(model.getInternetPackage().getPrice());
+			if(model.getTransactionDetail().getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID)){
+				model.getTransactionDetail().setRegistration(true);
+				model.getTransactionDetail().setPostpaidPeriod(1);
+			}
 		} else {
-			model.setUserPackage(userPackageService.findById(model
-					.getTransactionDetail().getUserPackage().getId()));
-			model.getTransactionDetail().setInternetPackage(null);
-			model.getTransactionDetail().setItem(null);
-			model.getTransactionDetail().setUom(null);
-			long internetTime = model.getUserPackage().getEndDate().getTime()
-					- model.getUserPackage().getLogInformation()
+			/**
+			long internetTime = System.currentTimeMillis()
+					- model.getTransactionDetail().getLogInformation()
 							.getCreateDate().getTime();
 			model.getTransactionDetail()
 					.setPrice(
 							((TimeUnit.MILLISECONDS.toMinutes(internetTime) / model
-									.getUserPackage().getInternetPackage()
-									.getTime()) * model.getUserPackage()
+									.getTransactionDetail().getInternetPackage()
+									.getTime()) * model.getTransactionDetail()
 									.getInternetPackage().getPrice()));
 			if (TimeUnit.MILLISECONDS.toMinutes(internetTime)
-					% model.getUserPackage().getInternetPackage().getPrice() != 0) {
+					% model.getTransactionDetail().getInternetPackage().getPrice() != 0) {
 				model.getTransactionDetail().setPrice(
 						model.getTransactionDetail().getPrice()
-								+ model.getUserPackage().getInternetPackage()
+								+ model.getTransactionDetail().getInternetPackage()
 										.getPrice());
 			}
-			model.getUserPackage().setStatus(Status.END);
-			userPackageService.save(model.getUserPackage());
+			*/
+			
+			model.setTransactionDetail(tDetailService.findById(model.getTransactionDetail().getId()));
+			model.getTransactionDetail().getLogInformation().setStatusFlag(StatusFlag.INACTIVE);
+			TransactionDetail detail = new TransactionDetail();
+			detail.setInternetPackage(model.getTransactionDetail().getInternetPackage());
+			detail.setPrice(model.getTransactionDetail().getPrice());
+			detail.setTransactionHeader(model.getTransactionHeader());
+			detail.setRegistration(false);
+			detail.setPostpaidPeriod(model.getTransactionDetail().getPostpaidPeriod());
+			detail.setPostpaidStart(model.getTransactionDetail().getPostpaidStart());
+			detail.setPostpaidEnd(model.getTransactionDetail().getPostpaidEnd());
+			
+			
+			try {
+				tDetailService.save(detail);
+			} catch (StockNotFoundException e) {
+				e.printStackTrace();
+			} catch (InvaidUnitOfMeasurementException e) {
+				e.printStackTrace();
+			}
+			
 		}
 
 		try {
@@ -213,10 +228,10 @@ public class TransactionAction extends DefaultAction implements
 				addFieldError("transactionHeader.cash", "Insufficient cash");
 			}
 		}
-
+		model.setTransactionDetails(tDetailService.findByKeyword(model
+				.getTransactionHeader().getId(), 0, model.getPage() - 1));
 		if (hasFieldErrors()) {
-			model.setTransactionDetails(tDetailService.findByKeyword(model
-					.getTransactionHeader().getId(), 0, model.getPage() - 1));
+			
 			model.setTransactionHeader(tHeaderService.findById(model
 					.getTransactionHeader().getId()));
 			return new ActionResult("freemarker",
@@ -225,6 +240,42 @@ public class TransactionAction extends DefaultAction implements
 
 		TransactionHeader tHeader = model.getTransactionHeader();
 		model.getTransactionHeader().setId(tHeader.getId());
+		
+		for (TransactionDetail td : model.getTransactionDetails().getEntityList()) {
+			if (td.getInternetPackage() != null) {
+				if (td.getInternetPackage().getPaymentMethod()
+						.equals(PaymentMethod.POSTPAID)) {
+					TransactionDetail detail = null;
+					if (td.isRegistration()) {
+						td.setPostpaidStart(new Date());
+						td.setPostpaidEnd(new Date(td.getPostpaidStart().getTime()+(td.getInternetPackage().getTime()*60000)));
+					} else {
+						detail = new TransactionDetail();
+						detail.setInternetPackage(td.getInternetPackage());
+						detail.setTransactionHeader(td.getTransactionHeader());
+						detail.setPrice(td.getPrice());
+						detail.setRegistration(true);
+						detail.setPostpaidPeriod(td.getPostpaidPeriod());
+						detail.setPostpaidStart(new Date(td.getPostpaidStart().getTime()+(td.getInternetPackage().getTime()*60000)));
+						detail.setPostpaidEnd(new Date(detail.getPostpaidStart().getTime()+(td.getInternetPackage().getTime()*60000)));
+						detail.setPostpaidPeriod(td.getPostpaidPeriod()+1);
+						detail.setSubscribe(true);
+						detail.setPaid(true);
+					}
+					td.setPaid(true);
+					try {
+						tDetailService.save(td);
+						if (detail != null)
+							tDetailService.save(detail);
+					} catch (StockNotFoundException e) {
+						e.printStackTrace();
+					} catch (InvaidUnitOfMeasurementException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
 		tHeaderService.save(model.getTransactionHeader());
 		return new ActionResult("/pos/transaction/detail/" + tHeader.getId())
 				.setType("redirect");
@@ -236,7 +287,14 @@ public class TransactionAction extends DefaultAction implements
 				model.getUsername(), model.getMax(), model.getPage() - 1));
 		return new ActionResult("/pos/transaction").setType("redirect");
 	}
-
+	
+	@Action(name = "/postpaid")
+	public ActionResult postpaid() {
+		model.setTransactionDetails(tDetailService.findPostpaidUser(model.getQ(), model.getTransactionHeader().getUsername(), model.getMax(),
+				model.getPage() - 1));
+		return new ActionResult("freemarker", "/blank.ftl");
+	}
+	
 	@Override
 	public TransactionActionModel getModel() {
 		return model;

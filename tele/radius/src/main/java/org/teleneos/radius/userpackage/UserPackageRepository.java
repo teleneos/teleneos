@@ -3,7 +3,10 @@
  */
 package org.teleneos.radius.userpackage;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.LogInformation.StatusFlag;
@@ -20,17 +23,38 @@ import org.teleneos.radius.userpackage.UserPackage.Status;
 @Repository
 public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 	public void save(String transactionId, String username) {
-		String ql = "SELECT d.internetPackage FROM TransactionDetail d WHERE d.transactionHeader.id = ?1 AND d.internetPackage IS NOT NULL";
-		List<InternetPackage> packages = entityManager
-				.createQuery(ql, InternetPackage.class)
+		String ql = "SELECT d.postpaidEnd, d.internetPackage FROM TransactionDetail d WHERE d.transactionHeader.id = ?1 AND d.internetPackage IS NOT NULL";
+		List<Object[]> packages = entityManager
+				.createQuery(ql)
 				.setParameter(1, transactionId).getResultList();
-
-		for (InternetPackage p : packages) {
-			UserPackage userPackage = new UserPackage();
-			userPackage.setInternetPackage(p);
-			userPackage.setUsername(username);
-
-			persist(userPackage);
+		String qc = "SELECT up FROM UserPackage up WHERE up.internetPackage.paymentMethod = ?1 AND up.username = ?2 ";
+		UserPackage up = null;
+		try {
+			up = entityManager.createQuery(qc, UserPackage.class)
+					.setParameter(1, PaymentMethod.POSTPAID)
+					.setParameter(2, username)
+					.setMaxResults(1)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			System.err.println(e.getMessage());
+		}
+		for (Object[] p : packages) {
+			InternetPackage ip = (InternetPackage) p[1];
+			Date date = (Date) p[0];
+			date = new Date(date.getTime() + (ip.getTime() * 60000));
+			if (up != null && ip.getPaymentMethod().equals(PaymentMethod.POSTPAID)) {
+				if(date.after(up.getEndDate())){
+					up.setEndDate(date);
+				}
+			} else {
+				up = new UserPackage();
+				up.setInternetPackage(ip);
+				up.setUsername(username);
+				if(ip.getPaymentMethod().equals(PaymentMethod.POSTPAID)){
+					up.setEndDate(date);
+				}
+			}
+			persist(up);
 		}
 	}
 

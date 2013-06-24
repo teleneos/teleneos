@@ -1,5 +1,7 @@
 package org.teleneos.pos.transaction;
 
+import java.util.Date;
+
 import org.meruvian.yama.actions.DefaultActionModel;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.teleneos.pos.conversion.Conversion;
@@ -29,7 +31,8 @@ public class TransactionActionModel extends DefaultActionModel {
 	private String username;
 	private boolean erroruom = false;
 	private long grandtotal;
-
+	private Date currentDate = new Date();
+	
 	public String getUsername() {
 		return username;
 	}
@@ -150,6 +153,14 @@ public class TransactionActionModel extends DefaultActionModel {
 
 	public void setConversions(EntityListWrapper<Conversion> conversions) {
 		this.conversions = conversions;
+	}
+
+	public Date getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
 	}
 
 }

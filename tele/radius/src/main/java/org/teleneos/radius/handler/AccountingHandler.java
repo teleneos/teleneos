@@ -99,7 +99,9 @@ public class AccountingHandler extends PacketHandlerBase {
 					LOG.info("Quota: " + quota);
 
 					userPackage.setStatus(Status.ACTIVE);
-					userPackage.setEndDate(calendar.getTime());
+					if(!userPackage.getInternetPackage().getPaymentMethod().equals(PaymentMethod.POSTPAID)){
+						userPackage.setEndDate(calendar.getTime());
+					}
 					userPackage.setQuotaBalance(quota);
 					userPackage.setUnlimited(quota < 1);
 

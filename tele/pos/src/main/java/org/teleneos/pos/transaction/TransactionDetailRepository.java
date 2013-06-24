@@ -10,9 +10,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.lang3.StringUtils;
 import org.meruvian.yama.persistence.EntityListWrapper;
 import org.meruvian.yama.persistence.PersistenceRepository;
+import org.meruvian.yama.persistence.LogInformation.StatusFlag;
 import org.meruvian.yama.persistence.utils.PagingUtils;
 import org.springframework.stereotype.Repository;
 import org.teleneos.radius.internetpackage.PaymentMethod;
@@ -27,8 +27,8 @@ public class TransactionDetailRepository extends
 	public EntityListWrapper<TransactionDetail> findByKeyword(String keyword,
 			int limit, int page) {
 
-		String criteria = "(td.transactionHeader.id = ?)";
-		Object[] params = { keyword };
+		String criteria = "(td.transactionHeader.id = ?) AND td.subscribe = ?";
+		Object[] params = { keyword, false };
 
 		return findAll(limit, page, "td", criteria, params);
 
@@ -139,7 +139,7 @@ public class TransactionDetailRepository extends
 		EntityListWrapper<TransactionDetail> list = new EntityListWrapper<TransactionDetail>();
 		list.setLimit(max);
 		list.setCurrentPage(page);
-		StringBuilder sb = new StringBuilder("SELECT td FROM TransactionDetail td WHERE td.internetPackage.paymentMethod = ? AND ");
+		StringBuilder sb = new StringBuilder("SELECT td FROM TransactionDetail td WHERE td.internetPackage.paymentMethod = ? AND td.subscribe = ? AND ");
 		boolean isPaid = q.equalsIgnoreCase("paid");
 		boolean isUnpaid = q.equalsIgnoreCase("unpaid");
 		Query query = null;
@@ -148,20 +148,23 @@ public class TransactionDetailRepository extends
 			sb.append("td.transactionHeader.postpaidStatus = ? ");
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
-					.setParameter(2, isPaid);
+					.setParameter(2, false)
+					.setParameter(3, isPaid);
 			crit = 0;
 		} else if (q.matches("[0-9]+")) {
 			sb.append("td.transactionHeader.counter = ? ");
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
-					.setParameter(2, Long.parseLong(q));
+					.setParameter(2, false)
+					.setParameter(3, Long.parseLong(q));
 			crit = 1;
 		} else {
 			sb.append("( td.internetPackage.name LIKE ? OR td.transactionHeader.username LIKE ? )");
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
-					.setParameter(2, "%"+q+"%")
-					.setParameter(3, "%"+q+"%");
+					.setParameter(2, false)
+					.setParameter(3, "%"+q+"%")
+					.setParameter(4, "%"+q+"%");
 			crit = 2;
 		}
 		
@@ -176,17 +179,22 @@ public class TransactionDetailRepository extends
 		TypedQuery<Long> lquery = entityManager.createQuery(sb.toString(), Long.class);
 		switch (crit) {
 		case 0:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, isPaid);
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, isPaid);
 			break;
 		case 1:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, Long.parseLong(q));
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, Long.parseLong(q));
 			break;
 		case 2:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, "%"+q+"%").setParameter(3, "%"+q+"%");
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, "%"+q+"%").setParameter(4, "%"+q+"%");
 		}
 		list.setRowCount(lquery.getSingleResult());
 		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), max));
 		return list;
 	}
-
+	
+	public EntityListWrapper<TransactionDetail> findPostpaidUser(String keyword, String username, int limit, int page) {
+		return findAll(limit, page, "p", "p.internetPackage.paymentMethod = ?1 AND (p.internetPackage.code LIKE ?2 OR p.internetPackage.name LIKE ?3 ) AND p.transactionHeader.username = ?4 AND p.registration = ?5 AND p.paid = ?6 AND p.logInformation.statusFlag = ?7",
+				PaymentMethod.POSTPAID, keyword+"%", keyword+"%", username, true, true, StatusFlag.ACTIVE);
+	}
+	
 }

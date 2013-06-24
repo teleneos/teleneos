@@ -1,6 +1,10 @@
 package org.teleneos.pos.transaction;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,7 +29,7 @@ import org.teleneos.radius.userpackage.UserPackage;
 public class TransactionDetail extends DefaultPersistence {
 
 	private static final long serialVersionUID = -6190694884542857298L;
-	
+
 	private Item item;
 	private int quantity = 1;
 	private Long price = 0L;
@@ -34,8 +38,13 @@ public class TransactionDetail extends DefaultPersistence {
 	private UserPackage userPackage;
 	private UnitOfMeasure uom;
 	private Conversion conversion;
-	private boolean postpaidStatus = false;
-
+	private boolean isRegistration = true;
+	private boolean isPaid = false;
+	private boolean subscribe = false;
+	private int postpaidPeriod;
+	private Date postpaidStart;
+	private Date postpaidEnd;
+	
 	@ManyToOne
 	@JoinColumn(name = "item_id")
 	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
@@ -96,7 +105,7 @@ public class TransactionDetail extends DefaultPersistence {
 	public void setUserPackage(UserPackage userPackage) {
 		this.userPackage = userPackage;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "uom_id")
 	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
@@ -119,12 +128,52 @@ public class TransactionDetail extends DefaultPersistence {
 		this.conversion = conversion;
 	}
 
-	public boolean isPostpaidStatus() {
-		return postpaidStatus;
+	public int getPostpaidPeriod() {
+		return postpaidPeriod;
 	}
 
-	public void setPostpaidStatus(boolean postpaidStatus) {
-		this.postpaidStatus = postpaidStatus;
+	public void setPostpaidPeriod(int postpaidPeriod) {
+		this.postpaidPeriod = postpaidPeriod;
+	}
+
+	public Date getPostpaidStart() {
+		return postpaidStart;
+	}
+
+	public void setPostpaidStart(Date postpaidStart) {
+		this.postpaidStart = postpaidStart;
+	}
+
+	public Date getPostpaidEnd() {
+		return postpaidEnd;
+	}
+
+	public void setPostpaidEnd(Date postpaidEnd) {
+		this.postpaidEnd = postpaidEnd;
+	}
+
+	public boolean isRegistration() {
+		return isRegistration;
+	}
+
+	public void setRegistration(boolean isRegistration) {
+		this.isRegistration = isRegistration;
+	}
+
+	public boolean isPaid() {
+		return isPaid;
+	}
+
+	public void setPaid(boolean isPaid) {
+		this.isPaid = isPaid;
+	}
+
+	public boolean isSubscribe() {
+		return subscribe;
+	}
+
+	public void setSubscribe(boolean subscribe) {
+		this.subscribe = subscribe;
 	}
 
 }
