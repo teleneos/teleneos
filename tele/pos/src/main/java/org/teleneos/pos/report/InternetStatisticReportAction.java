@@ -43,23 +43,27 @@ public class InternetStatisticReportAction extends DefaultAction implements
 	
 	@Action(method = HttpMethod.GET, name = "statistic/weekly")
 	public ActionResult weekly() {
-		LocalDate startDate = LocalDate.fromDateFields(radacctService.getFirstConnection());
-		if (startDate.getDayOfWeek() != 1) {
-			startDate = startDate.minusDays(startDate.getDayOfWeek() + 1);
-		}
-		if (startDate != null) {
-			LocalDate endDate = LocalDate.now();
-			for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-				if (date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-					model.getDates().add(date.toDate());
+		try{
+			LocalDate startDate = LocalDate.fromDateFields(radacctService.getFirstConnection());
+			if (startDate.getDayOfWeek() != 1) {
+				startDate = startDate.minusDays(startDate.getDayOfWeek() + 1);
+			}
+			if (startDate != null) {
+				LocalDate endDate = LocalDate.now();
+				for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+					if (date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+						model.getDates().add(date.toDate());
+					}
 				}
 			}
-		}
-		if (!StringUtils.isEmpty(model.getDate())) {
-			model.setStatistics(radacctService.weekly(model.getDate(), model.getMax(), model.getPage() - 1));
-		}else{
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			model.setStatistics(radacctService.weekly(format.format(model.getDates().get(model.getDates().size()-1)), model.getMax(), model.getPage() - 1));
+			if (!StringUtils.isEmpty(model.getDate())) {
+				model.setStatistics(radacctService.weekly(model.getDate(), model.getMax(), model.getPage() - 1));
+			}else{
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				model.setStatistics(radacctService.weekly(format.format(model.getDates().get(model.getDates().size()-1)), model.getMax(), model.getPage() - 1));
+			}
+		}catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
 		}
 		return new ActionResult("freemarker", "/view/report/weekly/list-statistic.ftl");
 	}
