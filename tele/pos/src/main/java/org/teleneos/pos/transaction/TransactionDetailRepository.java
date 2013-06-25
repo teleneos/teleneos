@@ -139,7 +139,7 @@ public class TransactionDetailRepository extends
 		EntityListWrapper<TransactionDetail> list = new EntityListWrapper<TransactionDetail>();
 		list.setLimit(max);
 		list.setCurrentPage(page);
-		StringBuilder sb = new StringBuilder("SELECT td FROM TransactionDetail td WHERE td.internetPackage.paymentMethod = ? AND td.subscribe = ? AND ");
+		StringBuilder sb = new StringBuilder("SELECT td FROM TransactionDetail td WHERE td.internetPackage.paymentMethod = ? AND td.subscribe = ? AND td.registration = ? AND ");
 		boolean isPaid = q.equalsIgnoreCase("paid");
 		boolean isUnpaid = q.equalsIgnoreCase("unpaid");
 		Query query = null;
@@ -149,22 +149,25 @@ public class TransactionDetailRepository extends
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
 					.setParameter(2, false)
-					.setParameter(3, isPaid);
+					.setParameter(3, true)
+					.setParameter(4, isPaid);
 			crit = 0;
 		} else if (q.matches("[0-9]+")) {
 			sb.append("td.transactionHeader.counter = ? ");
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
 					.setParameter(2, false)
-					.setParameter(3, Long.parseLong(q));
+					.setParameter(3, true)
+					.setParameter(4, Long.parseLong(q));
 			crit = 1;
 		} else {
 			sb.append("( td.internetPackage.name LIKE ? OR td.transactionHeader.username LIKE ? )");
 			query = entityManager.createQuery(sb.toString())
 					.setParameter(1, PaymentMethod.POSTPAID)
 					.setParameter(2, false)
-					.setParameter(3, "%"+q+"%")
-					.setParameter(4, "%"+q+"%");
+					.setParameter(3, true)
+					.setParameter(4, "%"+q+"%")
+					.setParameter(5, "%"+q+"%");
 			crit = 2;
 		}
 		
@@ -176,16 +179,17 @@ public class TransactionDetailRepository extends
 		list.setEntityList(query.getResultList());
 		
 		sb = sb.replace(0, 15, "SELECT COUNT(td) FROM ");
+		sb.append(" ORDER BY td.logInformation.createDate DESC");
 		TypedQuery<Long> lquery = entityManager.createQuery(sb.toString(), Long.class);
 		switch (crit) {
 		case 0:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, isPaid);
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, true).setParameter(4, isPaid);
 			break;
 		case 1:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, Long.parseLong(q));
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, true).setParameter(4, Long.parseLong(q));
 			break;
 		case 2:
-			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, "%"+q+"%").setParameter(4, "%"+q+"%");
+			lquery.setParameter(1, PaymentMethod.POSTPAID).setParameter(2, false).setParameter(3, true).setParameter(4, "%"+q+"%").setParameter(5, "%"+q+"%");
 		}
 		list.setRowCount(lquery.getSingleResult());
 		list.setTotalPage(PagingUtils.getTotalPage(list.getRowCount(), max));

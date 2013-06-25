@@ -67,7 +67,7 @@
 							<td>${d.transactionHeader.username}</td>
 							<td>${noInvoice(d.transactionHeader.counter)}</td>
 							<td>${d.internetPackage.name}</td>
-							<td>${d.postpaidStart} - ${d.postpaidEnd}</td>
+							<td><#if d.postpaidStart??>${d.postpaidStart} - ${d.postpaidEnd}</#if></td>
 							<td>${d.internetPackage.price!} @ ${timeFormat(d.internetPackage.time!0)}</td>
 							<td><#if d.paid> PAID <#else> UNPAID </#if></td>
 							<td style="text-align: right;">${d.internetPackage.price!}</td>

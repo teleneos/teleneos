@@ -64,17 +64,33 @@
 							<#assign price = s.quantity * s.price />
 							<tr>
 								<td>${no}</td>
-								<td>&nbsp;&nbsp;&nbsp;&nbsp;<#if s.item??>${s.item.name!}<#elseif s.internetPackage??>${s.internetPackage.code!}<#else>${s.userPackage.internetPackage.name!}</#if></td>
+								<td>&nbsp;&nbsp;&nbsp;
+									<#if s.item??>
+										${s.item.name!}
+									<#elseif s.internetPackage??>
+										<#if s.internetPackage.paymentMethod == 'PREPAID'> 
+											${s.internetPackage.name!}
+										<#elseif s.internetPackage.paymentMethod == 'POSTPAID'>
+											<#if s.registration>
+											Registration Package ${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}
+											<#else>
+												${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}, Period ${s.postpaidPeriod} (${s.postpaidStart} - ${s.postpaidEnd})
+											</#if>
+										</#if> 
+									<#else>
+										${s.userPackage.internetPackage.name!}
+									</#if>
+								</td>
 								<td style="text-align: center;"><#if s.item??>${s.quantity!}<#elseif s.userPackage??>${timeFormat(minuteUsage)}<#else>-</#if></td>
 								<td style="text-align: right;">
 									<#if s.internetPackage?? > 
-										<#if s.internetPackage.paymentMethod == 'POSTPAID' > 
-											@ ${timeFormat(s.internetPackage.time!0)} 
+										<#if s.internetPackage.paymentMethod == 'POSTPAID' && s.registration>
+											0
+										<#else>
+											${s.internetPackage.price!}
 										</#if>
 									<#elseif s.item??>
-									${s.price!} 
-									<#else>
-									@${s.userPackage.internetPackage.price}
+										${s.price!}
 									</#if>
 								</td>
 								<td style="text-align: right;">

@@ -27,7 +27,7 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 		List<Object[]> packages = entityManager
 				.createQuery(ql)
 				.setParameter(1, transactionId).getResultList();
-		String qc = "SELECT up FROM UserPackage up WHERE up.internetPackage.paymentMethod = ?1 AND up.username = ?2 ";
+		String qc = "SELECT up FROM UserPackage up WHERE up.internetPackage.paymentMethod = ?1 AND up.username = ?2 AND up.endDate IS NOT NULL";
 		UserPackage up = null;
 		try {
 			up = entityManager.createQuery(qc, UserPackage.class)
@@ -41,8 +41,8 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 		for (Object[] p : packages) {
 			InternetPackage ip = (InternetPackage) p[1];
 			Date date = (Date) p[0];
-			date = new Date(date.getTime() + (ip.getTime() * 60000));
 			if (up != null && ip.getPaymentMethod().equals(PaymentMethod.POSTPAID)) {
+				date = new Date(date.getTime() + (ip.getTime() * 60000));
 				if(date.after(up.getEndDate())){
 					up.setEndDate(date);
 				}
@@ -51,6 +51,7 @@ public class UserPackageRepository extends PersistenceRepository<UserPackage> {
 				up.setInternetPackage(ip);
 				up.setUsername(username);
 				if(ip.getPaymentMethod().equals(PaymentMethod.POSTPAID)){
+					date = new Date(date.getTime() + (ip.getTime() * 60000));
 					up.setEndDate(date);
 				}
 			}
