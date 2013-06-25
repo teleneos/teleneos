@@ -3,8 +3,6 @@ package org.teleneos.pos.transaction;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -44,6 +42,7 @@ public class TransactionDetail extends DefaultPersistence {
 	private int postpaidPeriod;
 	private Date postpaidStart;
 	private Date postpaidEnd;
+	private boolean reportPaidStatus = false;
 	
 	@ManyToOne
 	@JoinColumn(name = "item_id")
@@ -174,6 +173,14 @@ public class TransactionDetail extends DefaultPersistence {
 
 	public void setSubscribe(boolean subscribe) {
 		this.subscribe = subscribe;
+	}
+
+	public boolean isReportPaidStatus() {
+		return reportPaidStatus;
+	}
+
+	public void setReportPaidStatus(boolean reportPaidStatus) {
+		this.reportPaidStatus = reportPaidStatus;
 	}
 
 }

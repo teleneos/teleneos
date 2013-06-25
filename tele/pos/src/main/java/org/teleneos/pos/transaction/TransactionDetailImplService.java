@@ -169,7 +169,7 @@ public class TransactionDetailImplService implements TransactionDetailService {
 	@Override
 	public EntityListWrapper<TransactionDetail> generatePostpaidReport(
 			String q, int max, int page) {
-		return tDetailRepository. generatePostpaidReport(q, max, page);
+		return tDetailRepository.generatePostpaidReport(q, max, page);
 	}
 	
 	@Override

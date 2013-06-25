@@ -251,7 +251,7 @@
 												<#if s.internetPackage.paymentMethod == 'PREPAID'> 
 													${s.internetPackage.name!}
 												<#elseif s.internetPackage.paymentMethod == 'POSTPAID'>
-													<#if s.registration>
+													<#if s.registration && !s.reportPaidStatus>
 														Registration Package ${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}
 													<#else>
 														${s.internetPackage.name!} ${s.internetPackage.price!} @ ${timeFormat(s.internetPackage.time!0)}, Period ${s.postpaidPeriod} (${s.postpaidStart} - ${s.postpaidEnd})

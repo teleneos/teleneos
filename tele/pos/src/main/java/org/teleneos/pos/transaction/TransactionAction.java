@@ -261,6 +261,9 @@ public class TransactionAction extends DefaultAction implements
 						detail.setPostpaidPeriod(td.getPostpaidPeriod()+1);
 						detail.setSubscribe(true);
 						detail.setPaid(true);
+						
+						td.setRegistration(true);
+						td.setReportPaidStatus(true);
 					}
 					td.setPaid(true);
 					try {

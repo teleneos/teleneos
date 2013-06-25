@@ -69,7 +69,7 @@
 							<td>${d.internetPackage.name}</td>
 							<td><#if d.postpaidStart??>${d.postpaidStart} - ${d.postpaidEnd}</#if></td>
 							<td>${d.internetPackage.price!} @ ${timeFormat(d.internetPackage.time!0)}</td>
-							<td><#if d.paid> PAID <#else> UNPAID </#if></td>
+							<td><#if d.reportPaidStatus> PAID <#else> UNPAID </#if></td>
 							<td style="text-align: right;">${d.internetPackage.price!}</td>
 						</tr>
 						<#assign no = no + 1 />
