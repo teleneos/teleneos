@@ -46,23 +46,27 @@ public class ReportAction extends DefaultAction implements
 
 	@Action(method = HttpMethod.GET, name = "store/weekly")
 	public ActionResult weekly() {
-		LocalDate startDate = LocalDate.fromDateFields(transactionDetailService.getFirstTransaction());
-		if (startDate.getDayOfWeek() != 1) {
-			startDate = startDate.minusDays(startDate.getDayOfWeek() + 1);
-		}
-		if (startDate != null) {
-			LocalDate endDate = LocalDate.now();
-			for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-				if (date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-					model.getDates().add(date.toDate());
+		try{
+			LocalDate startDate = LocalDate.fromDateFields(transactionDetailService.getFirstTransaction());
+			if (startDate.getDayOfWeek() != 1) {
+				startDate = startDate.minusDays(startDate.getDayOfWeek() + 1);
+			}
+			if (startDate != null) {
+				LocalDate endDate = LocalDate.now();
+				for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+					if (date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+						model.getDates().add(date.toDate());
+					}
 				}
 			}
-		}
-		if (!StringUtils.isEmpty(model.getDate())) {
-			model.setItemReports(transactionDetailService.weekly(model.getDate()));
-		}else{
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			model.setItemReports(transactionDetailService.weekly(format.format(model.getDates().get(model.getDates().size()-1))));
+			if (!StringUtils.isEmpty(model.getDate())) {
+				model.setItemReports(transactionDetailService.weekly(model.getDate()));
+			}else{
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				model.setItemReports(transactionDetailService.weekly(format.format(model.getDates().get(model.getDates().size()-1))));
+			}
+		}catch(IllegalArgumentException e){
+			
 		}
 		return new ActionResult("freemarker", "/view/report/weekly/list.ftl");
 	}
