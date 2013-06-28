@@ -114,7 +114,7 @@ public class LdapUserRepository implements UserRepository {
 
 		List results = ldapTemplate.search(userSearchBase, filter.encode(),
 				controls, new UserContextMapper(), processor);
-		
+
 		PagedResult pagedResult = new PagedResult(results,
 				processor.getCookie());
 
@@ -157,14 +157,16 @@ public class LdapUserRepository implements UserRepository {
 		ctx.setAttributeValue("uid", bUser.getUsername());
 		ctx.setAttributeValue("mail", bUser.getEmail());
 		ctx.setAttributeValue("userPassword", bUser.getPassword());
-		ctx.setAttributeValue("description", DATE.format(user.getBirthDate()));
+		if (user.getBirthDate() != null)
+			ctx.setAttributeValue("description",
+					DATE.format(user.getBirthDate()));
 		ctx.setAttributeValue("employeeNumber", user.getIdcard().trim());
-		if (!StringUtils.isBlank(user.getOccupation()))
+		if (StringUtils.isNotBlank(user.getOccupation()))
 			ctx.setAttributeValue("employeeType", user.getOccupation());
 		else if (!persist)
 			ctx.removeAttributeValue("employeeType",
 					ctx.getStringAttribute("employeeType"));
-		if (!StringUtils.isBlank(user.getPhone()))
+		if (StringUtils.isNotBlank(user.getPhone()))
 			ctx.setAttributeValue("homePhone", user.getPhone());
 		else if (!persist)
 			ctx.removeAttributeValue("homePhone",
