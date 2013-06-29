@@ -2,25 +2,29 @@
 <html>
 	<#include "/view/decorator/basic/head.ftl" />
 	<body>
+		<#include "/view/decorator/basic/logo.ftl" />
 		<#if currentUser.role == 'ADMINISTRATOR'>
 		<#include "/view/decorator/nav/admin-topnav.ftl" />
 		<#elseif currentUser.role == 'USER'>
 		<#include "/view/decorator/nav/user-topnav.ftl" />
 		</#if>
 		
-		<div class="container" id="content">
-			<#if page.getProperty('meta.header')??>
-			<div class="row-fluid">
-				<div class="span12">
-					<h2>${page.getProperty('meta.header')} <small>${page.getProperty('meta.desc')!}</small></h2>
-				</div>
-			</div>
-			</#if>
+		<div class="container-fluid" id="content">
 			<div class="row-fluid">
 				<#include "/view/decorator/nav/profile-sidenav.ftl" />
-				<div class="span10">
+				
+				<#if page.getProperty('meta.header')??>
+				<div class="span10 block">
+				<div class="navbar navbar-inner block-header">
+					<div class="muted pull-left">
+						<strong>${page.getProperty('meta.header')}</strong> <small>${page.getProperty('meta.desc')!}</small>
+					</div>
+				</div>
 				${body!}
 				</div>
+				<#else>
+				${body!}
+				</#if>
 			</div>
 		</div>
 		

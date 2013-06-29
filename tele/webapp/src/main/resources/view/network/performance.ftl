@@ -2,44 +2,42 @@
 	<head>
 		<title><@s.text name="page.performance.title" /></title>
 		<meta name="header" content="<@s.text name="page.performance.header" />">
+		<content tag="sidenav">/view/decorator/nav/network-sidenav.ftl</content>
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<@s.url value="/static/explorercanvas/r3/excanvas.min.js" />"></script><![endif]-->
 		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.min.js" />"></script>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/network-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-					<div class="span12" style="height: 300px;" id="chart">
-						<img src="<@s.url value="/images/loading.gif" />" />
-					</div>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+				<div class="span12" style="height: 300px;" id="chart">
+					<img src="<@s.url value="/images/loading.gif" />" />
 				</div>
-				<br>
-				<div class="row-fluid">
-					<div class="span12">
-						<table class="table table-condensed table-striped">
-							<thead>
-								<tr>
-									<th></th>
-									<th></th>
-									<th>last</th>
-									<th>min</th>
-									<th>avg</th>
-									<th>max</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Values processed by server per second</td>
-									<td>[avg]</td>
-									<td id="td-last-proc" class="speed"></td>
-									<td id="td-min-proc" class="speed"></td>
-									<td id="td-avg-proc" class="speed"></td>
-									<td id="td-max-proc" class="speed"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<br>
+			<div class="row-fluid">
+				<div class="span12">
+					<table class="table table-condensed table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th></th>
+								<th>last</th>
+								<th>min</th>
+								<th>avg</th>
+								<th>max</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Values processed by server per second</td>
+								<td>[avg]</td>
+								<td id="td-last-proc" class="speed"></td>
+								<td id="td-min-proc" class="speed"></td>
+								<td id="td-avg-proc" class="speed"></td>
+								<td id="td-max-proc" class="speed"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -100,7 +98,7 @@
 				$('#td-max-proc').text(max.toFixed(2));
 				
 				$.plot($("#chart"), [
-					{ label: "Values processed by server", data: inData }
+					{ label: "Values processed by server", color: "#5A8F29", data: inData }
 				], option);
 			});
 			

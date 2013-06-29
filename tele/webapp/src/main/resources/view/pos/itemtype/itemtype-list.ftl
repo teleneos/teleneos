@@ -2,51 +2,49 @@
 	<head>
 		<title><@s.text name="page.itemtype.title" /></title>
 		<meta name="header" content="<@s.text name="page.itemtype.header" />">
+		<content tag="sidenav">/view/decorator/nav/pos-sidenav.ftl</content>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/pos-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-				<a class="btn btn-primary span2" href="<@s.url value="/pos/itemtype/add" />">
-					<i class="icon-plus icon-white"></i>
-					<@s.text name="button.add" />
-				</a>
-				<form class="form-inline span10" method="get">
-					<div class="input-append pull-right">
-						<input type="text" name="q" value="${q}" />
-						<button class="btn">
-							<i class="icon-search"></i>
-							<@s.text name="button.search" />
-						</button>
-					</div>
-				</form>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+			<a class="btn btn-primary span2" href="<@s.url value="/pos/itemtype/add" />">
+				<i class="icon-plus icon-white"></i>
+				<@s.text name="button.add" />
+			</a>
+			<form class="form-inline span10" method="get">
+				<div class="input-append pull-right">
+					<input type="text" name="q" value="${q}" />
+					<button class="btn">
+						<i class="icon-search"></i>
+						<@s.text name="button.search" />
+					</button>
 				</div>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th><@s.text name="label.admin.itemtype.name" /></th>
-							<th><@s.text name="label.admin.itemtype.unit" /></th>
-							<th><@s.text name="label.admin.itemtype.description" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<@s.url value="/pos/itemtype/edit/" var="editUrl" />
-						<#list itemTypes.entityList as s>
-						<tr>
-							<td>${no}</td>
-							<td><a href="${editUrl + s.id}">${s.name!}</a></td>
-							<td>${s.unit!} <#if s.uom??>${s.uom.name!}</#if></td>
-							<td>${s.description!}</td>
-						</tr>
-						<#assign no = no + 1 />
-						</#list>
-					</tbody>
-				</table>
-				<div id="pagination"></div>
+			</form>
 			</div>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th><@s.text name="label.admin.itemtype.name" /></th>
+						<th><@s.text name="label.admin.itemtype.unit" /></th>
+						<th><@s.text name="label.admin.itemtype.description" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign no = 1 + ((page - 1) * max) />
+					<@s.url value="/pos/itemtype/edit/" var="editUrl" />
+					<#list itemTypes.entityList as s>
+					<tr>
+						<td>${no}</td>
+						<td><a href="${editUrl + s.id}">${s.name!}</a></td>
+						<td>${s.unit!} <#if s.uom??>${s.uom.name!}</#if></td>
+						<td>${s.description!}</td>
+					</tr>
+					<#assign no = no + 1 />
+					</#list>
+				</tbody>
+			</table>
+			<div id="pagination"></div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
 		<script type="text/javascript">

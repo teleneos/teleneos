@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.businesspartner.title" /></title>
 		<meta name="header" content="<@s.text name="page.businesspartner.header" />">
+		<content tag="sidenav">/view/decorator/nav/pos-sidenav.ftl</content>
 		<script type="text/javascript">
 		var states = new Array("Afghanistan", "Albania", "Algeria",
 				"Andorra", "Angola", "Antarctica",
@@ -58,44 +59,41 @@
 		</script>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/pos-sidenav.ftl" />
-			<div class="span10">
-				<@s.form theme="bootstrap" cssClass="form-horizontal">
-					<@s.hidden name="businessPartner.id" />
-					<#-- <@s.label key="label.admin.businesspartner.category" required="true" /> -->
-					<@s.checkboxlist key="label.admin.businesspartner.category" name="businessPartner.category" list={'VENDOR' : 'Vendor', 'CUSTOMER' : 'Customer'} listValue="value" listKey="key" />
-					<@s.textfield key="label.admin.businesspartner.name" required="true" name="businessPartner.name" cssClass="span4" />
-					<@s.textfield key="label.admin.businesspartner.officePhone"  name="businessPartner.officePhone" cssClass="span4" />
-					<@s.textfield key="label.admin.businesspartner.fax"  name="businessPartner.fax" cssClass="span4" />
-					<@s.textfield key="label.admin.businesspartner.email"  name="businessPartner.email" cssClass="span4" />
-					<@s.textarea key="label.admin.businesspartner.address"  name="businessPartner.address" cssClass="span4" />
-					<@s.textfield key="label.admin.businesspartner.city"  name="businessPartner.city" cssClass="span4" />
-					<@s.textfield key="label.admin.businesspartner.zipcode"  name="businessPartner.zipCode" cssClass="span4" />
-					<div class="control-group ">
-						<label class="control-label" for="">Country
-						</label>
-						<div class="controls">
-							<select name='businessPartner.country'>
-								<script language="javascript">
-									for ( var hi = 0; hi < states.length; hi++)
-										document.write("<option value=\""+states[hi]+"\">"
-												+ states[hi] + "</option>");
-								</script>
-							</select>
-						</div>
+		<div class="block-content collapse in">
+			<@s.form theme="bootstrap" cssClass="form-horizontal">
+				<@s.hidden name="businessPartner.id" />
+				<#-- <@s.label key="label.admin.businesspartner.category" required="true" /> -->
+				<@s.checkboxlist key="label.admin.businesspartner.category" name="businessPartner.category" list={'VENDOR' : 'Vendor', 'CUSTOMER' : 'Customer'} listValue="value" listKey="key" />
+				<@s.textfield key="label.admin.businesspartner.name" required="true" name="businessPartner.name" cssClass="span4" />
+				<@s.textfield key="label.admin.businesspartner.officePhone"  name="businessPartner.officePhone" cssClass="span4" />
+				<@s.textfield key="label.admin.businesspartner.fax"  name="businessPartner.fax" cssClass="span4" />
+				<@s.textfield key="label.admin.businesspartner.email"  name="businessPartner.email" cssClass="span4" />
+				<@s.textarea key="label.admin.businesspartner.address"  name="businessPartner.address" cssClass="span4" />
+				<@s.textfield key="label.admin.businesspartner.city"  name="businessPartner.city" cssClass="span4" />
+				<@s.textfield key="label.admin.businesspartner.zipcode"  name="businessPartner.zipCode" cssClass="span4" />
+				<div class="control-group ">
+					<label class="control-label" for="">Country
+					</label>
+					<div class="controls">
+						<select name='businessPartner.country'>
+							<script language="javascript">
+								for ( var hi = 0; hi < states.length; hi++)
+									document.write("<option value=\""+states[hi]+"\">"
+											+ states[hi] + "</option>");
+							</script>
+						</select>
 					</div>
-					<@s.textarea key="label.admin.businesspartner.description"  name="businessPartner.description" cssClass="span4" />
-					<div class="form-actions">
-						<#if businessPartner.id??>
-						<@s.submit key="button.update" cssClass="btn btn-primary" />
-						<#else>
-						<@s.submit key="button.save" cssClass="btn btn-primary" />
-						</#if>
-						<@s.reset key="button.reset" cssClass="btn" />
-					</div>
-				</@s.form>
-			</div>
+				</div>
+				<@s.textarea key="label.admin.businesspartner.description"  name="businessPartner.description" cssClass="span4" />
+				<div class="form-actions">
+					<#if businessPartner.id??>
+					<@s.submit key="button.update" cssClass="btn btn-primary" />
+					<#else>
+					<@s.submit key="button.save" cssClass="btn btn-primary" />
+					</#if>
+					<@s.reset key="button.reset" cssClass="btn" />
+				</div>
+			</@s.form>
 		</div>		
 	</body>
 </html>

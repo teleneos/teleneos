@@ -1,6 +1,5 @@
 <div class="span2">
-	<ul class="nav nav-list">
-		<li class="nav-header"><@s.text name="menu.profile" /></li>
+	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<li>
 			<a href="/security/password">
 				<i class="icon-cog"></i>
@@ -13,7 +12,6 @@
 				<@s.text name="menu.profile.edit" />
 			</a>
 		</li>
-		<li class="divider"></li>
 		<li>
 			<a href="/security/logout">
 				<i class="icon-off"></i>

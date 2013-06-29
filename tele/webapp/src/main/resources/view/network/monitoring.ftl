@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.monitoring.title" /></title>
 		<meta name="header" content="<@s.text name="page.monitoring.header" />">
+		<content tag="sidenav">/view/decorator/nav/network-sidenav.ftl</content>
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<@s.url value="/static/explorercanvas/r3/excanvas.min.js" />"></script><![endif]-->
 		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.min.js" />"></script>
 		<style type="text/css">
@@ -11,48 +12,45 @@
 		</style>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/network-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-					<div class="span12" style="height: 300px;" id="chart">
-						<img src="<@s.url value="/images/loading.gif" />" />
-					</div>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+				<div class="span12" style="height: 300px;" id="chart">
+					<img src="<@s.url value="/images/loading.gif" />" />
 				</div>
-				<br>
-				<div class="row-fluid">
-					<div class="span12">
-						<table class="table table-condensed table-striped">
-							<thead>
-							<tr>
-								<th></th>
-								<th></th>
-								<th>last</th>
-								<th>min</th>
-								<th>avg</th>
-								<th>max</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td>Incoming network traffic on eth0</td>
-								<td>[avg]</td>
-								<td id="td-last-in" class="speed"></td>
-								<td id="td-min-in" class="speed"></td>
-								<td id="td-avg-in" class="speed"></td>
-								<td id="td-max-in" class="speed"></td>
-							</tr>
-							<tr>
-								<td>Outgoing network traffic on eth0</td>
-								<td>[avg]</td>
-								<td id="td-last-out" class="speed"></td>
-								<td id="td-min-out" class="speed"></td>
-								<td id="td-avg-out" class="speed"></td>
-								<td id="td-max-out" class="speed"></td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<br>
+			<div class="row-fluid">
+				<div class="span12">
+					<table class="table table-condensed table-striped">
+						<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th>last</th>
+							<th>min</th>
+							<th>avg</th>
+							<th>max</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>Incoming network traffic on eth0</td>
+							<td>[avg]</td>
+							<td id="td-last-in" class="speed"></td>
+							<td id="td-min-in" class="speed"></td>
+							<td id="td-avg-in" class="speed"></td>
+							<td id="td-max-in" class="speed"></td>
+						</tr>
+						<tr>
+							<td>Outgoing network traffic on eth0</td>
+							<td>[avg]</td>
+							<td id="td-last-out" class="speed"></td>
+							<td id="td-min-out" class="speed"></td>
+							<td id="td-avg-out" class="speed"></td>
+							<td id="td-max-out" class="speed"></td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -148,8 +146,8 @@
 				$('#td-max-out').text(max.toFixed(2));
 				
 				$.plot($("#chart"), [
-					{ label: "Incoming Traffic", data: inData },
-					{ label: "Outgoing Traffic", data: outData }
+					{ label: "Incoming Traffic", color: "#3C7DC4", data: inData },
+					{ label: "Outgoing Traffic", color: "#5A8F29", data: outData }
 				], option);
 			});
 			

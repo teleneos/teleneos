@@ -11,7 +11,7 @@
 <#if user != 'null'>
 <ul class="nav">
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.admin" />">
+		<a href="/admin" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.admin" />">
 			<@s.text name="menu.admin" />
 			<b class="caret"></b>
 		</a>
@@ -34,43 +34,11 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.pos" />">
+		<a href="/pos" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.pos" />">
 			<@s.text name="menu.pos" />
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
-			<#--
-			<li>
-				<a href="/pos/businesspartner">
-				<@s.text name="menu.pos.businesspartner" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/uom">
-					<@s.text name="menu.pos.uom" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/conversion">
-					<@s.text name="menu.pos.itemtype" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/itemcategory">
-					<@s.text name="menu.pos.itemcategory" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/item">
-					<@s.text name="menu.pos.item" />
-				</a>
-			</li>
-			<li>
-				<a href="/pos/goodreceiving">
-					<@s.text name="menu.pos.goodreceiving" />
-				</a>	
-			</li>
-			-->
 			<li>
 				<a href="/pos/inventoryonhand">
 					<@s.text name="menu.pos.inventoryonhand" />
@@ -83,23 +51,8 @@
 			</li>
 		</ul>
 	</li>
-	<#--
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.package" />">
-			<@s.text name="menu.package" />
-			<b class="caret"></b>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/master/packages">
-					<@s.text name="menu.master.packagemanager" />
-				</a>
-			</li>
-		</ul>
-	</li>
-	-->
-	<li class="dropdown">
-		<a href="/report" data-toggle="dropdown" title="<@s.text name="menu.report" />">
+		<a href="/report" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.report" />">
 			<@s.text name="menu.report" />
 			<b class="caret"></b>
 		</a>
@@ -122,7 +75,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.network" />">
+		<a href="/network" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.network" />">
 			<@s.text name="menu.network" />
 			<b class="caret"></b>
 		</a>
@@ -150,7 +103,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="/ticket" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			Ticketing
 			<b class="caret"></b>
 		</a>
@@ -160,18 +113,6 @@
 				Ticket
 			</a>
 		</li>
-		<#--
-		<li>
-			<a href="/ticket/premade">
-				Premade Answer
-			</a>
-		</li>
-		<li>
-			<a href="/ticket/category">
-				Ticket Category
-			</a>
-		</li>
-		-->
 		</ul>
 	</li>
 </ul>
@@ -179,7 +120,7 @@
 <ul class="nav pull-right">
 	<li class="divider-vertical"></li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+		<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
 			<i class="icon-user icon-white"></i>
 			${user.username}
 			<b class="caret"></b>

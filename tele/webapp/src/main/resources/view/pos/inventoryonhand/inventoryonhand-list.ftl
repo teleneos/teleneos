@@ -2,49 +2,43 @@
 	<head>
 		<title><@s.text name="page.inventoryonhand.title" /></title>
 		<meta name="header" content="<@s.text name="page.inventoryonhand.header" />">
+		<content tag="sidenav">/view/decorator/nav/pos-sidenav.ftl</content>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/pos-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-				<#--<a class="btn btn-primary span2" href="<@s.url value="/pos/inventoryonhand/add" />">
-					<i class="icon-plus icon-white"></i>
-					<@s.text name="button.add" />
-				</a>-->
-				<form class="form-inline span10" method="get">
-					<div class="input-append pull-right">
-						<input type="text" name="q" value="${q}" />
-						<button class="btn">
-							<i class="icon-search"></i>
-							<@s.text name="button.search" />
-						</button>
-					</div>
-				</form>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+			<form class="form-inline span10" method="get">
+				<div class="input-append pull-right">
+					<input type="text" name="q" value="${q}" />
+					<button class="btn">
+						<i class="icon-search"></i>
+						<@s.text name="button.search" />
+					</button>
 				</div>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th><@s.text name="label.admin.inventoryonhand.item" /></th>
-							<th><@s.text name="label.admin.inventoryonhand.stock" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<@s.url value="/pos/inventoryonhand/audit/" var="detailUrl" />
-						<#list inventoryOnhands.entityList as s>
-						<tr>
-							<td>${no}</td>
-							<td><a href="${detailUrl + s.item.id}">${s.item.code!} - ${s.item.name!}</a></td>
-							<td>${s.stock?string('#')!} ${s.item.uom.name!}</td>
-						</tr>
-						<#assign no = no + 1 />
-						</#list>
-					</tbody>
-				</table>
-				<div id="pagination"></div>
+			</form>
 			</div>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th><@s.text name="label.admin.inventoryonhand.item" /></th>
+						<th><@s.text name="label.admin.inventoryonhand.stock" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign no = 1 + ((page - 1) * max) />
+					<@s.url value="/pos/inventoryonhand/audit/" var="detailUrl" />
+					<#list inventoryOnhands.entityList as s>
+					<tr>
+						<td>${no}</td>
+						<td><a href="${detailUrl + s.item.id}">${s.item.code!} - ${s.item.name!}</a></td>
+						<td>${s.stock?string('#')!} ${s.item.uom.name!}</td>
+					</tr>
+					<#assign no = no + 1 />
+					</#list>
+				</tbody>
+			</table>
+			<div id="pagination"></div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
 		<script type="text/javascript">

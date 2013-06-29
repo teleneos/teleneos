@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="Ticket" /></title>
 		<meta name="header" content="<@s.text name="New Ticket" />">
+		<content tag="sidenav">/view/decorator/nav/ticket-sidenav.ftl</content>
 		<link rel="stylesheet" type="text/css" href="<@s.url value="/styles/datepicker.css" />" />
 		<script type="text/javascript" src="<@s.url value="/scripts/bootstrap-datepicker.js" />"></script>
 		<script type="text/javascript">

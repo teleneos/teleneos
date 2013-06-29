@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.onlineuser.title" /></title>
 		<meta name="header" content="<@s.text name="page.userstat.header" />">
+		<content tag="sidenav">/view/decorator/nav/admin-sidenav.ftl</content>
 	</head>
 	<body>
 		<#function byteString byte>
@@ -28,75 +29,72 @@
 				<#return time?string('#') + ' Sec' />
 			</#if>
 		</#function>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/admin-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-					<table class="table-condensed table-bordered">
-						<tr>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
-							<td class="span3">${user.user.username!}</td>
-							<td class="span2"><strong><@s.text name="label.user.name" /></strong></td>
-							<td class="span3">${user.name.first!} ${user.name.last!}</td>
-						</tr>
-						<tr>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.totaldownload" /></strong></td>
-							<td class="span3">${byteString(statistic[0]!0)}</td>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalupload" /></strong></td>
-							<td class="span3">${byteString(statistic[1]!0)}</td>
-						</tr>
-						<tr>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalonline" /></strong></td>
-							<td class="span3">${timeFormat(statistic[2]!0)}</td>
-							<td class="span2"><strong><@s.text name="label.admin.onlineuser.activepackage" /></strong></td>
-							<#if userPackage??>
-							<#assign ip = userPackage.internetPackage />
-							<td class="span3"><a title="${ip.name!}" href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
-							<#else>
-							<td class="span3">-</td>
-							</#if>
-						</tr>
-					</table>
-				</div>
-				<hr>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th class="span1">#</th>
-							<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
-							<th><@s.text name="label.admin.onlineuser.accid" /></th>
-							<th><@s.text name="label.admin.onlineuser.starttime" /></th>
-							<th><@s.text name="label.admin.onlineuser.stoptime" /></th>
-							<th><@s.text name="label.admin.onlineuser.download" /></th>
-							<th><@s.text name="label.admin.onlineuser.upload" /></th>
-							<th><@s.text name="label.admin.onlineuser.package" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<#list listacc.entityList as x>
-						<#assign a = x[0] />
-						<#assign c = x[1] />
-						<tr>
-							<td>${no}</td>
-							<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
-							<td>${a.radacctid!}</td>
-							<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('HH:mm:ss')}</strong></td>
-							<td>
-								${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('HH:mm:ss')}</strong>
-								<span class="label">${timeFormat(a.acctsessiontime)}</span>
-							</td>
-							<td>${byteString(a.acctinputoctets)}</td>
-							<td>${byteString(a.acctoutputoctets)}</td>
-							<#assign ip = c.userPackage.internetPackage />
-							<td title="${ip.name!}"><a href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
-						</tr>
-						<#assign no = no + 1 />
-						</#list>
-					</tbody>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+				<table class="table-condensed table-bordered">
+					<tr>
+						<td class="span2"><strong><@s.text name="label.admin.onlineuser.username" /></strong></td>
+						<td class="span3">${user.user.username!}</td>
+						<td class="span2"><strong><@s.text name="label.user.name" /></strong></td>
+						<td class="span3">${user.name.first!} ${user.name.last!}</td>
+					</tr>
+					<tr>
+						<td class="span2"><strong><@s.text name="label.admin.onlineuser.totaldownload" /></strong></td>
+						<td class="span3">${byteString(statistic[0]!0)}</td>
+						<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalupload" /></strong></td>
+						<td class="span3">${byteString(statistic[1]!0)}</td>
+					</tr>
+					<tr>
+						<td class="span2"><strong><@s.text name="label.admin.onlineuser.totalonline" /></strong></td>
+						<td class="span3">${timeFormat(statistic[2]!0)}</td>
+						<td class="span2"><strong><@s.text name="label.admin.onlineuser.activepackage" /></strong></td>
+						<#if userPackage??>
+						<#assign ip = userPackage.internetPackage />
+						<td class="span3"><a title="${ip.name!}" href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
+						<#else>
+						<td class="span3">-</td>
+						</#if>
+					</tr>
 				</table>
-				<div id="pagination"></div>
 			</div>
+			<hr>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th class="span1">#</th>
+						<th><@s.text name="label.admin.onlineuser.ipaddress" /></th>
+						<th><@s.text name="label.admin.onlineuser.accid" /></th>
+						<th><@s.text name="label.admin.onlineuser.starttime" /></th>
+						<th><@s.text name="label.admin.onlineuser.stoptime" /></th>
+						<th><@s.text name="label.admin.onlineuser.download" /></th>
+						<th><@s.text name="label.admin.onlineuser.upload" /></th>
+						<th><@s.text name="label.admin.onlineuser.package" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign no = 1 + ((page - 1) * max) />
+					<#list listacc.entityList as x>
+					<#assign a = x[0] />
+					<#assign c = x[1] />
+					<tr>
+						<td>${no}</td>
+						<td title="${a.callingstationid!}">${a.framedipaddress!}</td>
+						<td>${(a.radacctid!0)?string('#')}</td>
+						<td>${a.acctstarttime?string('dd-MM-yyyy')} <strong>${a.acctstarttime?string('HH:mm:ss')}</strong></td>
+						<td>
+							${a.acctstoptime?string('dd-MM-yyyy')} <strong>${a.acctstoptime?string('HH:mm:ss')}</strong>
+							<span class="label">${timeFormat(a.acctsessiontime)}</span>
+						</td>
+						<td>${byteString(a.acctinputoctets)}</td>
+						<td>${byteString(a.acctoutputoctets)}</td>
+						<#assign ip = c.userPackage.internetPackage />
+						<td title="${ip.name!}"><a href="<@s.url value="/master/packages?q=${ip.code!}" />">${ip.code!}</a></td>
+					</tr>
+					<#assign no = no + 1 />
+					</#list>
+				</tbody>
+			</table>
+			<div id="pagination"></div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
 		<script type="text/javascript">

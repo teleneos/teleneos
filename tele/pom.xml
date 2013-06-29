@@ -22,7 +22,7 @@
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<freemarker.version>2.3.19</freemarker.version>
 		<jquery.version>1.9.1</jquery.version>
-		<bootstrap.version>2.3.0</bootstrap.version>
+		<bootstrap.version>2.3.1</bootstrap.version>
 		<jradius.version>1.0.0</jradius.version>
 		<inca.version>1.0.2</inca.version>
 		<yama.version>1.0.2</yama.version>

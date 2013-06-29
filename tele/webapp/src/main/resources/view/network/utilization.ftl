@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.utilization.title" /></title>
 		<meta name="header" content="<@s.text name="page.utilization.header" />">
+		<content tag="sidenav">/view/decorator/nav/network-sidenav.ftl</content>
 		<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<@s.url value="/static/explorercanvas/r3/excanvas.min.js" />"></script><![endif]-->
 		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.min.js" />"></script>
 		<script type="text/javascript" src="<@s.url value="/static/flot/0.8.0/jquery.flot.pie.min.js" />"></script>
@@ -12,77 +13,74 @@
 		</style>
 	</head>
 	<body>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/network-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-					<div class="span12" style="height: 250px;" id="networkchart">
-						<img src="<@s.url value="/images/loading.gif" />" />
-					</div>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+				<div class="span12" style="height: 250px;" id="networkchart">
+					<img src="<@s.url value="/images/loading.gif" />" />
 				</div>
-				<br>
-				<div class="row-fluid">
+			</div>
+			<br>
+			<div class="row-fluid">
+				<table class="table table-condensed table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th>last</th>
+							<th>min</th>
+							<th>avg</th>
+							<th>max</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Processor load</td>
+							<td>[avg]</td>
+							<td id="td-last-proc" class="speed"></td>
+							<td id="td-min-proc" class="speed"></td>
+							<td id="td-avg-proc" class="speed"></td>
+							<td id="td-max-proc" class="speed"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr>
+			<div class="row-fluid">
+				<div class="span7">
 					<table class="table table-condensed table-striped">
 						<thead>
 							<tr>
-								<th></th>
-								<th></th>
-								<th>last</th>
-								<th>min</th>
-								<th>avg</th>
-								<th>max</th>
+								<th>Item</th>
+								<th>Value</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tb-items">
 							<tr>
-								<td>Processor load</td>
-								<td>[avg]</td>
-								<td id="td-last-proc" class="speed"></td>
-								<td id="td-min-proc" class="speed"></td>
-								<td id="td-avg-proc" class="speed"></td>
-								<td id="td-max-proc" class="speed"></td>
+								<td colspan="2">
+									<img src="<@s.url value="/images/loading.gif" />" />
+								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-				<hr>
-				<div class="row-fluid">
-					<div class="span7">
-						<table class="table table-condensed table-striped">
-							<thead>
-								<tr>
-									<th>Item</th>
-									<th>Value</th>
-								</tr>
-							</thead>
-							<tbody id="tb-items">
-								<tr>
-									<td colspan="2">
-										<img src="<@s.url value="/images/loading.gif" />" />
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="span5 well">
-						<div>
-							<p><strong>Swap Usage</strong></p>
-							<div style="height: 250px;margin-bottom: 50px;" id="swapchart">
-								<img src="<@s.url value="/images/loading.gif" />" />
-							</div>
+				<div class="span5 well">
+					<div>
+						<p><strong>Swap Usage</strong></p>
+						<div style="height: 250px;margin-bottom: 50px;" id="swapchart">
+							<img src="<@s.url value="/images/loading.gif" />" />
 						</div>
-						<div>
-							<p><strong>Disk Usage</strong></p>
-							<div style="height: 250px;" id="diskchart">
-								<img src="<@s.url value="/images/loading.gif" />" />
-							</div>
+					</div>
+					<div>
+						<p><strong>Disk Usage</strong></p>
+						<div style="height: 250px;" id="diskchart">
+							<img src="<@s.url value="/images/loading.gif" />" />
 						</div>
 					</div>
 				</div>
-				<br>
-				<div class="row-fluid">
-					<div class="span12">
-					</div>
+			</div>
+			<br>
+			<div class="row-fluid">
+				<div class="span12">
 				</div>
 			</div>
 		</div>
@@ -110,8 +108,8 @@
 				var used = total - free;
 
 				$.plot($('#swapchart'), 
-					[{ label: "Used space (" + byteString(used) + ")", data: used }, 
-					{ label: "Free space (" + byteString(free) + ")", data: free }], {
+					[{ label: "Used space (" + byteString(used) + ")", color: "#3C7DC4", data: used }, 
+					{ label: "Free space (" + byteString(free) + ")", color: "#5A8F29", data: free }], {
 					series: {
 						pie: {
 							show: true
@@ -131,8 +129,8 @@
 				var total = new Number(data.items[2].lastvalue);
 
 				$.plot($('#diskchart'), 
-					[{ label: "Used space (" + byteString(used) + ")", data: used }, 
-					{ label: "Free space (" + byteString(free) + ")", data: free }], {
+					[{ label: "Used space (" + byteString(used) + ")", color: "#3C7DC4", data: used }, 
+					{ label: "Free space (" + byteString(free) + ")", color: "#5A8F29", data: free }], {
 					series: {
 						pie: {
 							show: true
@@ -201,7 +199,7 @@
 				$('#td-max-proc').text(max.toFixed(2));
 				
 				$.plot($("#networkchart"), [
-					{ label: "CPU Usage", data: uzdata},
+					{ label: "CPU Usage", color: "#5A8F29", data: uzdata},
 				], option);
 			});
 			

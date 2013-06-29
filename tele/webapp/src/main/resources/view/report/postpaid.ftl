@@ -2,6 +2,7 @@
 	<head>
 		<title><@s.text name="page.statistic.title" /></title>
 		<meta name="header" content="<@s.text name="page.statistic.title" />">
+		<content tag="sidenav">/view/decorator/nav/report-statistic-sidenav.ftl</content>
 	</head>
 	<body>
 		<#function noInvoice counter>
@@ -32,52 +33,49 @@
 				<#return time?string('#') + ' Sec' />
 			</#if>
 		</#function>
-		<div class="row-fluid">
-			<#include "/view/decorator/nav/report-statistic-sidenav.ftl" />
-			<div class="span10">
-				<div class="row-fluid">
-				<form class="form-inline span12" method="get">
-					<div class=" pull-right">
-						Search : <input type="text" name="q" value="${q!}" />
-						<button class="btn" type="submit">
-							<i class="icon-search"></i>
-							<@s.text name="button.search" />
-						</button>
-					</div>
-				</form>
+		<div class="block-content collapse in">
+			<div class="row-fluid">
+			<form class="form-inline span12" method="get">
+				<div class=" pull-right">
+					Search : <input type="text" name="q" value="${q!}" />
+					<button class="btn" type="submit">
+						<i class="icon-search"></i>
+						<@s.text name="button.search" />
+					</button>
 				</div>
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th class="span1">#</th>
-							<th><@s.text name="label.report.postpaid.user" /></th>
-							<th><@s.text name="label.report.postpaid.inv" /></th>
-							<th><@s.text name="label.report.postpaid.package" /></th>
-							<th><@s.text name="label.report.postpaid.start" /></th>
-							<th><@s.text name="label.report.postpaid.price" /></th>
-							<th><@s.text name="label.report.postpaid.status" /></th>
-							<th><@s.text name="label.report.postpaid.total" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign no = 1 + ((page - 1) * max) />
-						<#list transactionDetails.entityList as d>
-						<tr>
-							<td>${no}</td>
-							<td>${d.transactionHeader.username}</td>
-							<td>${noInvoice(d.transactionHeader.counter)}</td>
-							<td>${d.internetPackage.name}</td>
-							<td><#if d.postpaidStart??>${d.postpaidStart} - ${d.postpaidEnd}</#if></td>
-							<td>${d.internetPackage.price!} @ ${timeFormat(d.internetPackage.time!0)}</td>
-							<td><#if d.reportPaidStatus> PAID <#else> UNPAID </#if></td>
-							<td style="text-align: right;">${d.internetPackage.price!}</td>
-						</tr>
-						<#assign no = no + 1 />
-						</#list>
-					</tbody>
-				</table>
-				<div id="pagination"></div>
+			</form>
 			</div>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th class="span1">#</th>
+						<th><@s.text name="label.report.postpaid.user" /></th>
+						<th><@s.text name="label.report.postpaid.inv" /></th>
+						<th><@s.text name="label.report.postpaid.package" /></th>
+						<th><@s.text name="label.report.postpaid.start" /></th>
+						<th><@s.text name="label.report.postpaid.price" /></th>
+						<th><@s.text name="label.report.postpaid.status" /></th>
+						<th><@s.text name="label.report.postpaid.total" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign no = 1 + ((page - 1) * max) />
+					<#list transactionDetails.entityList as d>
+					<tr>
+						<td>${no}</td>
+						<td>${d.transactionHeader.username}</td>
+						<td>${noInvoice(d.transactionHeader.counter)}</td>
+						<td>${d.internetPackage.name}</td>
+						<td><#if d.postpaidStart??>${d.postpaidStart} - ${d.postpaidEnd}</#if></td>
+						<td>${d.internetPackage.price!} @ ${timeFormat(d.internetPackage.time!0)}</td>
+						<td><#if d.reportPaidStatus> PAID <#else> UNPAID </#if></td>
+						<td style="text-align: right;">${d.internetPackage.price!}</td>
+					</tr>
+					<#assign no = no + 1 />
+					</#list>
+				</tbody>
+			</table>
+			<div id="pagination"></div>
 		</div>		
 		<script type="text/javascript" src="<@s.url value="/scripts/jq/pagination.js" />"></script>
 		<script type="text/javascript">

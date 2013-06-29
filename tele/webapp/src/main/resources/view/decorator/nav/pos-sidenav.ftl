@@ -1,6 +1,5 @@
 <div class="span2">
-	<ul class="nav nav-list">
-		<li id="nav-header" class="nav-header"><@s.text name="menu.pos" /></li>
+	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<#if currentUser.role != 'ADMINISTRATOR'>
 		<li>
 			<a href="/pos/businesspartner">

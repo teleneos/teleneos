@@ -2,6 +2,7 @@
 <html>
 	<#include "/view/decorator/basic/head.ftl" />
 	<body>
+		<#include "/view/decorator/basic/logo.ftl" />
 		<#include "/view/decorator/nav/user-topnav.ftl" />
 		<div class="modal hide fade in" id="popup-dialog">
 			<div class="modal-header">
@@ -20,15 +21,25 @@
 				<div id="popup-data"></div>
 			</div>
 		</div>
-		<div class="container" id="content">
-			<#if page.getProperty('meta.header')??>
+		<div class="container-fluid" id="content">
 			<div class="row-fluid">
-				<div class="span12">
-					<h2>${page.getProperty('meta.header')} <small>${page.getProperty('meta.desc')!}</small></h2>
+				<#if page.getProperty('page.sidenav')??>
+				<#include page.getProperty('page.sidenav') />
+				</#if>
+				
+				<#if page.getProperty('meta.header')??>
+				<div class="span10 block">
+				<div class="navbar navbar-inner block-header">
+					<div class="muted pull-left">
+						<strong>${page.getProperty('meta.header')}</strong> <small>${page.getProperty('meta.desc')!}</small>
+					</div>
 				</div>
+				${body!}
+				</div>
+				<#else>
+				${body!}
+				</#if>
 			</div>
-			</#if>
-			${body!}
 		</div>
 		
 		<#include "/view/decorator/basic/footer.ftl" />

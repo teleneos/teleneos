@@ -1,6 +1,5 @@
 <div class="span2">
-	<ul class="nav nav-list">
-		<li id="nav-header" class="nav-header"><@s.text name="page.configuration.title" /></li>
+	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<li>
 			<a href="/admin/configuration">
 				<@s.text name="menu.configuration.telecentre" />

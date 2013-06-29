@@ -5,7 +5,7 @@
 	<body>
 		<div class="row-fluid">
 			<div class="span12">
-				<div class="modal modal-static">
+				<div class="login-dialog modal modal-static">
 					<div class="modal-header">
 						<h2><@s.text name="page.login.header" /></h2>
 					</div>
@@ -25,8 +25,17 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+		jQuery.fn.center = function () {
+			this.css("position", "absolute");
+			this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
+			this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+			
+			return this;
+		}
+		
 		$(function() {
 			$('input[name="username"]').focus();
+			$('.navbar').remove();
 		});
 		</script>
 	</body>

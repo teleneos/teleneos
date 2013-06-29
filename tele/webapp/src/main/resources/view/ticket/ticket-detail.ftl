@@ -1,66 +1,65 @@
 <html>
-<head>
-<title><@s.text name="page.ticket.title" /></title>
-<meta name="header" content="<@s.text name="page.ticket.header" />">
-<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
-<script type="text/javascript">
-$(function() {
-	$('#premade').change(function() {
-		$('#message').val($("#premade option:selected").val());
-	});
-});
-</script>
-<style type="text/css">
-th {
-	text-align: left;
-}
-
-#ticketthread table.message {
-	margin: 10px 0px 5px;
-}
-
-table.message,table.response,table.note {
-	border: 1px solid rgb(205, 205, 205);
-	border-radius: 3px 3px 3px 3px;
-}
-
-
-table.message th,table.response th,table.note th {
-	line-height: 24px;
-	font-size: 12px;
-	font-weight: bold;
-	text-align: left;
-	padding: 1px 1px 1px 2px;
-}
-
-table.message td,table.message th,table.response td,table.response th,table.note td,table.note th
-	{
-	border-bottom: 1px solid;
-	padding: 5px;
-}
-
-td,th {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: rgb(62, 62, 62);
-	text-decoration: none;
-	border: medium none;
-}
-
-.ok {
-	background: -moz-linear-gradient(center top, rgb(253, 253, 253),
-		rgb(234, 234, 234) ) repeat scroll 0% 0%/100% auto rgb(234, 234, 234);
-	text-shadow: 0px 1px white;
-	border-bottom: 1px solid rgb(205, 205, 205);
-	color: rgb(99, 99, 99);
-	font-weight: 600;
-}
-</style>
-</head>
-<body>
-	<div class="row-fluid">
-		<#include "/view/decorator/nav/ticket-sidenav.ftl" />
-		<div class="span10">
+	<head>
+		<title><@s.text name="page.ticket.title" /></title>
+		<meta name="header" content="<@s.text name="page.ticket.header" />">
+		<content tag="sidenav">/view/decorator/nav/ticket-sidenav.ftl</content>
+		<script type="text/javascript" src="<@s.url value="/scripts/cimande-popup.js" />"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#premade').change(function() {
+				$('#message').val($("#premade option:selected").val());
+			});
+		});
+		</script>
+		<style type="text/css">
+		th {
+			text-align: left;
+		}
+		
+		#ticketthread table.message {
+			margin: 10px 0px 5px;
+		}
+		
+		table.message,table.response,table.note {
+			border: 1px solid rgb(205, 205, 205);
+			border-radius: 3px 3px 3px 3px;
+		}
+		
+		
+		table.message th,table.response th,table.note th {
+			line-height: 24px;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: left;
+			padding: 1px 1px 1px 2px;
+		}
+		
+		table.message td,table.message th,table.response td,table.response th,table.note td,table.note th
+			{
+			border-bottom: 1px solid;
+			padding: 5px;
+		}
+		
+		td,th {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			color: rgb(62, 62, 62);
+			text-decoration: none;
+			border: medium none;
+		}
+		
+		.ok {
+			background: -moz-linear-gradient(center top, rgb(253, 253, 253),
+				rgb(234, 234, 234) ) repeat scroll 0% 0%/100% auto rgb(234, 234, 234);
+			text-shadow: 0px 1px white;
+			border-bottom: 1px solid rgb(205, 205, 205);
+			color: rgb(99, 99, 99);
+			font-weight: 600;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="block-content collapse in">
 			<table border="0" cellpadding="2" cellspacing="0" width="100%">
 				<tbody>
 					<tr>
@@ -145,7 +144,5 @@ td,th {
 				</tbody>
 			</table>
 		</div>
-	</div>
-</body>
-
+	</body>
 </html>
