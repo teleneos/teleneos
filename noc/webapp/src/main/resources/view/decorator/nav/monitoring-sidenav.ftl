@@ -1,7 +1,5 @@
 <div class="span2">
-	<ul class="nav nav-list">
-		<li id="nav-header" class="nav-header"><@s.text name="menu.monitoring" /></li>
-		
+	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<li>
 			<a href="/monitoring/availability">
 				<@s.text name="menu.monitoring.availability" />

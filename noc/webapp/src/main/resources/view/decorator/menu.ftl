@@ -1,7 +1,7 @@
 <ul class="nav">
 	<li>
 		<a href='<@s.url value="/" />'>
-			<i class="icon-home icon-white"></i>
+			<i class="icon-home"></i>
 			<@s.text name="page.home" />
 		</a>
 	</li>
@@ -11,7 +11,7 @@
 <#if user != 'null'>
 <ul class="nav">
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.telecentre" />">
+		<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.telecentre" />">
 			<@s.text name="menu.telecentre" />
 			<b class="caret"></b>
 		</a>
@@ -29,7 +29,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.monitoring" />">
+		<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.monitoring" />">
 			<@s.text name="menu.monitoring" />
 			<b class="caret"></b>
 		</a>
@@ -57,7 +57,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.log" />">
+		<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.log" />">
 			<@s.text name="menu.log" />
 			<b class="caret"></b>
 		</a>
@@ -78,8 +78,8 @@
 <ul class="nav pull-right">
 	<li class="divider-vertical"></li>
 	<li class="dropdown">
-		<a href="#" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
-			<i class="icon-user icon-white"></i>
+		<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" title="<@s.text name="menu.user.title"><@s.param>${user.username}</@s.param></@s.text>">
+			<i class="icon-user"></i>
 			<b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">

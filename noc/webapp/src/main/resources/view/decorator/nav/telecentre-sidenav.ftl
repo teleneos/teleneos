@@ -1,7 +1,5 @@
 <div class="span2">
-	<ul class="nav nav-list">
-		<li id="nav-header" class="nav-header"><@s.text name="menu.telecentre" /></li>
-		
+	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<li>
 			<a href="/tele">
 				<@s.text name="menu.telecentre.manage" />
