@@ -1,17 +1,19 @@
+<#assign path = request.servletPath />
+<#assign path = path?substring(0, path?last_index_of('/')) />
 <div class="span2">
 	<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
 		<li>
-			<a href="/report/statistic/daily">
+			<a href="${path}/daily">
 				<@s.text name="menu.report.daily" />
 			</a>
 		</li>
 		<li>
-			<a href="/report/statistic/weekly">
+			<a href="${path}/weekly">
 				<@s.text name="menu.report.weekly" />
 			</a>
 		</li>
 		<li>
-			<a href="/report/statistic/monthly">
+			<a href="${path}/monthly">
 				<@s.text name="menu.report.monthly" />
 			</a>
 		</li>

@@ -14,7 +14,7 @@
 							<@s.actionmessage theme="bootstrap" />
 							<@s.textfield key="label.login.username" name="username" cssClass="span9" autofocus="" /> 
 							<@s.password key="label.login.password" name="password" cssClass="span9" />
-							<@s.hidden name="_spring_security_remember_me" value="true" />
+							<#-- <@s.hidden name="_spring_security_remember_me" value="true" /> -->
 							<#-- <@s.checkbox name="_spring_security_remember_me" key="label.login.rememberme" /> -->
 						</div>
 						<div class="modal-footer">
